@@ -35,6 +35,7 @@ class AppConfig:
     pollinations_api_key: str
     cloudflare_account_id: str
     cloudflare_api_token: str
+    deepai_api_key: str
     use_composio_fal: bool
     public_media_base_url: str
     image_width: int = 1080
@@ -68,6 +69,7 @@ class AppConfig:
             pollinations_api_key=os.getenv("POLLINATIONS_API_KEY", "").strip(),
             cloudflare_account_id=os.getenv("CLOUDFLARE_ACCOUNT_ID", "").strip(),
             cloudflare_api_token=os.getenv("CLOUDFLARE_API_TOKEN", "").strip(),
+            deepai_api_key=os.getenv("DEEPAI_API_KEY", "").strip(),
             use_composio_fal=os.getenv("USE_COMPOSIO_FAL", "false").lower() == "true",
             public_media_base_url=explicit_base or auto_base,
         )

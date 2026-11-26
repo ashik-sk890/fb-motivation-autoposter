@@ -31,6 +31,7 @@ In your GitHub repo: **Settings → Secrets and variables → Actions → Secret
 | `COMPOSIO_API_KEY` | **Yes** | Your Composio API key (`ck_*` or `ak_*`) |
 | `CLOUDFLARE_ACCOUNT_ID` | Recommended (Free) | Free-tier FLUX.1-schnell AI artwork (10,000 free Neurons/day, no card) |
 | `CLOUDFLARE_API_TOKEN` | Recommended (Free) | Cloudflare Workers AI token with Read/Write AI permission |
+| `DEEPAI_API_KEY` | Optional (Pro) | DeepAI Pro `text2img` API key |
 | `COMPOSIO_USER_ID` | Optional | Composio user/entity ID (for `ak_*` keys; defaults to `default`) |
 | `FACEBOOK_PAGE_ID` | Optional | Leave blank or `all` to post to **all** managed pages; or comma-separated IDs |
 | `GEMINI_API_KEY` | Optional | Enables unlimited fresh AI-written quotes & Imagen artwork |

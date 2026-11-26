@@ -236,6 +236,39 @@ def _try_composio_fal(prompt: str, config: AppConfig) -> bytes | None:
     return None
 
 
+def _try_deepai(prompt: str, api_key: str) -> bytes | None:
+    """Attempt image generation via DeepAI text2img API (requires DeepAI Pro key)."""
+    if not api_key:
+        return None
+    form = urllib.parse.urlencode(
+        {
+            "text": prompt,
+            "grid_size": "1",
+            "width": "768",
+            "height": "1024",
+        }
+    ).encode("utf-8")
+    req = urllib.request.Request(
+        "https://api.deepai.org/api/text2img",
+        data=form,
+        headers={
+            "api-key": api_key,
+            "Content-Type": "application/x-www-form-urlencoded",
+        },
+        method="POST",
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=60) as resp:
+            parsed = json.loads(resp.read().decode("utf-8"))
+            out_url = parsed.get("output_url", "")
+            if out_url:
+                data = _download_bytes(out_url, timeout=45)
+                return data if _is_valid_image_bytes(data) else None
+    except (urllib.error.URLError, KeyError, ValueError, TimeoutError):
+        return None
+    return None
+
+
 def _try_pollinations(prompt: str, api_key: str, seed: int) -> bytes | None:
     """Attempt artwork generation via Pollinations Flux endpoints with rate-limit backoff."""
     encoded = urllib.parse.quote(prompt, safe="")
@@ -747,6 +780,7 @@ def resolve_artwork_data_uri(
     if allow_remote_art:
         image_bytes = (
             _try_cloudflare_flux(prompt, config.cloudflare_account_id, config.cloudflare_api_token)
+            or _try_deepai(prompt, config.deepai_api_key)
             or _try_gemini_imagen(prompt, config.gemini_api_key)
             or _try_huggingface(prompt, config.hf_token)
             or _try_openai_image(prompt, config.openai_api_key)

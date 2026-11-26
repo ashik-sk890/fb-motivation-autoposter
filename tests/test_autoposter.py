@@ -10,7 +10,7 @@ import unittest
 from datetime import datetime, timezone
 from pathlib import Path
 
-from src.art_engine import _try_cloudflare_flux, build_illustrated_svg
+from src.art_engine import _try_cloudflare_flux, _try_deepai, build_illustrated_svg
 from src.card_renderer import build_card_html
 from src.composio_publisher import list_managed_pages, publish_post
 from src.config import ARCHETYPES_PATH, AppConfig, QUOTE_VAULT_PATH
@@ -34,6 +34,7 @@ def _test_config(**overrides: str) -> AppConfig:
         pollinations_api_key="",
         cloudflare_account_id="",
         cloudflare_api_token="",
+        deepai_api_key="",
         use_composio_fal=False,
         public_media_base_url="",
     )
@@ -135,6 +136,23 @@ class TestRenderingAndArt(unittest.TestCase):
         with mock.patch("urllib.request.urlopen", return_value=FakeResp()):
             out = _try_cloudflare_flux("charcoal sketch of wolf", "acc123", "tok123")
             self.assertEqual(out, fake_png)
+
+        def fake_deepai_open(req, timeout=60):
+            class Resp:
+                def __init__(self, payload: bytes) -> None:
+                    self._p = payload
+                def read(self) -> bytes:
+                    return self._p
+                def __enter__(self):
+                    return self
+                def __exit__(self, *args):
+                    return None
+            if "api.deepai.org" in req.full_url:
+                return Resp(json.dumps({"output_url": "https://cdn.example.com/out.png"}).encode("utf-8"))
+            return Resp(fake_png)
+
+        with mock.patch("urllib.request.urlopen", side_effect=fake_deepai_open):
+            self.assertEqual(_try_deepai("charcoal sketch", "dp-key"), fake_png)
 
         config = _test_config()
         slide = SlideContent("NEVER BE AN OPTION", "OPTION", "", "dark_eagle")
