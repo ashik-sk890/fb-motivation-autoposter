@@ -1,4 +1,42 @@
 {
-  "hashes": [],
-  "posts": []
+  "hashes": [
+    "62b66258e0542bc7",
+    "d766e8c5c94041fe"
+  ],
+  "posts": [
+    {
+      "timestamp_utc": "2026-11-26T23:34:03.069995+00:00",
+      "slot": 1,
+      "archetype_id": 17,
+      "archetype_name": "Don't Compete, Dominate",
+      "post_type": "single",
+      "source": "llm_live",
+      "content_hash": "62b66258e0542bc7",
+      "headline": "STOP COMPETING WITH THE CROWD WHEN YOUR ENTIRE PURPOSE IS TO DOMINATE THE GAME.",
+      "remote_result": {
+        "action": "FACEBOOK_CREATE_VIDEO_POST",
+        "page_id": "1423121790882352",
+        "result": {
+          "id": "1099391873103807"
+        }
+      }
+    },
+    {
+      "timestamp_utc": "2026-11-26T23:34:07.727749+00:00",
+      "slot": 1,
+      "archetype_id": 6,
+      "archetype_name": "Hard Truths Every Man Learns Late",
+      "post_type": "single",
+      "source": "llm_live",
+      "content_hash": "d766e8c5c94041fe",
+      "headline": "NOBODY CARES ABOUT YOUR EXCUSES, BUILD YOUR EMPIRE IN SILENCE",
+      "remote_result": {
+        "action": "FACEBOOK_CREATE_VIDEO_POST",
+        "page_id": "237094056146383",
+        "result": {
+          "id": "1018229007316198"
+        }
+      }
+    }
+  ]
 }
