@@ -1,0 +1,4 @@
+composio>=0.7.0
+pillow>=10.0.0
+playwright>=1.48.0
+requests>=2.31.0

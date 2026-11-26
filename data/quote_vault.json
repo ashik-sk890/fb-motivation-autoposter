@@ -1,0 +1,320 @@
+{
+  "visual_themes": {
+    "dark_lion": {
+      "label": "Monochrome Scarred Lion",
+      "layout_style": "monochrome_alpha",
+      "accent": "#FF3B30",
+      "svg_motif": "lion",
+      "ai_prompt": "Full-bleed dramatic black-and-white monochrome photograph-style digital art of a battle-scarred alpha lion walking forward through mist, intense sharp eyes, high-contrast silver-gelatin lighting, empty lower third for crisp caption, no text, no watermark"
+    },
+    "dark_knight": {
+      "label": "Gold Spotlight Warrior Carousel",
+      "layout_style": "gold_spotlight",
+      "accent": "#FACC15",
+      "svg_motif": "knight",
+      "ai_prompt": "Cinematic moody portrait of a determined stoic warrior/strategist in dramatic warm golden rim light and deep shadow, dark background on bottom/side for bold white and gold typography, ultra crisp, no text, no watermark"
+    },
+    "lone_wolf": {
+      "label": "Misty Wolf Pack Alpha",
+      "layout_style": "monochrome_alpha",
+      "accent": "#FF3B30",
+      "svg_motif": "wolf",
+      "ai_prompt": "Full-bleed atmospheric dark-amber and silver illustration of a lone wolf pack emerging from misty pine forest, glowing intense eyes, cinematic volumetric fog, clean space at bottom for bold typography, no text, no watermark"
+    },
+    "noir_suit": {
+      "label": "Saffron Editorial Strategist",
+      "layout_style": "saffron_editorial",
+      "accent": "#111111",
+      "svg_motif": "strategist",
+      "ai_prompt": "Vibrant warm saffron-orange textured paper background with a detailed black charcoal crosshatched portrait of a sharp suited strategist thinking quietly in lower half, generous clean top space for black serif quote, no text, no watermark"
+    },
+    "dark_eagle": {
+      "label": "Paper Sketch Priority Bird",
+      "layout_style": "paper_sketch",
+      "accent": "#DC2626",
+      "svg_motif": "cliff_birds",
+      "ai_prompt": "Detailed black ink and pencil sketch on textured cream sketchbook paper showing one lone bird boldly flying off a rocky cliff away from four passive birds, subtle dynamic crimson red brushstroke trail, clean upper area for handwritten ink quote, no text, no watermark"
+    },
+    "dark_anime_moody": {
+      "label": "Paper Sketch Mind Freedom",
+      "layout_style": "paper_sketch",
+      "accent": "#DC2626",
+      "svg_motif": "chained_mind",
+      "ai_prompt": "Expressive charcoal pencil sketch on warm off-white paper showing a young person dragging a heavy iron ball chained to a stone band around their head, metaphorical self-limiting beliefs art, clean upper half for black ink quote, no text, no watermark"
+    },
+    "dark_anime_rain": {
+      "label": "Sunrise Crimson Tree Reality",
+      "layout_style": "sunrise_metaphor",
+      "accent": "#DC2626",
+      "svg_motif": "crimson_tree",
+      "ai_prompt": "Luminous golden sunrise landscape with a vivid crimson-red tree on a calm shore, a lone silhouette figure walking toward the bright sun reflecting on mirror water, soft bright sky upper half for crisp red and dark text, no text, no watermark"
+    },
+    "dark_anime_warm": {
+      "label": "Cartoon Life Lesson Metaphor",
+      "layout_style": "cartoon_metaphor",
+      "accent": "#2563EB",
+      "svg_motif": "wrong_person_tap",
+      "ai_prompt": "Bright clean modern vector comic illustration of a stick-figure character happily pouring clear water from a tap into a leaking wire mesh basket, crystal clear visual metaphor on soft sky background, no text, no watermark"
+    },
+    "shadow_boxer": {
+      "label": "Split Gold Mentor Spotlight",
+      "layout_style": "gold_spotlight",
+      "accent": "#FACC15",
+      "svg_motif": "mentor_split",
+      "ai_prompt": "Editorial split-frame portrait of a calm focused athlete/mentor on the left side under dramatic warm spotlight fading smoothly to deep black on the right side for bold white and yellow quote text, no text, no watermark"
+    },
+    "obsidian_statue": {
+      "label": "Paper Sketch Mountain Crown",
+      "layout_style": "paper_sketch",
+      "accent": "#DC2626",
+      "svg_motif": "mountain_mask",
+      "ai_prompt": "Detailed pencil sketch on textured parchment paper of a determined young figure looking up at a shining crown atop mountain stairs while shedding a crumbling stone mask behind, clean space for bold serif quote, no text, no watermark"
+    },
+    "dark_panther": {
+      "label": "Monochrome Panther Storm",
+      "layout_style": "monochrome_alpha",
+      "accent": "#FF3B30",
+      "svg_motif": "panther",
+      "ai_prompt": "Full-bleed hyper-detailed dark monochrome & ember artwork of a fierce black panther emerging through stormy smoke with intense glowing eyes, high contrast, clean bottom area for bold headline, no text, no watermark"
+    },
+    "night_city_silhouette": {
+      "label": "Gold Crown Executive Card",
+      "layout_style": "gold_spotlight",
+      "accent": "#FACC15",
+      "svg_motif": "city",
+      "ai_prompt": "Cinematic luxury portrait overlooking night city skyline in rich warm amber and obsidian shadow, dramatic lighting, deep black lower frame for stacked white and gold quote text, no text, no watermark"
+    },
+    "masked_samurai": {
+      "label": "Saffron Chess & Sword Ink",
+      "layout_style": "saffron_editorial",
+      "accent": "#111111",
+      "svg_motif": "samurai",
+      "ai_prompt": "Bold warm amber-orange textured background with crisp black crosshatched ink illustration of a lone samurai warrior/chess king standing firm in lower half, generous clean top space for editorial serif text, no text, no watermark"
+    },
+    "scarred_bear": {
+      "label": "Cartoon Time & Energy Metaphor",
+      "layout_style": "cartoon_metaphor",
+      "accent": "#DC2626",
+      "svg_motif": "watering_rock",
+      "ai_prompt": "Clean bright modern cartoon metaphor illustration showing someone pouring effort from a watering can onto a solid gray stone while a bright green sprout waits beside it, crisp readable graphic art, no text, no watermark"
+    }
+  },
+  "single_quotes": [
+    {
+      "quote": "YOU WILL NEVER BE FREE UNTIL YOU FREE YOURSELF FROM THE PRISON OF YOUR OWN FALSE THOUGHTS.",
+      "accent": "PRISON OF YOUR OWN FALSE THOUGHTS.",
+      "caption": "Most cages are built in your own mind long before anyone else locks the door.",
+      "tone": "life_lessons",
+      "preferred_theme": "dark_anime_moody"
+    },
+    {
+      "quote": "NEVER BE AN OPTION. BE THE PRIORITY OR BE ALONE.",
+      "accent": "PRIORITY",
+      "caption": "Choose solitude over settling for someone's backup plan.",
+      "tone": "self_respect",
+      "preferred_theme": "dark_eagle"
+    },
+    {
+      "quote": "SUCCESS IS THE BEST REVENGE FOR ANYTHING.",
+      "accent": "BEST REVENGE",
+      "caption": "Let your elevation speak louder than anger ever could.",
+      "tone": "comeback",
+      "preferred_theme": "obsidian_statue"
+    },
+    {
+      "quote": "BE SMART. NOTICE EVERYTHING, BUT ACT LIKE YOU KNOW NOTHING.",
+      "accent": "ACT LIKE YOU KNOW NOTHING.",
+      "caption": "Stay silent, observe patterns carefully, and let results speak.",
+      "tone": "silent_power",
+      "preferred_theme": "noir_suit"
+    },
+    {
+      "quote": "YOUR EFFORTS ARE NOT WASTED — YOU JUST GAVE THEM TO THE WRONG PERSON.",
+      "accent": "WRONG PERSON.",
+      "caption": "Stop pouring pure energy into baskets designed to leak.",
+      "tone": "loyalty",
+      "preferred_theme": "dark_anime_warm"
+    },
+    {
+      "quote": "PEOPLE NEVER SEE WHAT THEY DID TO YOU — THEY ONLY BLAME HOW YOU REACTED.",
+      "accent": "SAD BUT TRUE",
+      "caption": "Sometimes silence tells the whole story better than arguing ever will.",
+      "tone": "cold_truth",
+      "preferred_theme": "dark_anime_rain"
+    },
+    {
+      "quote": "WHEN THE DECISION IS MADE, NEVER LOOK BACK.",
+      "accent": "NEVER LOOK BACK.",
+      "caption": "You weren't brought this far just to return to what broke you.",
+      "tone": "savage_attitude",
+      "preferred_theme": "dark_lion"
+    },
+    {
+      "quote": "FOCUS ON YOUR OWN JOURNEY. COMPARE ONLY TO WHO YOU WERE YESTERDAY.",
+      "accent": "YOUR OWN JOURNEY.",
+      "caption": "Work hard, stay honest, keep building quietly.",
+      "tone": "discipline",
+      "preferred_theme": "shadow_boxer"
+    },
+    {
+      "quote": "THE EVIL DONE TO YOU IN SECRET WILL BE EXPOSED IN PUBLIC. STAY FOCUSED.",
+      "accent": "STAY FOCUSED.",
+      "caption": "Karma keeps perfect records — never pause your grind for drama.",
+      "tone": "antihero_noir",
+      "preferred_theme": "night_city_silhouette"
+    },
+    {
+      "quote": "STOP WATERING DEAD STONES EXPECTING FLOWERS. INVEST IN YOUR OWN GROWTH.",
+      "accent": "DEAD STONES",
+      "caption": "Put your discipline where it actually grows.",
+      "tone": "growth",
+      "preferred_theme": "scarred_bear"
+    },
+    {
+      "quote": "IF NOBODY HATES YOU, THEN YOU ARE PLAYING WAY TOO SMALL.",
+      "accent": "PLAYING WAY TOO SMALL.",
+      "caption": "Standing out always offends people comfortable with average.",
+      "tone": "antihero_noir",
+      "preferred_theme": "dark_panther"
+    },
+    {
+      "quote": "NEVER MISTAKE MY PATIENCE FOR WEAKNESS. I FORGIVE, BUT I NEVER FORGET.",
+      "accent": "NEVER FORGET.",
+      "caption": "Quiet observation always beats loud reaction.",
+      "tone": "savage_attitude",
+      "preferred_theme": "dark_lion"
+    },
+    {
+      "quote": "ALONE IS PEACEFUL ONCE YOU REALIZE MOST CROWDS ARE JUST NOISE.",
+      "accent": "JUST NOISE.",
+      "caption": "A small honest circle beats a loud fake crowd.",
+      "tone": "solitude",
+      "preferred_theme": "lone_wolf"
+    },
+    {
+      "quote": "DISAPPEAR FOR SIX MONTHS. NO ANNOUNCEMENTS. JUST PURE EXECUTION.",
+      "accent": "PURE EXECUTION.",
+      "caption": "Work in private until results introduce you.",
+      "tone": "comeback",
+      "preferred_theme": "night_city_silhouette"
+    },
+    {
+      "quote": "PROTECT YOUR PEACE AT ALL COSTS. WALK AWAY WHEN RESPECT DISAPPEARS.",
+      "accent": "PROTECT YOUR PEACE",
+      "caption": "Self-respect starts the moment you refuse cheap treatment.",
+      "tone": "self_respect",
+      "preferred_theme": "dark_anime_rain"
+    },
+    {
+      "quote": "CONTROL YOUR TEMPER. THE MOMENT SOMEONE TRIGGERS YOU, THEY OWN YOU.",
+      "accent": "THEY OWN YOU.",
+      "caption": "Calmness under pressure is real strength.",
+      "tone": "stoicism",
+      "preferred_theme": "masked_samurai"
+    },
+    {
+      "quote": "TRUST ACTIONS, NOT SPEECHES. EVERYONE SOUNDS LOYAL UNTIL IT COSTS THEM.",
+      "accent": "TRUST ACTIONS,",
+      "caption": "Watch what people do when nothing is in it for them.",
+      "tone": "loyalty",
+      "preferred_theme": "noir_suit"
+    },
+    {
+      "quote": "STOP SETTING YOURSELF ON FIRE TO KEEP UNGRATEFUL PEOPLE WARM.",
+      "accent": "UNGRATEFUL PEOPLE WARM.",
+      "caption": "Choose yourself before life forces you to.",
+      "tone": "self_respect",
+      "preferred_theme": "dark_eagle"
+    }
+  ],
+  "carousel_series": [
+    {
+      "series_title": "5 VISUAL TRUTHS THAT WILL CHANGE YOUR MINDSET",
+      "caption_lead": "Follow {brand} for mindset shifts and harsh truths worth saving.",
+      "visual_theme": "dark_knight",
+      "slides": [
+        {"badge": "01 / 05", "quote": "THESE 5 TRUTHS WILL REWIRE YOUR MINDSET FOREVER.", "accent": "REWIRE YOUR MINDSET", "visual_theme": "dark_knight"},
+        {"badge": "02 / 05", "quote": "NEVER BE AN OPTION — BE THE PRIORITY OR WALK ALONE.", "accent": "PRIORITY", "visual_theme": "dark_eagle"},
+        {"badge": "03 / 05", "quote": "THE COLD WATER NEVER GETS WARMER IF YOU KEEP WAITING.", "accent": "NEVER GETS WARMER", "visual_theme": "dark_anime_rain"},
+        {"badge": "04 / 05", "quote": "STOP POURING GENUINE EFFORT INTO THE WRONG PERSON.", "accent": "WRONG PERSON.", "visual_theme": "dark_anime_warm"},
+        {"badge": "05 / 05", "quote": "DISAPPEAR IN SILENCE AND LET YOUR SUCCESS ANSWER EVERYTHING.", "accent": "SUCCESS ANSWER EVERYTHING.", "visual_theme": "obsidian_statue"}
+      ]
+    },
+    {
+      "series_title": "TIMELESS RULES EVERY STRONG MIND LIVES BY",
+      "caption_lead": "Follow {brand} for timeless rules every man should live by.",
+      "visual_theme": "dark_knight",
+      "slides": [
+        {"badge": "RULE #01", "quote": "OBSERVE EVERYTHING QUIETLY — ACT LIKE YOU KNOW NOTHING.", "accent": "ACT LIKE YOU KNOW NOTHING.", "visual_theme": "noir_suit"},
+        {"badge": "RULE #02", "quote": "NEVER BEG FOR RESPECT. LOWER THEIR ACCESS IMMEDIATELY.", "accent": "LOWER THEIR ACCESS", "visual_theme": "dark_lion"},
+        {"badge": "RULE #03", "quote": "FREE YOURSELF FROM THE PRISON OF OVERTHINKING.", "accent": "PRISON OF OVERTHINKING.", "visual_theme": "dark_anime_moody"},
+        {"badge": "RULE #04", "quote": "CONTROL YOUR EMOTIONS OR PEOPLE WILL USE THEM AGAINST YOU.", "accent": "CONTROL YOUR EMOTIONS", "visual_theme": "masked_samurai"},
+        {"badge": "RULE #05", "quote": "BUILD YOUR LIFE SO LOUD THAT CRITICS GO SILENT.", "accent": "CRITICS GO SILENT.", "visual_theme": "night_city_silhouette"}
+      ]
+    },
+    {
+      "series_title": "5 HARD TRUTHS ABOUT PEOPLE & LOYALTY",
+      "caption_lead": "Follow {brand} for lessons on self-respect, loyalty, and growth.",
+      "visual_theme": "dark_anime_moody",
+      "slides": [
+        {"badge": "TRUTH #01", "quote": "NOBODY IS COMING TO SAVE YOU. BECOME YOUR OWN RESCUE PLAN.", "accent": "YOUR OWN RESCUE PLAN.", "visual_theme": "shadow_boxer"},
+        {"badge": "TRUTH #02", "quote": "PEOPLE BLAME YOUR REACTION TO IGNORE WHAT THEY DID FIRST.", "accent": "BLAME YOUR REACTION", "visual_theme": "dark_anime_rain"},
+        {"badge": "TRUTH #03", "quote": "YOU DON'T LOSE REAL ONES — YOU LOSE PEOPLE PRETENDING.", "accent": "PEOPLE PRETENDING.", "visual_theme": "lone_wolf"},
+        {"badge": "TRUTH #04", "quote": "STOP WATERING DEAD CONNECTIONS — INVEST IN YOURSELF.", "accent": "INVEST IN YOURSELF.", "visual_theme": "scarred_bear"},
+        {"badge": "TRUTH #05", "quote": "SUCCESS IS THE CLEANEST REVENGE FOR ANY DISRESPECT.", "accent": "CLEANEST REVENGE", "visual_theme": "obsidian_statue"}
+      ]
+    }
+  ],
+  "combinatorial_parts": {
+    "openers": [
+      "NEVER EXPLAIN YOUR STANDARDS TO PEOPLE WHO",
+      "SILENCE BECOMES POWERFUL THE DAY YOU REALIZE MOST PEOPLE",
+      "PROTECT YOUR ENERGY FROM ANYONE WHO",
+      "STAY PATIENT WHILE BUILDING IN PRIVATE; SOON THOSE WHO",
+      "DISCIPLINE MEANS CHOOSING YOUR FUTURE EVEN WHEN YOU",
+      "YOUR PEACE BECOMES UNTOUCHABLE ONCE YOU STOP CARING ABOUT PEOPLE WHO",
+      "A LONE WOLF NEVER LOSES SLEEP OVER CROWDS THAT",
+      "REAL RESPECT IS NEVER BEGGED FROM THOSE WHO",
+      "ONE YEAR OF PURE FOCUS WILL MAKE EVERYONE WHO",
+      "THE CLEANEST REVENGE IS OUTGROWING EVERYONE WHO"
+    ],
+    "pivots": [
+      "ONLY CLAP WHEN IT BENEFITS THEM.",
+      "EXPECT LOYALTY WITHOUT OFFERING RESPECT.",
+      "DOUBTED WHAT YOU BUILT IN SILENCE.",
+      "MISTAKE YOUR CALMNESS FOR WEAKNESS.",
+      "ONLY VALUE YOU WHEN YOU ARE CONVENIENT.",
+      "TRADE LONG-TERM GREATNESS FOR CHEAP COMFORT.",
+      "WANT YOU SMALL SO THEY FEEL COMFORTABLE.",
+      "DISAPPEAR THE SECOND YOUR SEASON GETS HARD."
+    ],
+    "closers": [
+      "STAND FIRM AND MOVE ON.",
+      "BE THE PRIORITY OR WALK ALONE.",
+      "LET RESULTS DO THE TALKING.",
+      "CHOOSE YOURSELF EVERY TIME.",
+      "PROTECT YOUR PEACE AT ALL COSTS.",
+      "TURN EVERY DOUBT INTO FUEL.",
+      "NEVER LOOK BACK."
+    ]
+  },
+  "cta_templates": {
+    "savage_oneliner": [
+      "{caption}\n. . . . . .\n{hashtags}",
+      "{caption} ⚡\n. . . . . .\n{hashtags}"
+    ],
+    "follow_cta": [
+      "Follow {brand} for {lead}\n. . . . . .\n{hashtags}",
+      "Save this post & follow {brand} for daily mindset art.\n. . . . . .\n{hashtags}"
+    ],
+    "motivational_punch": [
+      "{caption}\n\nFollow {brand} — join the 1% mindset.\n. . . . . .\n{hashtags}"
+    ],
+    "reflection_cta": [
+      "{caption}\n\nSave this if you needed this reminder today.\n. . . . . .\n{hashtags}"
+    ],
+    "yes_if_agree": [
+      "Type \"YES\" if you agree 💯\n\n{caption}\n. . . . . .\n{hashtags}"
+    ]
+  }
+}

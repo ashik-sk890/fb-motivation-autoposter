@@ -1,0 +1,405 @@
+{
+  "description": "50 proven dark motivation, attitude, discipline, and mindset content archetypes modeled after top viral Facebook motivation pages including @attitudeproblem7.",
+  "archetypes": [
+    {
+      "id": 1,
+      "name": "Apex Patience & Revenge Warning",
+      "tone": "savage_attitude",
+      "visual_theme": "dark_lion",
+      "caption_style": "savage_oneliner",
+      "hashtags": ["#attitudeproblem", "#ruthless", "#respect", "#darkmindset", "#alpha"]
+    },
+    {
+      "id": 2,
+      "name": "Warrior Mindset Rules",
+      "tone": "rules_series",
+      "visual_theme": "dark_knight",
+      "caption_style": "follow_cta",
+      "hashtags": ["#rulesforlife", "#mindset", "#discipline", "#warriormindset", "#selfimprovement"]
+    },
+    {
+      "id": 3,
+      "name": "Lone Wolf Solitude",
+      "tone": "solitude",
+      "visual_theme": "lone_wolf",
+      "caption_style": "savage_oneliner",
+      "hashtags": ["#lonewolf", "#solitude", "#loyalty", "#selfrespect", "#nofakefriends"]
+    },
+    {
+      "id": 4,
+      "name": "Anti-Hero Noir Realism",
+      "tone": "antihero_noir",
+      "visual_theme": "noir_suit",
+      "caption_style": "savage_oneliner",
+      "hashtags": ["#antihero", "#coldtruth", "#savagequotes", "#ego", "#realness"]
+    },
+    {
+      "id": 5,
+      "name": "Eagle Vision — Fly Solo",
+      "tone": "ambition",
+      "visual_theme": "dark_eagle",
+      "caption_style": "motivational_punch",
+      "hashtags": ["#eagle", "#ambition", "#nextlevel", "#focus", "#1percentclub"]
+    },
+    {
+      "id": 6,
+      "name": "Hard Truths Every Man Learns Late",
+      "tone": "life_lessons",
+      "visual_theme": "dark_anime_moody",
+      "caption_style": "follow_cta",
+      "hashtags": ["#hardtruths", "#mensmindset", "#lifelessons", "#maturity", "#growth"]
+    },
+    {
+      "id": 7,
+      "name": "Silent Grind — Let Results Scream",
+      "tone": "discipline",
+      "visual_theme": "shadow_boxer",
+      "caption_style": "motivational_punch",
+      "hashtags": ["#silentgrind", "#workinprogress", "#hustle", "#discipline", "#successmindset"]
+    },
+    {
+      "id": 8,
+      "name": "Sunk Cost Trap — Walk Away",
+      "tone": "self_respect",
+      "visual_theme": "dark_anime_rain",
+      "caption_style": "reflection_cta",
+      "hashtags": ["#selfrespect", "#walkaway", "#knowyourworth", "#boundaries", "#mindsetshift"]
+    },
+    {
+      "id": 9,
+      "name": "No Begging, No Chasing",
+      "tone": "savage_attitude",
+      "visual_theme": "dark_panther",
+      "caption_style": "savage_oneliner",
+      "hashtags": ["#nofilter", "#selfworth", "#coldmindset", "#attitude", "#neverbeg"]
+    },
+    {
+      "id": 10,
+      "name": "Stoic Emotional Control",
+      "tone": "stoicism",
+      "visual_theme": "obsidian_statue",
+      "caption_style": "follow_cta",
+      "hashtags": ["#stoicism", "#emotionalcontrol", "#innerstrength", "#stoicmindset", "#wisdom"]
+    },
+    {
+      "id": 11,
+      "name": "Fake Friends vs Real Loyalty",
+      "tone": "loyalty",
+      "visual_theme": "noir_suit",
+      "caption_style": "savage_oneliner",
+      "hashtags": ["#loyalty", "#fakefriends", "#circle", "#trust", "#realtalk"]
+    },
+    {
+      "id": 12,
+      "name": "Outgrowing Your Environment",
+      "tone": "growth",
+      "visual_theme": "dark_eagle",
+      "caption_style": "motivational_punch",
+      "hashtags": ["#levelup", "#outgrow", "#vision", "#ambition", "#mindset"]
+    },
+    {
+      "id": 13,
+      "name": "Unbreakable Discipline at 3 AM",
+      "tone": "discipline",
+      "visual_theme": "night_city_silhouette",
+      "caption_style": "yes_if_agree",
+      "hashtags": ["#lategrind", "#discipline", "#consistency", "#winners", "#focus"]
+    },
+    {
+      "id": 14,
+      "name": "Kindest Rude Person (Boundaries)",
+      "tone": "savage_attitude",
+      "visual_theme": "masked_samurai",
+      "caption_style": "savage_oneliner",
+      "hashtags": ["#boundaries", "#energy", "#respectyourself", "#ruthless", "#attitude"]
+    },
+    {
+      "id": 15,
+      "name": "5 Brutal Laws of Respect",
+      "tone": "rules_series",
+      "visual_theme": "dark_knight",
+      "caption_style": "follow_cta",
+      "hashtags": ["#lawsofrespect", "#rules", "#masculinity", "#standards", "#mindset"]
+    },
+    {
+      "id": 16,
+      "name": "Pain Builds Monsters",
+      "tone": "resilience",
+      "visual_theme": "scarred_bear",
+      "caption_style": "motivational_punch",
+      "hashtags": ["#resilience", "#pain", "#comeback", "#unbreakable", "#strength"]
+    },
+    {
+      "id": 17,
+      "name": "Don't Compete, Dominate",
+      "tone": "ambition",
+      "visual_theme": "dark_lion",
+      "caption_style": "savage_oneliner",
+      "hashtags": ["#dominate", "#leagueofmyown", "#beastmode", "#winner", "#ambition"]
+    },
+    {
+      "id": 18,
+      "name": "Protect Your Peace at All Costs",
+      "tone": "self_respect",
+      "visual_theme": "dark_anime_warm",
+      "caption_style": "reflection_cta",
+      "hashtags": ["#peaceofmind", "#protectyourenergy", "#selfcare", "#calm", "#boundaries"]
+    },
+    {
+      "id": 19,
+      "name": "Nobody Cares, Work Harder",
+      "tone": "discipline",
+      "visual_theme": "shadow_boxer",
+      "caption_style": "yes_if_agree",
+      "hashtags": ["#workharder", "#noexcuses", "#grind", "#accountability", "#motivation"]
+    },
+    {
+      "id": 20,
+      "name": "Watch How Quiet People Move",
+      "tone": "silent_power",
+      "visual_theme": "dark_panther",
+      "caption_style": "savage_oneliner",
+      "hashtags": ["#silentmoves", "#power", "#observe", "#strategy", "#chessnotcheckers"]
+    },
+    {
+      "id": 21,
+      "name": "Money, Focus & Zero Distractions",
+      "tone": "wealth_focus",
+      "visual_theme": "night_city_silhouette",
+      "caption_style": "motivational_punch",
+      "hashtags": ["#focus", "#wealthmindset", "#nodistractions", "#build", "#1percent"]
+    },
+    {
+      "id": 22,
+      "name": "Never Go Back to What Broke You",
+      "tone": "self_respect",
+      "visual_theme": "dark_anime_rain",
+      "caption_style": "follow_cta",
+      "hashtags": ["#moveon", "#nevergoback", "#healing", "#strength", "#selflove"]
+    },
+    {
+      "id": 23,
+      "name": "The Price of Becoming Great",
+      "tone": "ambition",
+      "visual_theme": "masked_samurai",
+      "caption_style": "reflection_cta",
+      "hashtags": ["#sacrifice", "#greatness", "#isolation", "#dedication", "#success"]
+    },
+    {
+      "id": 24,
+      "name": "If Nobody Hates You, You're Boring",
+      "tone": "antihero_noir",
+      "visual_theme": "noir_suit",
+      "caption_style": "savage_oneliner",
+      "hashtags": ["#haters", "#standout", "#bold", "#attitude", "#unapologetic"]
+    },
+    {
+      "id": 25,
+      "name": "Master Your Anger, Master Your Fate",
+      "tone": "stoicism",
+      "visual_theme": "obsidian_statue",
+      "caption_style": "follow_cta",
+      "hashtags": ["#selfcontrol", "#stoic", "#calmness", "#power", "#wisdom"]
+    },
+    {
+      "id": 26,
+      "name": "King Who Fights Alone",
+      "tone": "solitude",
+      "visual_theme": "dark_lion",
+      "caption_style": "motivational_punch",
+      "hashtags": ["#kingmindset", "#standalone", "#courage", "#leadership", "#alpha"]
+    },
+    {
+      "id": 27,
+      "name": "Never Explain Yourself to Small Minds",
+      "tone": "savage_attitude",
+      "visual_theme": "dark_eagle",
+      "caption_style": "savage_oneliner",
+      "hashtags": ["#noexplanation", "#standards", "#mindset", "#ruthless", "#confidence"]
+    },
+    {
+      "id": 28,
+      "name": "7 Daily Habits of the 1% Club",
+      "tone": "rules_series",
+      "visual_theme": "night_city_silhouette",
+      "caption_style": "follow_cta",
+      "hashtags": ["#1percentclub", "#dailyhabits", "#excellence", "#discipline", "#growth"]
+    },
+    {
+      "id": 29,
+      "name": "Cut Off Energy Vampires",
+      "tone": "loyalty",
+      "visual_theme": "lone_wolf",
+      "caption_style": "savage_oneliner",
+      "hashtags": ["#circle", "#peace", "#detachment", "#selfrespect", "#clarity"]
+    },
+    {
+      "id": 30,
+      "name": "From Rock Bottom to Untouchable",
+      "tone": "resilience",
+      "visual_theme": "scarred_bear",
+      "caption_style": "yes_if_agree",
+      "hashtags": ["#comeback", "#rockbottom", "#neverquit", "#resilience", "#strength"]
+    },
+    {
+      "id": 31,
+      "name": "Be So Private Nobody Can Target You",
+      "tone": "silent_power",
+      "visual_theme": "masked_samurai",
+      "caption_style": "motivational_punch",
+      "hashtags": ["#privacy", "#silentlife", "#lowkey", "#power", "#smart"]
+    },
+    {
+      "id": 32,
+      "name": "Actions Expose Everything Words Hide",
+      "tone": "cold_truth",
+      "visual_theme": "noir_suit",
+      "caption_style": "yes_if_agree",
+      "hashtags": ["#actionsspeak", "#truth", "#observant", "#mindset", "#wisdom"]
+    },
+    {
+      "id": 33,
+      "name": "Stay Dangerous, Stay Disciplined",
+      "tone": "discipline",
+      "visual_theme": "shadow_boxer",
+      "caption_style": "motivational_punch",
+      "hashtags": ["#dangerous", "#disciplined", "#training", "#focus", "#strength"]
+    },
+    {
+      "id": 34,
+      "name": "Your Circle Reflects Your Future",
+      "tone": "growth",
+      "visual_theme": "dark_eagle",
+      "caption_style": "follow_cta",
+      "hashtags": ["#circle", "#growth", "#mindset", "#elevation", "#standards"]
+    },
+    {
+      "id": 35,
+      "name": "Don't Fear Starting Over",
+      "tone": "resilience",
+      "visual_theme": "dark_anime_warm",
+      "caption_style": "reflection_cta",
+      "hashtags": ["#startover", "#rebuild", "#courage", "#wisdom", "#keepgoing"]
+    },
+    {
+      "id": 36,
+      "name": "Respect Is Earned in Silence",
+      "tone": "silent_power",
+      "visual_theme": "obsidian_statue",
+      "caption_style": "motivational_punch",
+      "hashtags": ["#respect", "#character", "#silence", "#integrity", "#men"]
+    },
+    {
+      "id": 37,
+      "name": "They Doubted You — Let Them Watch",
+      "tone": "comeback",
+      "visual_theme": "dark_lion",
+      "caption_style": "savage_oneliner",
+      "hashtags": ["#provewrong", "#comeback", "#success", "#attitude", "#focus"]
+    },
+    {
+      "id": 38,
+      "name": "5 Signs You Are Leveling Up",
+      "tone": "rules_series",
+      "visual_theme": "dark_anime_moody",
+      "caption_style": "follow_cta",
+      "hashtags": ["#levelingup", "#growth", "#mindset", "#signs", "#evolution"]
+    },
+    {
+      "id": 39,
+      "name": "Detach From Outcomes, Attach to Effort",
+      "tone": "stoicism",
+      "visual_theme": "masked_samurai",
+      "caption_style": "reflection_cta",
+      "hashtags": ["#stoicism", "#effort", "#detachment", "#discipline", "#calm"]
+    },
+    {
+      "id": 40,
+      "name": "Never Shrink to Make Others Comfortable",
+      "tone": "self_respect",
+      "visual_theme": "dark_panther",
+      "caption_style": "yes_if_agree",
+      "hashtags": ["#selfworth", "#standtall", "#confidence", "#standards", "#mindset"]
+    },
+    {
+      "id": 41,
+      "name": "Cold Mornings Build Warm Futures",
+      "tone": "discipline",
+      "visual_theme": "lone_wolf",
+      "caption_style": "motivational_punch",
+      "hashtags": ["#morninggrind", "#winterarc", "#discipline", "#future", "#focus"]
+    },
+    {
+      "id": 42,
+      "name": "Trust Is Expensive — Spend It Wisely",
+      "tone": "loyalty",
+      "visual_theme": "noir_suit",
+      "caption_style": "savage_oneliner",
+      "hashtags": ["#trust", "#wisdom", "#loyalty", "#circle", "#realtalk"]
+    },
+    {
+      "id": 43,
+      "name": "Heartless Doesn't Mean Weak",
+      "tone": "savage_attitude",
+      "visual_theme": "scarred_bear",
+      "caption_style": "savage_oneliner",
+      "hashtags": ["#coldheart", "#lessons", "#attitude", "#armor", "#strength"]
+    },
+    {
+      "id": 44,
+      "name": "Build an Empire They Can't Ignore",
+      "tone": "wealth_focus",
+      "visual_theme": "night_city_silhouette",
+      "caption_style": "motivational_punch",
+      "hashtags": ["#empire", "#vision", "#ambition", "#wealth", "#1percent"]
+    },
+    {
+      "id": 45,
+      "name": "Rules for Dealing With Disrespect",
+      "tone": "rules_series",
+      "visual_theme": "dark_knight",
+      "caption_style": "follow_cta",
+      "hashtags": ["#disrespect", "#rules", "#boundaries", "#dignity", "#mindset"]
+    },
+    {
+      "id": 46,
+      "name": "Comfort Is the Silent Killer of Dreams",
+      "tone": "discipline",
+      "visual_theme": "shadow_boxer",
+      "caption_style": "yes_if_agree",
+      "hashtags": ["#comfortzone", "#discipline", "#ambition", "#wakeup", "#grind"]
+    },
+    {
+      "id": 47,
+      "name": "One Year of Pure Focus Changes Everything",
+      "tone": "comeback",
+      "visual_theme": "dark_eagle",
+      "caption_style": "reflection_cta",
+      "hashtags": ["#lockin", "#focus", "#transformation", "#oneyear", "#discipline"]
+    },
+    {
+      "id": 48,
+      "name": "No Hate, No Revenge — Just Silence",
+      "tone": "silent_power",
+      "visual_theme": "dark_knight",
+      "caption_style": "savage_oneliner",
+      "hashtags": ["#silence", "#class", "#norevenge", "#selfcontrol", "#growth"]
+    },
+    {
+      "id": 49,
+      "name": "Be the Storm They Never Saw Coming",
+      "tone": "ambition",
+      "visual_theme": "dark_lion",
+      "caption_style": "savage_oneliner",
+      "hashtags": ["#storm", "#alpha", "#unstoppable", "#mindset", "#power"]
+    },
+    {
+      "id": 50,
+      "name": "Lessons on Love, Loyalty & Choosing Yourself",
+      "tone": "life_lessons",
+      "visual_theme": "dark_anime_warm",
+      "caption_style": "follow_cta",
+      "hashtags": ["#chooseyourself", "#loveandloyalty", "#lifelessons", "#selfrespect", "#mindset"]
+    }
+  ]
+}

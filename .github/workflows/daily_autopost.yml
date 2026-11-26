@@ -1,0 +1,136 @@
+name: Daily Facebook Multi-Page Autoposter (4x/Day Each Page)
+
+on:
+  schedule:
+    # 4 daily slots per page tuned for UTC+05:30 (10:00, 14:00, 18:00, 21:30)
+    - cron: "30 4 * * *"
+    - cron: "30 8 * * *"
+    - cron: "30 12 * * *"
+    - cron: "0 16 * * *"
+  workflow_dispatch:
+    inputs:
+      slot:
+        description: "Post slot (auto, 1, 2, 3, or 4)"
+        required: false
+        default: "auto"
+      dry_run:
+        description: "Render cards without publishing to Facebook"
+        type: boolean
+        required: false
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: fb-autopost-lock
+  cancel-in-progress: false
+
+jobs:
+  autopost:
+    runs-on: ubuntu-latest
+    env:
+      COMPOSIO_API_KEY: ${{ secrets.COMPOSIO_API_KEY }}
+      COMPOSIO_USER_ID: ${{ secrets.COMPOSIO_USER_ID }}
+      COMPOSIO_FACEBOOK_ACCOUNT: ${{ secrets.COMPOSIO_FACEBOOK_ACCOUNT }}
+      FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      HF_TOKEN: ${{ secrets.HF_TOKEN }}
+      POLLINATIONS_API_KEY: ${{ secrets.POLLINATIONS_API_KEY }}
+      USE_COMPOSIO_FAL: ${{ vars.USE_COMPOSIO_FAL }}
+      BRAND_NAME: ${{ vars.BRAND_NAME }}
+      BRAND_MONOGRAM: ${{ vars.BRAND_MONOGRAM }}
+      BRAND_HANDLE: ${{ vars.BRAND_HANDLE }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Cache Playwright Chromium
+        id: playwright-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-chromium-${{ hashFiles('requirements.txt') }}
+
+      - name: Install Playwright Chromium
+        run: |
+          playwright install chromium
+          if [ "${{ steps.playwright-cache.outputs.cache-hit }}" != "true" ]; then
+            playwright install-deps chromium || true
+          fi
+
+      - name: Detect public repo media hosting capability
+        id: repo-check
+        run: |
+          IS_PUBLIC=$(python -c '
+          import json, os, urllib.request
+          repo = os.environ["GITHUB_REPOSITORY"]
+          try:
+              with urllib.request.urlopen(f"https://api.github.com/repos/{repo}", timeout=10) as r:
+                  data = json.load(r)
+                  print("true" if data.get("private") is False else "false")
+          except Exception:
+              print("false")
+          ')
+          echo "REPO_IS_PUBLIC=$IS_PUBLIC" >> "$GITHUB_ENV"
+
+      - name: Generate quote and render card images
+        run: |
+          SLOT="${{ inputs.slot || 'auto' }}"
+          python -m src.main --slot "$SLOT" --render-only
+
+      - name: Publish rendered cards to orphan media branch (if repo is public)
+        if: env.REPO_IS_PUBLIC == 'true' && inputs.dry_run != true
+        run: |
+          mkdir -p "$RUNNER_TEMP/fb_media_stage"
+          cp generated/latest/*.jpg "$RUNNER_TEMP/fb_media_stage/" || true
+          pushd "$RUNNER_TEMP/fb_media_stage"
+          git init
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b media
+          git add .
+          git commit -m "chore: update latest generated card media"
+          git remote add origin "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"
+          git push --force origin media
+          popd
+          sleep 4
+
+      - name: Publish to Facebook Page via Composio
+        if: inputs.dry_run != true
+        run: |
+          python -m src.main --publish-manifest generated/latest/manifest.json
+
+      - name: Upload preview artifacts (dry-run or debugging)
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: rendered-post-slot-${{ inputs.slot || 'auto' }}
+          path: generated/latest/
+          retention-days: 7
+
+      - name: Persist posted history and keep workflow active beyond 60 days
+        if: inputs.dry_run != true
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add state/posted_history.json
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: record posted history [skip ci]"
+            git push
+          fi
