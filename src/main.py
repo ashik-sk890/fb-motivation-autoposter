@@ -14,6 +14,8 @@ from src.card_renderer import render_slide_assets
 from src.composio_publisher import list_managed_pages, publish_post, resolve_target_pages
 from src.config import AppConfig, GENERATED_DIR, QUOTE_VAULT_PATH
 from src.content_engine import PostPlan, SlideContent, build_post_plan, load_json, save_history
+from src.music_engine import select_background_track
+from src.video_engine import is_ffmpeg_available, render_video_from_cards
 
 
 def resolve_slot(slot_arg: str, utc_now: datetime | None = None) -> int:
@@ -44,6 +46,7 @@ def _render_single_job(
     allow_remote_art: bool,
     seed: int,
     extra_used_hashes: set[str],
+    media_mode: str = "auto",
 ) -> dict[str, Any]:
     """Generate unique content and render card assets for one target Facebook Page."""
     plan = build_post_plan(
@@ -98,6 +101,34 @@ def _render_single_job(
             }
         )
 
+    video_path_str = ""
+    video_public_url = ""
+    music_meta: dict[str, Any] = {}
+    if media_mode != "photo" and image_paths and is_ffmpeg_available():
+        primary_style = rendered_cards[0]["layout_style"] if rendered_cards else "monochrome_alpha"
+        track = select_background_track(
+            layout_style=primary_style,
+            seed=seed,
+            allow_download=allow_remote_art,
+        )
+        audio_path = Path(track["path"]) if track else None
+        if track:
+            music_meta = {
+                "title": track["title"],
+                "category": track["category"],
+                "license": track["license"],
+            }
+        mp4_out = output_dir / f"p_{safe_pid}_s{slot}.mp4"
+        built_mp4 = render_video_from_cards(
+            image_paths=[Path(p) for p in image_paths],
+            audio_path=audio_path,
+            output_mp4=mp4_out,
+        )
+        if built_mp4:
+            video_path_str = str(built_mp4)
+            if config.public_media_base_url:
+                video_public_url = f"{config.public_media_base_url}/{built_mp4.name}?v={cache_bust}"
+
     return {
         "page_id": page_id,
         "page_name": page_name,
@@ -121,6 +152,9 @@ def _render_single_job(
         "cards": rendered_cards,
         "image_paths": image_paths,
         "public_urls": public_urls,
+        "video_path": video_path_str,
+        "video_public_url": video_public_url,
+        "music_track": music_meta,
     }
 
 
@@ -131,6 +165,7 @@ def generate_and_render(
     allow_remote_art: bool = True,
     seed: int | None = None,
     pages: list[dict[str, str]] | None = None,
+    media_mode: str = "auto",
 ) -> dict[str, Any]:
     """Generate distinct posts & cards for every target Facebook Page on the slot."""
     if pages is None:
@@ -153,6 +188,7 @@ def generate_and_render(
             allow_remote_art=allow_remote_art,
             seed=base_seed + page_idx * 1009,
             extra_used_hashes=extra_used_hashes,
+            media_mode=media_mode,
         )
         job["account"] = page.get("account", "")
         jobs.append(job)
@@ -202,6 +238,8 @@ def _publish_manifest_jobs(config: AppConfig, manifest: dict[str, Any]) -> list[
         public_urls = job.get("public_urls") or None
         target_page_id = str(job.get("page_id") or "").strip() or None
         target_account = str(job.get("account") or "").strip() or None
+        video_path = Path(job["video_path"]) if job.get("video_path") else None
+        video_public_url = str(job.get("video_public_url") or "").strip() or None
         try:
             pub_res = publish_post(
                 config=config,
@@ -210,6 +248,8 @@ def _publish_manifest_jobs(config: AppConfig, manifest: dict[str, Any]) -> list[
                 public_urls=public_urls,
                 target_page_id=target_page_id,
                 account=target_account,
+                video_path=video_path,
+                video_public_url=video_public_url,
             )
             save_history(plan=plan, post_result=pub_res, max_items=config.max_history_items)
             results.append({"page_id": target_page_id, "page_name": job.get("page_name"), "status": "ok", **pub_res})
@@ -228,6 +268,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--dry-run", action="store_true", help="Render cards and print payload without posting")
     parser.add_argument("--preview-all", action="store_true", help="Render preview gallery across all 6 modern visual styles")
     parser.add_argument("--offline-art", action="store_true", help="Use built-in illustrated SVGs without network calls")
+    parser.add_argument("--media-mode", default="auto", choices=["auto", "video", "photo"], help="Output format: video (with music), photo, or auto")
     parser.add_argument("--list-pages", action="store_true", help="List Facebook Pages connected in Composio")
     args = parser.parse_args(argv)
 
@@ -283,6 +324,7 @@ def main(argv: list[str] | None = None) -> int:
         slot=slot,
         output_dir=Path(args.output_dir),
         allow_remote_art=allow_remote,
+        media_mode=args.media_mode,
     )
 
     if args.render_only or args.dry_run:

@@ -16,6 +16,8 @@ from src.composio_publisher import list_managed_pages, publish_post
 from src.config import ARCHETYPES_PATH, AppConfig, QUOTE_VAULT_PATH
 from src.content_engine import PostPlan, SlideContent, build_post_plan, load_json, save_history
 from src.main import generate_and_render, resolve_slot
+from src.music_engine import select_background_track
+from src.video_engine import _build_single_card_cmd, _build_slideshow_cmd
 
 
 def _test_config(**overrides: str) -> AppConfig:
@@ -374,6 +376,68 @@ class TestComposioPublisher(unittest.TestCase):
             self.assertEqual(res["page_id"], "55443322")
             self.assertEqual(res["result"]["id"], "55443322_999")
             self.assertEqual(captured_requests[0]["headers"]["X-consumer-api-key"], "ck_sample_consumer_key")
+
+    def test_music_selector_video_cmds_and_video_publish(self) -> None:
+        from unittest import mock
+
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp_path = Path(tmp)
+            mood_dir = tmp_path / "late-night"
+            mood_dir.mkdir(parents=True)
+            mp3 = mood_dir / "midnight-grind.mp3"
+            mp3.write_bytes(b"ID3" + b"0" * 100)
+
+            track = select_background_track("monochrome_alpha", seed=7, allow_download=False, cache_dir=tmp_path, custom_dir=tmp_path / "none")
+            self.assertIsNotNone(track)
+            self.assertEqual(track["category"], "late-night")
+
+            img1 = tmp_path / "c1.jpg"
+            img2 = tmp_path / "c2.jpg"
+            out_mp4 = tmp_path / "out.mp4"
+            img1.write_bytes(b"\xff\xd8\xff" + b"0" * 50)
+            img2.write_bytes(b"\xff\xd8\xff" + b"0" * 50)
+
+            cmd1 = _build_single_card_cmd(img1, mp3, out_mp4)
+            self.assertIn("zoompan", " ".join(cmd1))
+            self.assertIn(str(mp3), cmd1)
+
+            cmd2 = _build_slideshow_cmd([img1, img2], mp3, out_mp4)
+            self.assertIn("concat=n=2:v=1:a=0", " ".join(cmd2))
+
+            class FakeResp:
+                def __init__(self, body_str: str) -> None:
+                    self._data = body_str.encode("utf-8")
+                def read(self) -> bytes:
+                    return self._data
+                def __enter__(self):
+                    return self
+                def __exit__(self, *args):
+                    return None
+
+            def fake_open(req, timeout=45):
+                payload = json.loads(req.data.decode("utf-8"))
+                tname = payload["params"]["name"]
+                if tname == "COMPOSIO_MANAGE_CONNECTIONS":
+                    inner = {"successful": True, "data": {"results": {"facebook": {"accounts": [{"id": "fb_1", "status": "active", "is_default": True}]}}}}
+                elif tname == "COMPOSIO_GET_TOOL_SCHEMAS":
+                    inner = {"successful": True, "data": {"tool_schemas": {"FACEBOOK_CREATE_VIDEO_POST": {"input_schema": {"properties": {"page_id": {}, "description": {}, "file_url": {}, "title": {}, "published": {}}}}}}}
+                else:
+                    inner = {"successful": True, "data": {"results": [{"response": {"data": {"id": "vid_999"}}}]}}
+                sse = f'data: {json.dumps({"jsonrpc": "2.0", "id": 1, "result": {"content": [{"type": "text", "text": json.dumps(inner)}]}})}\n\n'
+                return FakeResp(sse)
+
+            config = _test_config(composio_api_key="ck_sample_consumer_key")
+            plan = PostPlan(slot=1, archetype_id=1, archetype_name="Apex Patience", post_type="single", caption="Test video", slides=[SlideContent("TEST", "TEST")], content_hash="vid1")
+            with mock.patch("urllib.request.urlopen", side_effect=fake_open):
+                res = publish_post(
+                    config=config,
+                    plan=plan,
+                    image_paths=[img1],
+                    target_page_id="1443084575557354",
+                    video_public_url="https://example.com/post.mp4",
+                )
+            self.assertEqual(res["action"], "FACEBOOK_CREATE_VIDEO_POST")
+            self.assertEqual(res["result"]["id"], "vid_999")
 
 
 if __name__ == "__main__":

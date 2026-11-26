@@ -280,13 +280,92 @@ def publish_post(
     public_urls: list[str] | None = None,
     target_page_id: str | None = None,
     account: str | None = None,
+    video_path: Path | None = None,
+    video_public_url: str | None = None,
 ) -> dict[str, Any]:
-    """Publish a single photo or multi-photo carousel post to Facebook via Composio."""
-    if not image_paths:
-        raise ValueError("Cannot publish a post without at least one rendered image.")
+    """Publish a video-with-music post (preferred) or photo/carousel post via Composio."""
+    if not image_paths and not video_path and not video_public_url:
+        raise ValueError("Cannot publish a post without rendered images or video.")
 
-    backend = _select_backend(config, image_paths[0].parent)
+    base_dir = video_path.parent if video_path else image_paths[0].parent
+    backend = _select_backend(config, base_dir)
     page_id = target_page_id or resolve_page_id(config)
+
+    if video_public_url or (video_path and video_path.exists()):
+        try:
+            return _publish_video_post(
+                backend=backend,
+                page_id=page_id,
+                title=plan.archetype_name[:80],
+                description=plan.caption,
+                video_ref=video_public_url or str(video_path.resolve()),
+                account=account,
+            )
+        except Exception as video_err:
+            if not image_paths:
+                raise
+            # Graceful fallback to image/carousel if video endpoint rejects payload
+            fallback_res = _publish_images(
+                backend=backend,
+                plan=plan,
+                page_id=page_id,
+                image_paths=image_paths,
+                public_urls=public_urls,
+                account=account,
+            )
+            fallback_res["video_fallback_reason"] = str(video_err)
+            return fallback_res
+
+    return _publish_images(
+        backend=backend,
+        plan=plan,
+        page_id=page_id,
+        image_paths=image_paths,
+        public_urls=public_urls,
+        account=account,
+    )
+
+
+def _publish_video_post(
+    backend: _ComposioBackend,
+    page_id: str,
+    title: str,
+    description: str,
+    video_ref: str,
+    account: str | None = None,
+) -> dict[str, Any]:
+    """Publish an H.264/AAC MP4 video with baked background music via FACEBOOK_CREATE_VIDEO_POST."""
+    props = backend.get_schema_properties("FACEBOOK_CREATE_VIDEO_POST")
+    page_key = _pick_key(props, ("page_id", "id"), "page_id")
+    desc_key = _pick_key(props, ("description", "message", "caption"), "description")
+    media_key = "file_url" if video_ref.startswith(("http://", "https://")) else "video"
+    args: dict[str, Any] = {
+        page_key: page_id,
+        desc_key: description,
+        media_key: video_ref,
+    }
+    if "title" in props or not props:
+        args["title"] = title
+    if "published" in props:
+        args["published"] = True
+
+    result = backend.execute("FACEBOOK_CREATE_VIDEO_POST", args, account=account)
+    return {
+        "action": "FACEBOOK_CREATE_VIDEO_POST",
+        "page_id": page_id,
+        "result": _extract_payload_data(result),
+    }
+
+
+def _publish_images(
+    backend: _ComposioBackend,
+    plan: PostPlan,
+    page_id: str,
+    image_paths: list[Path],
+    public_urls: list[str] | None,
+    account: str | None,
+) -> dict[str, Any]:
+    """Publish single or multi-photo post when no MP4 video is attached."""
     media_refs = (
         public_urls
         if public_urls and len(public_urls) == len(image_paths)
