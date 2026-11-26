@@ -155,16 +155,34 @@ def _post_json(url: str, payload: dict[str, Any], headers: dict[str, str], timeo
         return json.loads(resp.read().decode("utf-8"))
 
 
+_STYLE_HINTS: dict[str, str] = {
+    "paper_sketch": "black ink & charcoal pencil sketch on clean cream paper, clean empty top space, no text",
+    "saffron_editorial": "crisp black crosshatched ink illustration on pure bright white/cream background in lower half, generous clean top space, no text",
+    "cartoon_metaphor": "bright clean modern 2D vector comic metaphor illustration on daylight pastel sky background, subject in lower 65%, no text",
+    "sunrise_metaphor": "luminous golden sunrise horizon landscape, clear soft sky upper half, dramatic silhouette lower half, no text",
+    "gold_spotlight": "moody dramatic rim-lit portrait or scene fading smoothly into deep black on bottom/right for overlay text, no text",
+    "monochrome_alpha": "high-contrast black-and-white monochrome photograph-style dramatic art with tiny crimson accent fading to deep black bottom, no text",
+}
+
+
 def _generate_via_llm(
     config: AppConfig,
     archetype: dict[str, Any],
     post_type: str,
     used_hashes: set[str],
-    valid_themes: list[str] | None = None,
+    visual_themes: dict[str, Any] | None = None,
 ) -> dict[str, Any] | None:
     """Attempt fresh high-CTR quote and visual prompt generation using Gemini or OpenAI."""
     slide_count = 4 if post_type == "carousel" else 1
-    theme_choices = ", ".join(valid_themes or ["dark_eagle", "dark_anime_moody", "dark_anime_rain", "noir_suit", "dark_anime_warm", "shadow_boxer", "dark_lion"])
+    theme_map = visual_themes or {}
+    if theme_map:
+        theme_guide = "; ".join(
+            f"{k} ({_STYLE_HINTS.get(str(v.get('layout_style', '')), str(v.get('label', '')))})"
+            for k, v in theme_map.items()
+        )
+    else:
+        theme_guide = "dark_eagle, dark_anime_moody, dark_anime_rain, noir_suit, dark_anime_warm, shadow_boxer, dark_lion"
+
     prompt = (
         f"Create an original viral high-CTR motivation/attitude Facebook {post_type} post.\n"
         f"Theme: {archetype['name']} (tone: {archetype['tone']}).\n"
@@ -174,8 +192,9 @@ def _generate_via_llm(
         f"slides (array of {slide_count} objects with keys: quote, accent, badge, visual_theme, image_prompt).\n"
         f"- Each quote must be UPPERCASE, punchy, 8 to 20 words, strong self-respect/mindset/discipline hook.\n"
         f"- 'accent' MUST be an exact uppercase substring of 'quote' (2 to 5 impactful words to color crimson/gold).\n"
-        f"- 'visual_theme' MUST be one of: {theme_choices}.\n"
-        f"- 'image_prompt' MUST describe a brand-new, high-CTR visual metaphor or dramatic scene matching the chosen theme style (no text, no words, no watermark inside the image).\n"
+        f"- 'visual_theme' MUST be one of the theme keys listed below.\n"
+        f"- 'image_prompt' MUST describe a brand-new, high-CTR visual metaphor or dramatic scene strictly matching the required medium/background style for your chosen visual_theme (no text, no words, no watermark inside the image):\n"
+        f"  Themes & required visual medium: {theme_guide}.\n"
         f"- For carousel slides, set badge to '01 / 04', '02 / 04', etc. For single post, badge is empty string.\n"
     )
 
@@ -379,8 +398,9 @@ def build_post_plan(
     archetype = _pick_archetype(archetypes, slot, rng)
     post_type = SLOT_PREFERENCES[slot]["post_type"]
 
-    valid_themes = list((vault.get("visual_themes") or {}).keys())
-    llm_data = _generate_via_llm(config, archetype, post_type, used_hashes, valid_themes=valid_themes)
+    visual_themes = vault.get("visual_themes") or {}
+    valid_themes = list(visual_themes.keys())
+    llm_data = _generate_via_llm(config, archetype, post_type, used_hashes, visual_themes=visual_themes)
     if llm_data:
         theme = archetype.get("visual_theme", "dark_lion")
         slides = [

@@ -246,14 +246,60 @@ def list_managed_pages(config: AppConfig) -> list[dict[str, Any]]:
     return all_pages
 
 
+def _match_discovered_page(token: str, pages: list[dict[str, Any]]) -> dict[str, Any] | None:
+    """Find a managed page by exact ID, exact name, or unique case-insensitive name substring."""
+    clean_tok = token.strip()
+    low_tok = clean_tok.lower()
+    for page in pages:
+        pid = str(page.get("id") or page.get("page_id") or "").strip()
+        if pid and pid == clean_tok:
+            return page
+    for page in pages:
+        pname = str(page.get("name") or "").strip().lower()
+        if pname and pname == low_tok:
+            return page
+    for page in pages:
+        pname = str(page.get("name") or "").strip().lower()
+        if pname and low_tok in pname:
+            return page
+    return None
+
+
 def resolve_target_pages(config: AppConfig) -> list[dict[str, str]]:
-    """Return list of target Facebook pages ({id, name, account}) — all managed pages by default."""
+    """Return target Facebook pages ({id, name, account}), filtered by FACEBOOK_PAGE_ID if set."""
+    pages: list[dict[str, Any]] = []
+    if config.composio_api_key:
+        try:
+            pages = list_managed_pages(config)
+        except Exception:
+            pages = []
+
     raw_ids = config.facebook_page_id.strip()
     if raw_ids and raw_ids.lower() != "all":
-        ids = [part.strip() for part in raw_ids.split(",") if part.strip()]
-        return [{"id": pid, "name": config.brand_name, "account": config.composio_facebook_account} for pid in ids]
+        tokens = [part.strip() for part in raw_ids.split(",") if part.strip()]
+        selected: list[dict[str, str]] = []
+        seen_ids: set[str] = set()
+        for tok in tokens:
+            matched = _match_discovered_page(tok, pages) if pages else None
+            if matched:
+                pid = str(matched.get("id") or matched.get("page_id") or "").strip()
+                pname = str(matched.get("name") or config.brand_name).strip()
+                acc = str(matched.get("composio_account") or config.composio_facebook_account).strip()
+            elif tok.isdigit():
+                pid = tok
+                pname = config.brand_name
+                acc = config.composio_facebook_account
+            else:
+                continue
+            if pid and pid not in seen_ids:
+                seen_ids.add(pid)
+                selected.append({"id": pid, "name": pname, "account": acc})
+        if not selected:
+            raise RuntimeError(
+                f"None of the requested FACEBOOK_PAGE_ID entries ({raw_ids}) matched connected Facebook Pages."
+            )
+        return selected
 
-    pages = list_managed_pages(config)
     resolved: list[dict[str, str]] = []
     for page in pages:
         pid = str(page.get("id") or page.get("page_id") or "").strip()

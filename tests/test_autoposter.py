@@ -12,7 +12,7 @@ from pathlib import Path
 
 from src.art_engine import _try_cloudflare_flux, _try_deepai, _try_gemini_imagen, build_illustrated_svg
 from src.card_renderer import build_card_html
-from src.composio_publisher import list_managed_pages, publish_post
+from src.composio_publisher import list_managed_pages, publish_post, resolve_target_pages
 from src.config import ARCHETYPES_PATH, AppConfig, QUOTE_VAULT_PATH
 from src.content_engine import PostPlan, SlideContent, build_post_plan, load_json, save_history
 from src.main import generate_and_render, resolve_slot
@@ -438,6 +438,28 @@ class TestComposioPublisher(unittest.TestCase):
                 )
             self.assertEqual(res["action"], "FACEBOOK_CREATE_VIDEO_POST")
             self.assertEqual(res["result"]["id"], "vid_999")
+
+    def test_resolve_target_pages_filtering_and_page_branding(self) -> None:
+        from unittest import mock
+
+        discovered = [
+            {"id": "1443084575557354", "name": "Mallick Yt", "composio_account": "fb_u1"},
+            {"id": "1423121790882352", "name": "Anime kid Story ", "composio_account": "fb_u1"},
+            {"id": "237094056146383", "name": "online course", "composio_account": "fb_u1"},
+        ]
+        with mock.patch("src.composio_publisher.list_managed_pages", return_value=discovered):
+            by_id = resolve_target_pages(_test_config(facebook_page_id="1423121790882352,237094056146383"))
+            self.assertEqual([p["id"] for p in by_id], ["1423121790882352", "237094056146383"])
+            self.assertEqual([p["name"] for p in by_id], ["Anime kid Story", "online course"])
+            self.assertTrue(all(p["account"] == "fb_u1" for p in by_id))
+
+            by_name = resolve_target_pages(_test_config(facebook_page_id="anime kid,online course"))
+            self.assertEqual([p["id"] for p in by_name], ["1423121790882352", "237094056146383"])
+
+        slide = SlideContent("NEVER LOOK BACK.", "LOOK BACK.", "", "dark_lion")
+        html_anime = build_card_html(_test_config(), slide, "data:image/png;base64,AA", page_brand="Anime kid Story")
+        self.assertIn(">AKS<", html_anime)
+        self.assertIn(">@animekidstory<", html_anime)
 
 
 if __name__ == "__main__":

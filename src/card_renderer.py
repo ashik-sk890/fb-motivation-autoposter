@@ -34,6 +34,20 @@ def _scale_font(text: str, large: int = 58, medium: int = 48, compact: int = 40)
     return compact
 
 
+def _derive_page_branding(config: AppConfig, page_brand: str | None) -> tuple[str, str, str]:
+    """Resolve clean display brand, initials monogram, and handle for each target Page."""
+    effective_name = (page_brand or config.brand_name).strip()
+    if page_brand and page_brand.strip():
+        words = [w for w in "".join(ch if ch.isalnum() or ch.isspace() else " " for ch in effective_name).split() if w]
+        derived_mono = "".join(w[0].upper() for w in words)[:4] or config.brand_monogram
+        slug = "".join(ch.lower() for ch in effective_name if ch.isalnum())
+        derived_handle = f"@{slug}" if slug else config.brand_handle
+        mono = derived_mono if config.brand_monogram == "AP" else config.brand_monogram
+        handle = derived_handle if config.brand_handle in ("@attitude__mindset", "@attitude__test") else config.brand_handle
+        return effective_name, mono, handle
+    return effective_name, config.brand_monogram, config.brand_handle
+
+
 def build_card_html(
     config: AppConfig,
     slide: SlideContent,
@@ -45,9 +59,10 @@ def build_card_html(
     is_ai_art: bool = False,
 ) -> str:
     """Render self-contained 1080x1350 HTML tailored to one of 6 modern viral visual styles."""
-    brand_label = html.escape(page_brand or config.brand_name)
-    handle = html.escape(config.brand_handle)
-    monogram = html.escape(config.brand_monogram)
+    raw_brand, raw_mono, raw_handle = _derive_page_branding(config, page_brand)
+    brand_label = html.escape(raw_brand)
+    handle = html.escape(raw_handle)
+    monogram = html.escape(raw_mono)
     badge = html.escape(slide.badge)
 
     if layout_style == "paper_sketch":
