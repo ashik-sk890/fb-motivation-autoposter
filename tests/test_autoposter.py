@@ -10,7 +10,7 @@ import unittest
 from datetime import datetime, timezone
 from pathlib import Path
 
-from src.art_engine import _try_cloudflare_flux, _try_deepai, build_illustrated_svg
+from src.art_engine import _try_cloudflare_flux, _try_deepai, _try_gemini_imagen, build_illustrated_svg
 from src.card_renderer import build_card_html
 from src.composio_publisher import list_managed_pages, publish_post
 from src.config import ARCHETYPES_PATH, AppConfig, QUOTE_VAULT_PATH
@@ -153,6 +153,27 @@ class TestRenderingAndArt(unittest.TestCase):
 
         with mock.patch("urllib.request.urlopen", side_effect=fake_deepai_open):
             self.assertEqual(_try_deepai("charcoal sketch", "dp-key"), fake_png)
+
+        class FakeGeminiImgResp:
+            def read(self) -> bytes:
+                return json.dumps(
+                    {
+                        "candidates": [
+                            {
+                                "content": {
+                                    "parts": [{"inlineData": {"mimeType": "image/png", "data": b64_png}}]
+                                }
+                            }
+                        ]
+                    }
+                ).encode("utf-8")
+            def __enter__(self):
+                return self
+            def __exit__(self, *args):
+                return None
+
+        with mock.patch("urllib.request.urlopen", return_value=FakeGeminiImgResp()):
+            self.assertEqual(_try_gemini_imagen("charcoal sketch", "gem-key"), fake_png)
 
         config = _test_config()
         slide = SlideContent("NEVER BE AN OPTION", "OPTION", "", "dark_eagle")

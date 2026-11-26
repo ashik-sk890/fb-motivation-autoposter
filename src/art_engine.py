@@ -36,38 +36,39 @@ def _download_bytes(url: str, headers: dict[str, str] | None = None, timeout: in
 
 
 def _try_gemini_imagen(prompt: str, api_key: str) -> bytes | None:
-    """Attempt artwork generation via Google Gemini Imagen REST API."""
+    """Attempt artwork generation via Google AI Studio native Gemini image models."""
     if not api_key:
         return None
-    url = (
-        "https://generativelanguage.googleapis.com/v1beta/models/"
-        f"imagen-3.0-generate-002:predict?key={api_key}"
-    )
-    payload = json.dumps(
-        {
-            "instances": [{"prompt": prompt}],
-            "parameters": {
-                "sampleCount": 1,
-                "aspectRatio": "3:4",
-                "outputMimeType": "image/jpeg",
-                "personGeneration": "ALLOW_ADULT",
-            },
-        }
-    ).encode("utf-8")
-    req = urllib.request.Request(
-        url,
-        data=payload,
-        headers={"Content-Type": "application/json"},
-        method="POST",
-    )
-    try:
-        with urllib.request.urlopen(req, timeout=60) as resp:
-            parsed = json.loads(resp.read().decode("utf-8"))
-            b64 = parsed["predictions"][0]["bytesBase64Encoded"]
-            data = base64.b64decode(b64)
-            return data if _is_valid_image_bytes(data) else None
-    except (urllib.error.URLError, KeyError, IndexError, ValueError, TimeoutError):
-        return None
+    for model in ("gemini-3.1-flash-image", "gemini-2.5-flash-image", "gemini-nano-banana-2.1"):
+        url = (
+            "https://generativelanguage.googleapis.com/v1beta/models/"
+            f"{model}:generateContent?key={api_key}"
+        )
+        payload = json.dumps(
+            {
+                "contents": [{"parts": [{"text": prompt}]}],
+                "generationConfig": {"responseModalities": ["IMAGE"]},
+            }
+        ).encode("utf-8")
+        req = urllib.request.Request(
+            url,
+            data=payload,
+            headers={"Content-Type": "application/json"},
+            method="POST",
+        )
+        try:
+            with urllib.request.urlopen(req, timeout=60) as resp:
+                parsed = json.loads(resp.read().decode("utf-8"))
+                parts = parsed["candidates"][0]["content"]["parts"]
+                for part in parts:
+                    inline = part.get("inlineData") or {}
+                    if inline.get("data"):
+                        data = base64.b64decode(inline["data"])
+                        if _is_valid_image_bytes(data):
+                            return data
+        except (urllib.error.URLError, KeyError, IndexError, ValueError, TimeoutError):
+            continue
+    return None
 
 
 def _try_huggingface(prompt: str, token: str) -> bytes | None:
@@ -770,9 +771,10 @@ def resolve_artwork_data_uri(
     seed: int,
     allow_remote_art: bool = True,
     cache_path: Path | None = None,
+    prompt_override: str = "",
 ) -> tuple[str, str]:
     """Return (data_uri, source_label) for the visual artwork of a card."""
-    prompt = str(theme_meta.get("ai_prompt", "Dark dramatic lion portrait, high contrast, no text"))
+    prompt = prompt_override.strip() or str(theme_meta.get("ai_prompt", "Dark dramatic lion portrait, high contrast, no text"))
     accent = str(theme_meta.get("accent", "#FF3B30"))
     motif = str(theme_meta.get("svg_motif", "lion"))
     layout_style = str(theme_meta.get("layout_style", "monochrome_alpha"))

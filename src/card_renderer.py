@@ -395,6 +395,7 @@ def render_slide_assets(
         seed=seed,
         allow_remote_art=allow_remote_art,
         cache_path=art_cache_path,
+        prompt_override=slide.image_prompt,
     )
 
     html_content = build_card_html(

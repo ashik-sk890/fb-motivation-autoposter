@@ -23,6 +23,7 @@ class SlideContent:
     accent: str
     badge: str = ""
     visual_theme: str = "dark_lion"
+    image_prompt: str = ""
 
 
 @dataclass(frozen=True)
@@ -159,37 +160,47 @@ def _generate_via_llm(
     archetype: dict[str, Any],
     post_type: str,
     used_hashes: set[str],
+    valid_themes: list[str] | None = None,
 ) -> dict[str, Any] | None:
-    """Attempt fresh quote/carousel generation using Gemini or OpenAI if configured."""
+    """Attempt fresh high-CTR quote and visual prompt generation using Gemini or OpenAI."""
     slide_count = 4 if post_type == "carousel" else 1
+    theme_choices = ", ".join(valid_themes or ["dark_eagle", "dark_anime_moody", "dark_anime_rain", "noir_suit", "dark_anime_warm", "shadow_boxer", "dark_lion"])
     prompt = (
-        f"Create an original viral dark-motivation Facebook {post_type} post inspired by top attitude quote pages.\n"
+        f"Create an original viral high-CTR motivation/attitude Facebook {post_type} post.\n"
         f"Theme: {archetype['name']} (tone: {archetype['tone']}).\n"
         f"Rules:\n"
         f"- Output strict JSON only, no markdown fences.\n"
-        f"- Return object with keys: caption (1 crisp sentence), lead (short phrase after 'Follow for '), "
-        f"slides (array of {slide_count} objects with keys: quote, accent, badge).\n"
-        f"- Each quote must be UPPERCASE, punchy, 8 to 20 words, strong attitude/self-respect/discipline tone.\n"
+        f"- Return object with keys: caption (1 crisp engaging sentence), lead (short phrase after 'Follow for '), "
+        f"slides (array of {slide_count} objects with keys: quote, accent, badge, visual_theme, image_prompt).\n"
+        f"- Each quote must be UPPERCASE, punchy, 8 to 20 words, strong self-respect/mindset/discipline hook.\n"
         f"- 'accent' MUST be an exact uppercase substring of 'quote' (2 to 5 impactful words to color crimson/gold).\n"
-        f"- For carousel slides, set badge to 'RULE #01', 'RULE #02', etc. For single post, badge is empty string.\n"
+        f"- 'visual_theme' MUST be one of: {theme_choices}.\n"
+        f"- 'image_prompt' MUST describe a brand-new, high-CTR visual metaphor or dramatic scene matching the chosen theme style (no text, no words, no watermark inside the image).\n"
+        f"- For carousel slides, set badge to '01 / 04', '02 / 04', etc. For single post, badge is empty string.\n"
     )
 
     raw_text = ""
     try:
         if config.gemini_api_key:
-            url = (
-                "https://generativelanguage.googleapis.com/v1beta/models/"
-                f"gemini-2.5-flash:generateContent?key={config.gemini_api_key}"
-            )
-            resp = _post_json(
-                url,
-                {
-                    "contents": [{"parts": [{"text": prompt}]}],
-                    "generationConfig": {"responseMimeType": "application/json", "temperature": 0.95},
-                },
-                {"Content-Type": "application/json"},
-            )
-            raw_text = resp["candidates"][0]["content"]["parts"][0]["text"]
+            for model in ("gemini-3.5-flash-lite", "gemini-3.8-flash", "gemini-flash-latest"):
+                url = (
+                    "https://generativelanguage.googleapis.com/v1beta/models/"
+                    f"{model}:generateContent?key={config.gemini_api_key}"
+                )
+                try:
+                    resp = _post_json(
+                        url,
+                        {
+                            "contents": [{"parts": [{"text": prompt}]}],
+                            "generationConfig": {"responseMimeType": "application/json", "temperature": 1.0},
+                        },
+                        {"Content-Type": "application/json"},
+                    )
+                    raw_text = resp["candidates"][0]["content"]["parts"][0]["text"]
+                    if raw_text:
+                        break
+                except (urllib.error.URLError, KeyError, IndexError, TimeoutError):
+                    continue
         elif config.openai_api_key:
             resp = _post_json(
                 "https://api.openai.com/v1/chat/completions",
@@ -197,7 +208,7 @@ def _generate_via_llm(
                     "model": "gpt-4o-mini",
                     "messages": [{"role": "user", "content": prompt}],
                     "response_format": {"type": "json_object"},
-                    "temperature": 0.95,
+                    "temperature": 1.0,
                 },
                 {
                     "Content-Type": "application/json",
@@ -208,6 +219,8 @@ def _generate_via_llm(
         else:
             return None
 
+        if not raw_text:
+            return None
         parsed = json.loads(raw_text)
         slides = parsed.get("slides", [])
         if not slides:
@@ -366,7 +379,8 @@ def build_post_plan(
     archetype = _pick_archetype(archetypes, slot, rng)
     post_type = SLOT_PREFERENCES[slot]["post_type"]
 
-    llm_data = _generate_via_llm(config, archetype, post_type, used_hashes)
+    valid_themes = list((vault.get("visual_themes") or {}).keys())
+    llm_data = _generate_via_llm(config, archetype, post_type, used_hashes, valid_themes=valid_themes)
     if llm_data:
         theme = archetype.get("visual_theme", "dark_lion")
         slides = [
@@ -374,7 +388,8 @@ def build_post_plan(
                 quote=str(s["quote"]).upper().strip(),
                 accent=str(s.get("accent", "")).upper().strip(),
                 badge=str(s.get("badge", "")).upper().strip(),
-                visual_theme=theme,
+                visual_theme=s.get("visual_theme") if s.get("visual_theme") in valid_themes else theme,
+                image_prompt=str(s.get("image_prompt", "")).strip(),
             )
             for s in llm_data["slides"]
         ]

@@ -114,6 +114,7 @@ def _render_single_job(
                 "accent": s.accent,
                 "badge": s.badge,
                 "visual_theme": s.visual_theme,
+                "image_prompt": s.image_prompt,
             }
             for s in plan.slides
         ],
@@ -175,6 +176,7 @@ def _plan_from_job(job: dict[str, Any]) -> PostPlan:
             accent=s.get("accent", ""),
             badge=s.get("badge", ""),
             visual_theme=s.get("visual_theme", "dark_lion"),
+            image_prompt=s.get("image_prompt", ""),
         )
         for s in job["slides"]
     ]
