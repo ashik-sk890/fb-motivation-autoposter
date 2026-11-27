@@ -156,14 +156,14 @@ def _post_json(url: str, payload: dict[str, Any], headers: dict[str, str], timeo
 
 
 _STYLE_HINTS: dict[str, str] = {
-    "paper_sketch": "clean crisp black ink & charcoal pencil metaphor drawing isolated on pure solid blank white #FFFFFF paper background, zero dark/gray background shading, no text",
+    "paper_sketch": "clean crisp black ink & charcoal pencil metaphor drawing isolated on pure solid blank white #FFFFFF paper background, zero dark background shading, no text",
     "saffron_editorial": "minimalist crisp black crosshatched ink illustration isolated on pure solid blank white #FFFFFF paper background, lower-weighted composition, no dark edges, no text",
-    "cartoon_metaphor": "bright sunny modern 2D flat vector comic metaphor illustration on crisp daylight sky blue/pastel background, joyful high-contrast colors, no text",
-    "sunrise_metaphor": "radiant golden morning sunrise horizon landscape with luminous pastel sky upper half and vivid coral/emerald foreground contrast, no text",
-    "pastel_viral": "bright trendy 2026 pastel 3D/vector daylight illustration with sky blue, warm peach, butter yellow, and vibrant coral accents, clean uplifting composition, no text",
-    "vibrant_magazine": "bright golden-hour daylight editorial photograph-style scene with luminous turquoise, warm amber, and sunny sky tones, no dark gloomy black shadows, no text",
-    "gold_spotlight": "bright golden-hour studio rim-lit portrait on warm sapphire/amber backdrop, high clarity, no text",
-    "monochrome_alpha": "clean silver-gelatin editorial portrait with bright luminous highlights, no text",
+    "cartoon_metaphor": "breathtaking Pixar and Makoto Shinkai 3D animated movie frame showing a vivid visual metaphor, sunlit volumetric rays, lush full-view atmospheric sky above, rich depth of field, zero borders, no text",
+    "sunrise_metaphor": "sweeping cinematic golden morning sunrise vista in ultra-detailed 8k anime/film style, luminous open pastel sky across upper third, dramatic glowing subject below, no text",
+    "pastel_viral": "breathtaking full-bleed 8k cinematic concept art with glowing golden-hour volumetric sunbeams, vibrant turquoise-amber atmospheric sky, dramatic wide depth of field, centered hero subject with calm lower space for bold typography, no borders, no text",
+    "vibrant_magazine": "epic full-bleed cinematic widescreen-feel film still in 8k photorealistic/semi-realistic style, radiant warm sunset rim-light, dramatic mist & skyline/mountain depth, clean lower gradient zone for text, no borders, no text",
+    "gold_spotlight": "epic golden-hour studio rim-lit cinematic portrait on sapphire/amber horizon backdrop, volumetric rays, no text",
+    "monochrome_alpha": "epic silver-gelatin storm cinema portrait with sharp dramatic rim lighting and glowing sparks, no text",
 }
 
 
@@ -183,21 +183,21 @@ def _generate_via_llm(
             for k, v in theme_map.items()
         )
     else:
-        theme_guide = "bright_pastel_path, vibrant_sunrise_pop, sunny_sky_growth, dark_eagle, dark_anime_moody, dark_anime_rain, noir_suit, dark_anime_warm"
+        theme_guide = "vibrant_sunrise_pop, dark_knight, bright_pastel_path, dark_anime_rain, dark_anime_warm, shadow_boxer, noir_suit, dark_eagle"
 
     prompt = (
-        f"Create an original viral high-CTR bright modern Facebook {post_type} post.\n"
+        f"Create an original viral high-CTR cinematic Facebook Reels/Video {post_type} post.\n"
         f"Theme: {archetype['name']} (tone: {archetype['tone']}).\n"
         f"Rules:\n"
         f"- Output strict JSON only, no markdown fences.\n"
         f"- Return object with keys: caption (1 crisp engaging sentence), lead (short phrase after 'Follow for '), "
         f"slides (array of {slide_count} objects with keys: quote, accent, badge, visual_theme, image_prompt).\n"
-        f"- Each quote must be UPPERCASE, punchy, 8 to 20 words, strong self-respect/mindset/discipline hook.\n"
+        f"- Each quote must be UPPERCASE, punchy, 8 to 18 words, strong mindset/respect/ambition hook.\n"
         f"- 'accent' MUST be an exact uppercase substring of 'quote' (2 to 5 impactful words to color highlight).\n"
-        f"- 'visual_theme' MUST be one of the theme keys listed below.\n"
-        f"- BRIGHT & TRENDY VISUAL RULE: Every visual MUST feel bright, eye-catching, modern, and vibrant (sunlit daylight, pastel sky, cream paper ink, warm saffron, or golden sunrise — NEVER dark gloomy pitch-black shadows!).\n"
-        f"- 'image_prompt' MUST include a clear concrete visual SUBJECT + symbolic metaphor (e.g. eagle breaking away from perched birds, climber ascending sunlit stairs, suited chess strategist, red sunrise tree, golden lion in daylight, blooming sprout vs dry stone) rendered in the required medium/background style for your chosen visual_theme (never omit the subject; no text, no words, no watermark):\n"
-        f"  Themes & required visual medium: {theme_guide}.\n"
+        f"- 'visual_theme' MUST be picked creatively to best fit the scene from: {', '.join(theme_map.keys()) if theme_map else theme_guide} (vary themes instead of always picking the first one).\n"
+        f"- CINEMATIC FULL-VIEW RULE: Design every visual as a breathtaking, vibrant full-screen 8K cinematic scene (volumetric sunlight, golden hour depth, electric atmosphere, cosmic/mountain/skyline/anime-film realism — NEVER flat dull clipart or boxy borders!).\n"
+        f"- 'image_prompt' MUST describe a concrete symbolic SUBJECT centered nicely with generous open atmospheric sky/foreground so it fills a vertical 9:16 mobile screen cinematically, strictly matching the chosen visual_theme style (no text, no words, no watermark):\n"
+        f"  Style requirements: {theme_guide}.\n"
         f"- For carousel slides, set badge to '01 / 04', '02 / 04', etc. For single post, badge is empty string.\n"
     )
 

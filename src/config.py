@@ -39,7 +39,7 @@ class AppConfig:
     use_composio_fal: bool
     public_media_base_url: str
     image_width: int = 1080
-    image_height: int = 1350
+    image_height: int = 1920
     max_history_items: int = 4000
 
     @classmethod

@@ -140,7 +140,7 @@ def _try_cloudflare_flux(prompt: str, account_id: str, api_token: str) -> bytes 
         f"https://api.cloudflare.com/client/v4/accounts/{account_id}"
         "/ai/run/@cf/black-forest-labs/flux-1-schnell"
     )
-    payload = json.dumps({"prompt": prompt, "steps": 4}).encode("utf-8")
+    payload = json.dumps({"prompt": prompt, "steps": 6}).encode("utf-8")
     req = urllib.request.Request(
         url,
         data=payload,

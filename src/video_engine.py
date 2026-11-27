@@ -19,11 +19,11 @@ def _build_single_card_cmd(
     duration_sec: float = 10.0,
     audio_offset_sec: float = 0.0,
 ) -> list[str]:
-    """Assemble ffmpeg command for a rock-solid static 1080x1350 card (zero shake) + audio."""
+    """Assemble ffmpeg command for a rock-solid static 1080x1920 vertical full-view card (zero shake) + audio."""
     fade_out_start = max(duration_sec - 0.8, 1.0)
     video_filter = (
-        "[0:v]scale=1080:1350:force_original_aspect_ratio=decrease,"
-        "pad=1080:1350:(ow-iw)/2:(oh-ih)/2,setsar=1,fps=30,format=yuv420p[v]"
+        "[0:v]scale=1080:1920:force_original_aspect_ratio=decrease,"
+        "pad=1080:1920:(ow-iw)/2:(oh-ih)/2,setsar=1,fps=30,format=yuv420p[v]"
     )
 
     if audio_path and audio_path.exists():
@@ -131,7 +131,7 @@ def _build_slideshow_cmd(
 
     for idx, img in enumerate(image_paths):
         cmd.extend(["-loop", "1", "-t", f"{slide_duration_sec:.2f}", "-i", str(img)])
-        scale_parts.append(f"[{idx}:v]scale=1080:1350:force_original_aspect_ratio=decrease,pad=1080:1350:(ow-iw)/2:(oh-ih)/2,setsar=1,fps=30[v{idx}]")
+        scale_parts.append(f"[{idx}:v]scale=1080:1920:force_original_aspect_ratio=decrease,pad=1080:1920:(ow-iw)/2:(oh-ih)/2,setsar=1,fps=30[v{idx}]")
         concat_inputs.append(f"[v{idx}]")
 
     video_chain = ";".join(scale_parts) + f";{''.join(concat_inputs)}concat=n={len(image_paths)}:v=1:a=0,format=yuv420p[v]"

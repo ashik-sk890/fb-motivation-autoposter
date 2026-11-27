@@ -83,15 +83,15 @@ def build_card_html(
 
 
 def _tpl_paper_sketch(slide: SlideContent, art_uri: str, brand: str, badge: str, is_ai_art: bool = False) -> str:
-    """Textured sketchbook paper + dark handwritten/serif ink + crimson swoosh."""
+    """Full-screen 9:16 sketchbook paper + dark handwritten/serif ink + crimson swoosh."""
     quote_txt = slide.quote.strip().title() if len(slide.quote) > 35 else slide.quote.strip()
     q_html = _highlight_html(quote_txt, slide.accent, "red-accent")
-    font_px = _scale_font(quote_txt, large=62, medium=52, compact=44)
+    font_px = _scale_font(quote_txt, large=64, medium=54, compact=46)
     badge_html = f'<div class="pill">{badge}</div>' if badge else ""
     art_layer_css = (
-        f'.art-inset {{ position: absolute; left: 56px; right: 56px; top: 430px; bottom: 84px; background: url("{art_uri}") center/contain no-repeat; mix-blend-mode: multiply; -webkit-mask-image: radial-gradient(ellipse at center, black 62%, transparent 98%); mask-image: radial-gradient(ellipse at center, black 62%, transparent 98%); }}'
+        f'.art-inset {{ position: absolute; left: 24px; right: 24px; top: 580px; bottom: 210px; background: url("{art_uri}") center/contain no-repeat; mix-blend-mode: multiply; -webkit-mask-image: radial-gradient(ellipse at center, black 64%, transparent 98%); mask-image: radial-gradient(ellipse at center, black 64%, transparent 98%); }}'
         if is_ai_art
-        else f'.card {{ background: #eeeae0 url("{art_uri}") center/cover no-repeat; }}'
+        else f'.card {{ background: #faf6ee url("{art_uri}") center/cover no-repeat; }}'
     )
     art_div = '<div class="art-inset"></div>' if is_ai_art else ""
     return f"""<!DOCTYPE html>
@@ -100,16 +100,16 @@ def _tpl_paper_sketch(slide: SlideContent, art_uri: str, brand: str, badge: str,
 <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,600;0,700;1,600&family=Patrick+Hand&display=swap" rel="stylesheet" />
 <style>
   * {{ box-sizing: border-box; margin: 0; padding: 0; }}
-  html, body {{ width: 1080px; height: 1350px; overflow: hidden; background: #faf6ee; font-family: 'Patrick Hand', 'Lora', Georgia, serif; color: #18181b; }}
-  .card {{ position: relative; width: 1080px; height: 1350px; background: radial-gradient(circle at 50% 45%, #fffdf8 52%, #efe8d8 100%); }}
+  html, body {{ width: 1080px; height: 1920px; overflow: hidden; background: #faf6ee; font-family: 'Patrick Hand', 'Lora', Georgia, serif; color: #18181b; }}
+  .card {{ position: relative; width: 1080px; height: 1920px; background: radial-gradient(circle at 50% 45%, #fffdf8 52%, #efe8d8 100%); }}
   {art_layer_css}
-  .top-text {{ position: absolute; top: 88px; left: 86px; right: 86px; text-align: center; }}
+  .top-text {{ position: absolute; top: 195px; left: 76px; right: 76px; text-align: center; }}
   .pill {{ display: inline-block; margin-bottom: 18px; padding: 6px 22px; border: 2px solid #dc2626; border-radius: 999px; color: #dc2626; font-family: Arial, sans-serif; font-weight: 800; font-size: 20px; letter-spacing: 3px; }}
   .quote {{ font-size: {font_px}px; line-height: 1.28; font-weight: 600; color: #1c1917; letter-spacing: 0.4px; }}
-  .red-accent {{ color: #dc2626; text-decoration: underline; text-decoration-color: rgba(220,38,38,0.68); text-underline-offset: 10px; text-decoration-thickness: 4px; }}
-  .divider {{ margin: 28px auto 0; width: 280px; height: 18px; display: flex; align-items: center; justify-content: center; gap: 12px; color: #44403c; font-size: 20px; }}
+  .red-accent {{ color: #dc2626; text-decoration: underline; text-decoration-color: rgba(220,38,38,0.72); text-underline-offset: 10px; text-decoration-thickness: 4px; }}
+  .divider {{ margin: 30px auto 0; width: 280px; height: 18px; display: flex; align-items: center; justify-content: center; gap: 12px; color: #44403c; font-size: 20px; }}
   .line {{ flex: 1; height: 2px; background: #44403c; opacity: 0.55; }}
-  .brand {{ position: absolute; bottom: 38px; left: 0; right: 0; text-align: center; font-family: 'Lora', Georgia, serif; font-size: 22px; color: #44403c; letter-spacing: 1px; opacity: 0.78; }}
+  .brand {{ position: absolute; bottom: 185px; left: 0; right: 0; text-align: center; font-family: 'Lora', Georgia, serif; font-size: 22px; color: #44403c; letter-spacing: 1px; opacity: 0.8; }}
 </style></head><body>
   <div class="card">
     {art_div}
@@ -124,26 +124,28 @@ def _tpl_paper_sketch(slide: SlideContent, art_uri: str, brand: str, badge: str,
 
 
 def _tpl_sunrise_metaphor(slide: SlideContent, art_uri: str, brand: str, badge: str) -> str:
-    """Bright golden sunrise + bold red headline + dark clean truth text over landscape."""
+    """Full-bleed 9:16 bright golden sunrise cinema view + vivid red headline over radiant sky."""
     headline = badge or "HARD TRUTH"
     body_text = slide.quote.strip().capitalize()
     q_html = _highlight_html(body_text, slide.accent, "bold-mark")
-    font_px = _scale_font(body_text, large=46, medium=40, compact=35)
+    font_px = _scale_font(body_text, large=48, medium=42, compact=37)
     return f"""<!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8" />
 <meta name="viewport" content="width=1080, initial-scale=1.0" />
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;900&display=swap" rel="stylesheet" />
 <style>
   * {{ box-sizing: border-box; margin: 0; padding: 0; }}
-  html, body {{ width: 1080px; height: 1350px; overflow: hidden; font-family: 'Montserrat', Arial, sans-serif; }}
-  .card {{ position: relative; width: 1080px; height: 1350px; background: url("{art_uri}") center/cover no-repeat; }}
-  .top-box {{ position: absolute; top: 88px; left: 78px; right: 78px; text-align: center; }}
-  .headline {{ font-size: 74px; font-weight: 900; color: #dc2626; letter-spacing: 1px; margin-bottom: 26px; text-shadow: 0 2px 12px rgba(255,255,255,0.65); }}
-  .quote {{ font-size: {font_px}px; line-height: 1.44; font-weight: 700; color: #18181b; text-shadow: 0 1px 10px rgba(255,255,255,0.75); }}
-  .bold-mark {{ color: #991b1b; font-weight: 900; }}
-  .brand {{ position: absolute; bottom: 26px; left: 0; right: 0; text-align: center; font-size: 18px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.82); text-shadow: 0 2px 8px rgba(0,0,0,0.8); }}
+  html, body {{ width: 1080px; height: 1920px; overflow: hidden; font-family: 'Montserrat', Arial, sans-serif; }}
+  .card {{ position: relative; width: 1080px; height: 1920px; background: url("{art_uri}") center/cover no-repeat; }}
+  .sky-veil {{ position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(255,250,240,0.82) 0%, rgba(255,250,240,0.52) 28%, rgba(255,255,255,0.0) 48%); }}
+  .top-box {{ position: absolute; top: 190px; left: 74px; right: 74px; text-align: center; }}
+  .headline {{ font-size: 74px; font-weight: 900; color: #dc2626; letter-spacing: 1px; margin-bottom: 24px; text-shadow: 0 2px 16px rgba(255,255,255,0.85); }}
+  .quote {{ font-size: {font_px}px; line-height: 1.42; font-weight: 800; color: #111827; text-shadow: 0 2px 14px rgba(255,255,255,0.85); }}
+  .bold-mark {{ color: #b91c1c; font-weight: 900; }}
+  .brand {{ position: absolute; bottom: 210px; left: 0; right: 0; text-align: center; font-size: 19px; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.9); text-shadow: 0 2px 12px rgba(0,0,0,0.85); }}
 </style></head><body>
   <div class="card">
+    <div class="sky-veil"></div>
     <div class="top-box">
       <div class="headline">{headline}</div>
       <div class="quote">{q_html}</div>
@@ -154,13 +156,13 @@ def _tpl_sunrise_metaphor(slide: SlideContent, art_uri: str, brand: str, badge: 
 
 
 def _tpl_saffron_editorial(slide: SlideContent, art_uri: str, brand: str, badge: str, is_ai_art: bool = False) -> str:
-    """Vibrant warm saffron-orange editorial ink card (Art by Naveen style)."""
+    """Full-screen 9:16 vibrant saffron editorial ink canvas."""
     quote_txt = slide.quote.strip().capitalize()
     q_html = _highlight_html(quote_txt, slide.accent, "ink-emphasis")
-    font_px = _scale_font(quote_txt, large=62, medium=54, compact=46)
+    font_px = _scale_font(quote_txt, large=64, medium=54, compact=46)
     badge_html = f'<div class="pill">{badge}</div>' if badge else ""
     art_layer_css = (
-        f'.art-inset {{ position: absolute; left: 60px; right: 60px; top: 430px; bottom: 40px; background: url("{art_uri}") center bottom/contain no-repeat; mix-blend-mode: multiply; -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 18%, black 100%); mask-image: linear-gradient(to bottom, transparent 0%, black 18%, black 100%); }}'
+        f'.art-inset {{ position: absolute; left: 32px; right: 32px; top: 610px; bottom: 180px; background: url("{art_uri}") center bottom/contain no-repeat; mix-blend-mode: multiply; -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 18%, black 100%); mask-image: linear-gradient(to bottom, transparent 0%, black 18%, black 100%); }}'
         if is_ai_art
         else f'.card {{ background: #f59e0b url("{art_uri}") center/cover no-repeat; }}'
     )
@@ -171,14 +173,14 @@ def _tpl_saffron_editorial(slide: SlideContent, art_uri: str, brand: str, badge:
 <link href="https://fonts.googleapis.com/css2?family=Lora:wght@600;700&display=swap" rel="stylesheet" />
 <style>
   * {{ box-sizing: border-box; margin: 0; padding: 0; }}
-  html, body {{ width: 1080px; height: 1350px; overflow: hidden; font-family: 'Lora', Georgia, serif; }}
-  .card {{ position: relative; width: 1080px; height: 1350px; background: radial-gradient(circle at 50% 42%, #fde047 0%, #fbbf24 52%, #f59e0b 100%); }}
+  html, body {{ width: 1080px; height: 1920px; overflow: hidden; font-family: 'Lora', Georgia, serif; }}
+  .card {{ position: relative; width: 1080px; height: 1920px; background: radial-gradient(circle at 50% 42%, #fde047 0%, #fbbf24 52%, #f59e0b 100%); }}
   {art_layer_css}
-  .top-text {{ position: absolute; top: 96px; left: 86px; right: 86px; text-align: center; }}
+  .top-text {{ position: absolute; top: 205px; left: 78px; right: 78px; text-align: center; }}
   .pill {{ display: inline-block; margin-bottom: 16px; padding: 6px 20px; border: 2px solid #111111; border-radius: 999px; font-family: Arial, sans-serif; font-weight: 800; font-size: 19px; letter-spacing: 3px; color: #111111; }}
   .quote {{ font-size: {font_px}px; line-height: 1.26; font-weight: 700; color: #111111; text-shadow: 0 2px 14px rgba(251,191,36,0.55); }}
   .ink-emphasis {{ text-decoration: underline; text-decoration-thickness: 4px; text-underline-offset: 8px; }}
-  .sig {{ position: absolute; right: 32px; bottom: 24px; font-style: italic; font-size: 20px; font-weight: 700; color: #111111; background: rgba(251, 191, 36, 0.88); padding: 4px 14px; border-radius: 999px; }}
+  .sig {{ position: absolute; left: 60px; bottom: 205px; font-style: italic; font-size: 20px; font-weight: 700; color: #111111; background: rgba(251, 191, 36, 0.9); padding: 5px 16px; border-radius: 999px; }}
 </style></head><body>
   <div class="card">
     {art_div}
@@ -192,10 +194,10 @@ def _tpl_saffron_editorial(slide: SlideContent, art_uri: str, brand: str, badge:
 
 
 def _tpl_cartoon_metaphor(slide: SlideContent, art_uri: str, brand: str, badge: str) -> str:
-    """Clean daylight comic metaphor card (Stick Wisdom 44K reaction pattern)."""
+    """Full-bleed 9:16 Pixar/Shinkai-style vibrant 3D animated metaphor with floating cinema text."""
     quote_txt = slide.quote.strip().upper()
     q_html = _highlight_html(quote_txt, slide.accent, "blue-accent")
-    font_px = _scale_font(quote_txt, large=48, medium=42, compact=36)
+    font_px = _scale_font(quote_txt, large=52, medium=44, compact=38)
     badge_html = f'<div class="pill">{badge}</div>' if badge else ""
     return f"""<!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8" />
@@ -203,15 +205,17 @@ def _tpl_cartoon_metaphor(slide: SlideContent, art_uri: str, brand: str, badge: 
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&display=swap" rel="stylesheet" />
 <style>
   * {{ box-sizing: border-box; margin: 0; padding: 0; }}
-  html, body {{ width: 1080px; height: 1350px; overflow: hidden; font-family: 'Montserrat', Arial, sans-serif; }}
-  .card {{ position: relative; width: 1080px; height: 1350px; background: #e2e8f0 url("{art_uri}") center/cover no-repeat; }}
-  .banner {{ position: absolute; top: 56px; left: 60px; right: 60px; background: rgba(255,255,255,0.92); border: 3px solid #0f172a; border-radius: 22px; padding: 30px 36px; text-align: center; box-shadow: 0 10px 28px rgba(15,23,42,0.12); }}
-  .pill {{ display: inline-block; margin-bottom: 12px; padding: 5px 18px; background: #0f172a; color: #ffffff; border-radius: 999px; font-size: 18px; font-weight: 800; letter-spacing: 3px; }}
+  html, body {{ width: 1080px; height: 1920px; overflow: hidden; font-family: 'Montserrat', Arial, sans-serif; }}
+  .card {{ position: relative; width: 1080px; height: 1920px; background: #0f172a url("{art_uri}") center/cover no-repeat; }}
+  .scrim {{ position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(15,23,42,0.58) 0%, rgba(15,23,42,0.22) 28%, rgba(15,23,42,0.0) 48%, rgba(15,23,42,0.78) 84%, rgba(10,14,26,0.92) 100%); }}
+  .banner {{ position: absolute; top: 185px; left: 68px; right: 68px; background: rgba(255,255,255,0.84); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-radius: 26px; padding: 30px 36px; text-align: center; box-shadow: 0 18px 42px rgba(15,23,42,0.24); }}
+  .pill {{ display: inline-block; margin-bottom: 12px; padding: 5px 18px; background: #2563eb; color: #ffffff; border-radius: 999px; font-size: 18px; font-weight: 800; letter-spacing: 3px; }}
   .quote {{ font-size: {font_px}px; line-height: 1.24; font-weight: 900; color: #0f172a; }}
   .blue-accent {{ color: #dc2626; }}
-  .brand {{ position: absolute; bottom: 24px; left: 0; right: 0; text-align: center; font-size: 18px; font-weight: 800; letter-spacing: 3px; color: #1e293b; opacity: 0.78; }}
+  .brand {{ position: absolute; bottom: 205px; left: 0; right: 0; text-align: center; font-size: 19px; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.92); text-shadow: 0 2px 12px rgba(0,0,0,0.85); }}
 </style></head><body>
   <div class="card">
+    <div class="scrim"></div>
     <div class="banner">
       {badge_html}
       <div class="quote">{q_html}</div>
@@ -230,38 +234,37 @@ def _tpl_pastel_viral(
     badge: str,
     accent_color: str,
 ) -> str:
-    """2026 bright pastel gallery card: crisp sky/cream gradient + bold headline + artwork frame."""
+    """Full-bleed 9:16 edge-to-edge cinematic scene with glowing highlights & Reels-safe typography."""
     quote_txt = slide.quote.strip().upper()
-    q_html = _highlight_html(quote_txt, slide.accent, "pop-mark")
-    font_px = _scale_font(quote_txt, large=48, medium=42, compact=36)
-    pill_color = accent_color if accent_color and accent_color != "#111111" else "#2563EB"
-    badge_html = f'<div class="pill">{badge}</div>' if badge else '<div class="pill">DAILY MINDSET</div>'
+    q_html = _highlight_html(quote_txt, slide.accent, "cine-accent")
+    font_px = _scale_font(quote_txt, large=60, medium=50, compact=43)
+    hi = accent_color if accent_color and accent_color != "#111111" else "#FACC15"
+    badge_html = f'<div class="pill">{badge}</div>' if badge else '<div class="pill">MINDSET</div>'
     return f"""<!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8" />
 <meta name="viewport" content="width=1080, initial-scale=1.0" />
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet" />
 <style>
   * {{ box-sizing: border-box; margin: 0; padding: 0; }}
-  html, body {{ width: 1080px; height: 1350px; overflow: hidden; font-family: 'Montserrat', Arial, sans-serif; }}
-  .card {{ position: relative; width: 1080px; height: 1350px; background: linear-gradient(155deg, #e0f2fe 0%, #fef9c3 52%, #ffedd5 100%); padding: 52px; display: flex; flex-direction: column; }}
-  .frame {{ flex: 1; background: #ffffff; border: 4px solid #0f172a; border-radius: 34px; box-shadow: 0 24px 54px rgba(15,23,42,0.12); padding: 44px 48px 34px; display: flex; flex-direction: column; }}
-  .top-row {{ display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }}
-  .pill {{ display: inline-block; padding: 8px 22px; background: {pill_color}; color: #ffffff; border-radius: 999px; font-size: 18px; font-weight: 800; letter-spacing: 2.5px; }}
-  .mono {{ width: 52px; height: 52px; border-radius: 50%; border: 3px solid #0f172a; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 18px; color: #0f172a; background: #fef08a; }}
-  .quote {{ font-size: {font_px}px; line-height: 1.24; font-weight: 900; color: #0f172a; letter-spacing: -0.3px; margin-bottom: 28px; }}
-  .pop-mark {{ color: {pill_color}; background: #fef08a; padding: 0 8px; border-radius: 8px; }}
-  .art-box {{ flex: 1; border-radius: 24px; border: 3px solid #e2e8f0; background: #f8fafc url("{art_uri}") center/cover no-repeat; }}
-  .footer {{ margin-top: 20px; display: flex; align-items: center; justify-content: space-between; font-size: 18px; font-weight: 800; color: #475569; letter-spacing: 1.5px; }}
+  html, body {{ width: 1080px; height: 1920px; overflow: hidden; background: #070b14; font-family: 'Montserrat', Arial, sans-serif; color: #ffffff; }}
+  .card {{ position: relative; width: 1080px; height: 1920px; background: #070b14 url("{art_uri}") center 40%/cover no-repeat; }}
+  .cinema-scrim {{ position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(7,11,20,0.42) 0%, rgba(7,11,20,0.0) 22%, rgba(7,11,20,0.0) 50%, rgba(7,11,20,0.78) 72%, rgba(5,8,16,0.95) 100%); }}
+  .panel {{ position: absolute; left: 64px; right: 112px; bottom: 230px; display: flex; flex-direction: column; align-items: flex-start; }}
+  .top-tag {{ display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }}
+  .pill {{ padding: 7px 20px; background: {hi}; color: #ffffff; border-radius: 999px; font-size: 18px; font-weight: 900; letter-spacing: 3px; box-shadow: 0 6px 20px rgba(0,0,0,0.35); }}
+  .seal {{ width: 48px; height: 48px; border-radius: 50%; border: 2px solid #facc15; background: rgba(7,11,20,0.72); color: #facc15; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 900; }}
+  .quote {{ font-family: 'Anton', 'Montserrat', sans-serif; font-size: {font_px + 6}px; line-height: 1.15; letter-spacing: 0.8px; color: #ffffff; text-transform: uppercase; text-shadow: 0 6px 26px rgba(0,0,0,0.92); }}
+  .cine-accent {{ color: #fde047; }}
+  .bar {{ width: 220px; height: 5px; border-radius: 4px; background: linear-gradient(90deg, {hi}, #fde047); margin: 22px 0 14px; }}
+  .brand {{ font-size: 19px; font-weight: 800; letter-spacing: 2.5px; color: rgba(255,255,255,0.88); text-transform: uppercase; text-shadow: 0 2px 10px rgba(0,0,0,0.9); }}
 </style></head><body>
   <div class="card">
-    <div class="frame">
-      <div class="top-row">
-        {badge_html}
-        <div class="mono">{monogram}</div>
-      </div>
+    <div class="cinema-scrim"></div>
+    <div class="panel">
+      <div class="top-tag">{badge_html}<span class="seal">{monogram}</span></div>
       <div class="quote">{q_html}</div>
-      <div class="art-box"></div>
-      <div class="footer"><span>{brand}</span><span>{handle}</span></div>
+      <div class="bar"></div>
+      <div class="brand">{brand}</div>
     </div>
   </div>
 </body></html>"""
@@ -276,36 +279,36 @@ def _tpl_vibrant_magazine(
     badge: str,
     accent_color: str,
 ) -> str:
-    """Luminous daylight editorial card: full-bleed bright scene fading cleanly into pure white card bottom."""
+    """Full-bleed 9:16 ultra-vibrant daylight/twilight cinema poster (zero white boxes)."""
     quote_txt = slide.quote.strip().upper()
     q_html = _highlight_html(quote_txt, slide.accent, "mag-accent")
-    font_px = _scale_font(quote_txt, large=52, medium=44, compact=38)
-    hi = accent_color if accent_color and accent_color != "#111111" else "#EA580C"
+    font_px = _scale_font(quote_txt, large=60, medium=50, compact=43)
+    hi = accent_color if accent_color and accent_color != "#111111" else "#F97316"
     badge_html = f'<div class="pill">{badge}</div>' if badge else ""
     return f"""<!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8" />
 <meta name="viewport" content="width=1080, initial-scale=1.0" />
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet" />
 <style>
   * {{ box-sizing: border-box; margin: 0; padding: 0; }}
-  html, body {{ width: 1080px; height: 1350px; overflow: hidden; background: #ffffff; font-family: 'Montserrat', Arial, sans-serif; color: #0f172a; }}
-  .card {{ position: relative; width: 1080px; height: 1350px; background: #f8fafc url("{art_uri}") center top/cover no-repeat; }}
-  .white-fade {{ position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(255,255,255,0.0) 0%, rgba(255,255,255,0.12) 48%, rgba(255,255,255,0.92) 64%, #ffffff 74%); }}
-  .panel {{ position: absolute; left: 68px; right: 68px; bottom: 58px; text-align: center; display: flex; flex-direction: column; align-items: center; }}
-  .pill {{ margin-bottom: 14px; padding: 7px 22px; background: {hi}; color: #ffffff; border-radius: 999px; font-size: 19px; font-weight: 800; letter-spacing: 3px; }}
-  .quote {{ font-size: {font_px}px; line-height: 1.22; font-weight: 900; color: #0f172a; text-transform: uppercase; }}
-  .mag-accent {{ color: {hi}; text-decoration: underline; text-decoration-thickness: 5px; text-underline-offset: 8px; }}
-  .bar {{ width: 420px; max-width: 80%; height: 4px; border-radius: 4px; background: linear-gradient(90deg, transparent, {hi}, transparent); margin: 24px 0 18px; }}
-  .sig-row {{ display: flex; align-items: center; gap: 14px; font-size: 19px; font-weight: 800; color: #334155; letter-spacing: 2px; text-transform: uppercase; }}
-  .seal {{ width: 54px; height: 54px; border-radius: 50%; background: #0f172a; color: #fde047; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 900; }}
+  html, body {{ width: 1080px; height: 1920px; overflow: hidden; background: #090d16; font-family: 'Montserrat', Arial, sans-serif; color: #ffffff; }}
+  .card {{ position: relative; width: 1080px; height: 1920px; background: #090d16 url("{art_uri}") center 36%/cover no-repeat; }}
+  .cine-fade {{ position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(9,13,22,0.32) 0%, rgba(9,13,22,0.0) 20%, rgba(9,13,22,0.0) 52%, rgba(9,13,22,0.78) 73%, rgba(6,9,16,0.96) 100%); }}
+  .panel {{ position: absolute; left: 64px; right: 104px; bottom: 235px; text-align: center; display: flex; flex-direction: column; align-items: center; }}
+  .pill {{ margin-bottom: 16px; padding: 7px 24px; background: {hi}; color: #ffffff; border-radius: 999px; font-size: 19px; font-weight: 800; letter-spacing: 3px; }}
+  .quote {{ font-family: 'Anton', 'Montserrat', sans-serif; font-size: {font_px + 4}px; line-height: 1.17; color: #ffffff; text-transform: uppercase; letter-spacing: 1px; text-shadow: 0 6px 24px rgba(0,0,0,0.95); }}
+  .mag-accent {{ color: #fde047; }}
+  .bar {{ width: 420px; max-width: 80%; height: 4px; border-radius: 4px; background: linear-gradient(90deg, transparent, #fde047, {hi}, transparent); margin: 24px 0 18px; }}
+  .sig-row {{ display: flex; align-items: center; gap: 14px; font-size: 19px; font-weight: 800; color: rgba(255,255,255,0.88); letter-spacing: 2px; text-transform: uppercase; }}
+  .seal {{ width: 52px; height: 52px; border-radius: 50%; border: 2px solid #fde047; background: rgba(9,13,22,0.85); color: #fde047; display: flex; align-items: center; justify-content: center; font-size: 17px; font-weight: 900; }}
 </style></head><body>
   <div class="card">
-    <div class="white-fade"></div>
+    <div class="cine-fade"></div>
     <div class="panel">
       {badge_html}
       <div class="quote">{q_html}</div>
       <div class="bar"></div>
-      <div class="sig-row"><span class="seal">{monogram}</span><span>{brand} · {handle}</span></div>
+      <div class="sig-row"><span class="seal">{monogram}</span><span>{brand}</span></div>
     </div>
   </div>
 </body></html>"""
@@ -320,9 +323,9 @@ def _tpl_gold_spotlight(
     badge: str,
     motif: str,
 ) -> str:
-    """Split or bottom-overlay dark-and-gold editorial poster (Live Motivation / MC style)."""
+    """Split or bottom-overlay dark-and-gold editorial poster (9:16 Reels full-view)."""
     q_html = _highlight_html(slide.quote.strip().upper(), slide.accent, "gold")
-    font_px = _scale_font(slide.quote, large=56, medium=48, compact=40)
+    font_px = _scale_font(slide.quote, large=60, medium=50, compact=42)
     badge_html = f'<div class="pill">{badge}</div>' if badge else ""
 
     if motif == "mentor_split":
@@ -332,14 +335,14 @@ def _tpl_gold_spotlight(
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&display=swap" rel="stylesheet" />
 <style>
   * {{ box-sizing: border-box; margin: 0; padding: 0; }}
-  html, body {{ width: 1080px; height: 1350px; overflow: hidden; background: #050507; color: #ffffff; font-family: 'Montserrat', Arial, sans-serif; }}
-  .card {{ position: relative; width: 1080px; height: 1350px; background: #050507 url("{art_uri}") center/cover no-repeat; }}
-  .right-fade {{ position: absolute; inset: 0; background: linear-gradient(90deg, rgba(5,5,7,0.08) 0%, rgba(5,5,7,0.72) 44%, rgba(5,5,7,0.97) 56%, #050507 100%); }}
-  .col {{ position: absolute; top: 180px; bottom: 140px; left: 480px; right: 64px; display: flex; flex-direction: column; justify-content: center; }}
-  .eyebrow {{ font-size: 28px; font-weight: 800; letter-spacing: 3px; color: #facc15; text-transform: uppercase; margin-bottom: 18px; border-bottom: 3px solid #facc15; padding-bottom: 12px; display: inline-block; }}
-  .quote {{ font-size: {font_px}px; line-height: 1.24; font-weight: 900; color: #ffffff; text-transform: uppercase; }}
+  html, body {{ width: 1080px; height: 1920px; overflow: hidden; background: #050507; color: #ffffff; font-family: 'Montserrat', Arial, sans-serif; }}
+  .card {{ position: relative; width: 1080px; height: 1920px; background: #050507 url("{art_uri}") center/cover no-repeat; }}
+  .right-fade {{ position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(5,5,7,0.12) 0%, rgba(5,5,7,0.45) 54%, rgba(5,5,7,0.92) 74%, #050507 100%); }}
+  .col {{ position: absolute; left: 64px; right: 112px; bottom: 235px; display: flex; flex-direction: column; justify-content: flex-end; }}
+  .eyebrow {{ font-size: 26px; font-weight: 800; letter-spacing: 3px; color: #facc15; text-transform: uppercase; margin-bottom: 18px; border-bottom: 3px solid #facc15; padding-bottom: 10px; display: inline-block; align-self: flex-start; }}
+  .quote {{ font-size: {font_px}px; line-height: 1.24; font-weight: 900; color: #ffffff; text-transform: uppercase; text-shadow: 0 4px 20px rgba(0,0,0,0.9); }}
   .gold {{ color: #facc15; }}
-  .attr {{ margin-top: 38px; font-size: 24px; font-style: italic; font-weight: 700; color: rgba(255,255,255,0.82); }}
+  .attr {{ margin-top: 28px; font-size: 22px; font-style: italic; font-weight: 700; color: rgba(255,255,255,0.85); }}
 </style></head><body>
   <div class="card">
     <div class="right-fade"></div>
@@ -357,16 +360,16 @@ def _tpl_gold_spotlight(
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@700;900&display=swap" rel="stylesheet" />
 <style>
   * {{ box-sizing: border-box; margin: 0; padding: 0; }}
-  html, body {{ width: 1080px; height: 1350px; overflow: hidden; background: #050507; color: #ffffff; font-family: 'Anton', 'Montserrat', Impact, sans-serif; }}
-  .card {{ position: relative; width: 1080px; height: 1350px; background: #050507 url("{art_uri}") center top/cover no-repeat; }}
-  .grad {{ position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.35) 45%, rgba(0,0,0,0.92) 64%, #050507 75%); }}
-  .content {{ position: absolute; left: 68px; right: 68px; bottom: 72px; text-align: center; display: flex; flex-direction: column; align-items: center; }}
+  html, body {{ width: 1080px; height: 1920px; overflow: hidden; background: #050507; color: #ffffff; font-family: 'Anton', 'Montserrat', Impact, sans-serif; }}
+  .card {{ position: relative; width: 1080px; height: 1920px; background: #050507 url("{art_uri}") center top/cover no-repeat; }}
+  .grad {{ position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.35) 52%, rgba(0,0,0,0.9) 74%, #050507 100%); }}
+  .content {{ position: absolute; left: 64px; right: 104px; bottom: 235px; text-align: center; display: flex; flex-direction: column; align-items: center; }}
   .pill {{ margin-bottom: 18px; padding: 6px 22px; border: 2px solid #facc15; border-radius: 999px; color: #facc15; font-family: 'Montserrat', sans-serif; font-size: 20px; font-weight: 900; letter-spacing: 4px; }}
   .quote {{ font-size: {font_px + 4}px; line-height: 1.18; letter-spacing: 1px; color: #ffffff; text-transform: uppercase; text-shadow: 0 4px 20px rgba(0,0,0,0.9); }}
   .gold {{ color: #facc15; }}
-  .gold-bar {{ width: 640px; max-width: 90%; height: 3px; background: linear-gradient(90deg, transparent, #facc15, transparent); margin: 26px 0 18px; }}
-  .seal {{ width: 96px; height: 96px; border-radius: 50%; border: 3px solid #facc15; display: flex; align-items: center; justify-content: center; font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 28px; color: #facc15; background: rgba(5,5,7,0.88); letter-spacing: 2px; }}
-  .handle {{ margin-top: 12px; font-family: 'Montserrat', sans-serif; font-size: 17px; font-weight: 700; letter-spacing: 3px; color: rgba(255,255,255,0.65); text-transform: uppercase; }}
+  .gold-bar {{ width: 520px; max-width: 85%; height: 3px; background: linear-gradient(90deg, transparent, #facc15, transparent); margin: 24px 0 18px; }}
+  .seal {{ width: 82px; height: 82px; border-radius: 50%; border: 3px solid #facc15; display: flex; align-items: center; justify-content: center; font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 24px; color: #facc15; background: rgba(5,5,7,0.88); letter-spacing: 2px; }}
+  .handle {{ margin-top: 12px; font-family: 'Montserrat', sans-serif; font-size: 17px; font-weight: 700; letter-spacing: 3px; color: rgba(255,255,255,0.72); text-transform: uppercase; }}
 </style></head><body>
   <div class="card">
     <div class="grad"></div>
@@ -389,7 +392,7 @@ def _tpl_monochrome_alpha(
     handle: str,
     badge: str,
 ) -> str:
-    """Full-bleed monochrome/storm alpha wildlife & warrior poster (Alpha Male Aesthetics style)."""
+    """Full-bleed 9:16 monochrome/storm alpha wildlife & warrior poster."""
     q_html = _highlight_html(slide.quote.strip().upper(), slide.accent, "accent")
     font_px = _scale_font(slide.quote, large=64, medium=54, compact=46)
     badge_html = f'<div class="badge" style="border-color:{accent_color};color:{accent_color};">{badge}</div>' if badge else ""
@@ -399,15 +402,15 @@ def _tpl_monochrome_alpha(
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@600;700&family=Montserrat:wght@700;800&display=swap" rel="stylesheet" />
 <style>
   * {{ box-sizing: border-box; margin: 0; padding: 0; }}
-  html, body {{ width: 1080px; height: 1350px; overflow: hidden; background: #040406; color: #ffffff; font-family: 'Oswald', Impact, sans-serif; }}
-  .card {{ position: relative; width: 1080px; height: 1350px; background: #040406 url("{art_uri}") center/cover no-repeat; }}
-  .vignette {{ position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.06) 0%, rgba(0,0,0,0.22) 50%, rgba(0,0,0,0.82) 74%, rgba(0,0,0,0.96) 100%); }}
-  .content {{ position: absolute; left: 72px; right: 72px; bottom: 86px; text-align: center; display: flex; flex-direction: column; align-items: center; }}
+  html, body {{ width: 1080px; height: 1920px; overflow: hidden; background: #040406; color: #ffffff; font-family: 'Oswald', Impact, sans-serif; }}
+  .card {{ position: relative; width: 1080px; height: 1920px; background: #040406 url("{art_uri}") center/cover no-repeat; }}
+  .vignette {{ position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.25) 50%, rgba(0,0,0,0.82) 74%, rgba(0,0,0,0.96) 100%); }}
+  .content {{ position: absolute; left: 64px; right: 104px; bottom: 235px; text-align: center; display: flex; flex-direction: column; align-items: center; }}
   .monogram {{ font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 20px; letter-spacing: 5px; padding: 4px 16px; border-top: 1px solid rgba(255,255,255,0.45); border-bottom: 1px solid rgba(255,255,255,0.45); margin-bottom: 16px; }}
   .badge {{ margin-bottom: 14px; font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 20px; letter-spacing: 4px; padding: 6px 20px; border: 2px solid; border-radius: 999px; background: rgba(0,0,0,0.68); }}
   .quote {{ font-size: {font_px}px; line-height: 1.20; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; text-shadow: 0 6px 26px rgba(0,0,0,0.98); }}
   .accent {{ color: {accent_color}; }}
-  .handle {{ margin-top: 22px; font-family: 'Montserrat', sans-serif; font-size: 16px; font-weight: 700; letter-spacing: 3.5px; color: rgba(255,255,255,0.52); text-transform: uppercase; }}
+  .handle {{ margin-top: 22px; font-family: 'Montserrat', sans-serif; font-size: 16px; font-weight: 700; letter-spacing: 3.5px; color: rgba(255,255,255,0.62); text-transform: uppercase; }}
 </style></head><body>
   <div class="card">
     <div class="vignette"></div>

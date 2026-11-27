@@ -411,7 +411,7 @@ class TestComposioPublisher(unittest.TestCase):
             cmd1 = _build_single_card_cmd(img1, m4a, out_mp4)
             joined1 = " ".join(cmd1)
             self.assertNotIn("zoompan", joined1)
-            self.assertIn("scale=1080:1350", joined1)
+            self.assertIn("scale=1080:1920", joined1)
             self.assertIn("stillimage", joined1)
             self.assertIn("aloop=loop=-1", joined1)
             self.assertIn(str(m4a), cmd1)
@@ -472,6 +472,9 @@ class TestComposioPublisher(unittest.TestCase):
 
             by_name = resolve_target_pages(_test_config(facebook_page_id="anime kid,online course"))
             self.assertEqual([p["id"] for p in by_name], ["1423121790882352", "237094056146383"])
+
+            all_three = resolve_target_pages(_test_config(facebook_page_id="all"))
+            self.assertEqual([p["id"] for p in all_three], ["1443084575557354", "1423121790882352", "237094056146383"])
 
         slide = SlideContent("NEVER LOOK BACK.", "LOOK BACK.", "", "dark_lion")
         html_anime = build_card_html(_test_config(), slide, "data:image/png;base64,AA", page_brand="Anime kid Story")
