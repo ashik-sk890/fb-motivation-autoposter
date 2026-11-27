@@ -3,7 +3,10 @@
     "62b66258e0542bc7",
     "d766e8c5c94041fe",
     "f142fdde72227aa1",
-    "1968cf6ae6e81dbe"
+    "1968cf6ae6e81dbe",
+    "d650f7fea7df79f6",
+    "f07d64aa11111bc2",
+    "ac28475edca801e7"
   ],
   "posts": [
     {
@@ -71,6 +74,57 @@
         "page_id": "237094056146383",
         "result": {
           "id": "2220477195240148"
+        }
+      }
+    },
+    {
+      "timestamp_utc": "2026-11-27T00:33:32.856909+00:00",
+      "slot": 1,
+      "archetype_id": 23,
+      "archetype_name": "The Price of Becoming Great",
+      "post_type": "single",
+      "source": "llm_live",
+      "content_hash": "d650f7fea7df79f6",
+      "headline": "THE PRICE OF GREATNESS IS ALONE TIME BEFORE THE WORLD FINALLY NOTICES YOUR WORK",
+      "remote_result": {
+        "action": "FACEBOOK_CREATE_VIDEO_POST",
+        "page_id": "1443084575557354",
+        "result": {
+          "id": "1833703801230100"
+        }
+      }
+    },
+    {
+      "timestamp_utc": "2026-11-27T00:33:36.781702+00:00",
+      "slot": 1,
+      "archetype_id": 5,
+      "archetype_name": "Eagle Vision — Fly Solo",
+      "post_type": "single",
+      "source": "llm_live",
+      "content_hash": "f07d64aa11111bc2",
+      "headline": "EAGLES DARE TO FLY SOLO WHEN EVERYONE ELSE FOLLOWS THE CROWD",
+      "remote_result": {
+        "action": "FACEBOOK_CREATE_VIDEO_POST",
+        "page_id": "1423121790882352",
+        "result": {
+          "id": "1835501107599798"
+        }
+      }
+    },
+    {
+      "timestamp_utc": "2026-11-27T00:33:41.178184+00:00",
+      "slot": 1,
+      "archetype_id": 50,
+      "archetype_name": "Lessons on Love, Loyalty & Choosing Yourself",
+      "post_type": "single",
+      "source": "llm_live",
+      "content_hash": "ac28475edca801e7",
+      "headline": "STOP BEGGING FOR LOYALTY FROM PEOPLE WHO ARE PROFESSIONALLY TRAINED TO BETRAY YOU",
+      "remote_result": {
+        "action": "FACEBOOK_CREATE_VIDEO_POST",
+        "page_id": "237094056146383",
+        "result": {
+          "id": "1959410955428131"
         }
       }
     }
