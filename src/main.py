@@ -13,7 +13,7 @@ from typing import Any
 from src.card_renderer import render_slide_assets
 from src.composio_publisher import list_managed_pages, publish_post, resolve_target_pages
 from src.config import AppConfig, GENERATED_DIR, QUOTE_VAULT_PATH
-from src.content_engine import PostPlan, SlideContent, build_post_plan, load_json, save_history
+from src.content_engine import PostPlan, SlideContent, build_post_plan, is_slot_published_today, load_json, save_history
 from src.music_engine import select_background_track
 from src.video_engine import is_ffmpeg_available, render_video_from_cards
 
@@ -243,6 +243,8 @@ def _publish_manifest_jobs(
     delay_between_pages_sec: float = 30.0,
 ) -> list[dict[str, Any]]:
     """Publish every page job in manifest.json and persist deduplication history."""
+    if manifest.get("skipped"):
+        return [{"status": "skipped", "reason": manifest.get("reason", "already_posted_today")}]
     jobs = manifest.get("jobs") or [manifest]
     results: list[dict[str, Any]] = []
     for idx, job in enumerate(jobs):
@@ -295,6 +297,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--preview-all", action="store_true", help="Render preview gallery across all 6 modern visual styles")
     parser.add_argument("--offline-art", action="store_true", help="Use built-in illustrated SVGs without network calls")
     parser.add_argument("--media-mode", default="auto", choices=["auto", "video", "photo"], help="Output format: video (with music), photo, or auto")
+    parser.add_argument("--skip-if-posted-today", action="store_true", help="Exit cleanly if this slot was already published today (IST)")
     parser.add_argument("--list-pages", action="store_true", help="List Facebook Pages connected in Composio")
     args = parser.parse_args(argv)
 
@@ -345,10 +348,24 @@ def main(argv: list[str] | None = None) -> int:
         return 1 if all(r["status"] == "error" for r in results) else 0
 
     slot = resolve_slot(args.slot)
+    out_dir = Path(args.output_dir)
+    if args.skip_if_posted_today and is_slot_published_today(slot=slot):
+        skipped_manifest = {
+            "skipped": True,
+            "slot": slot,
+            "reason": f"Slot {slot} already published today (IST)",
+            "pages_count": 0,
+            "jobs": [],
+        }
+        out_dir.mkdir(parents=True, exist_ok=True)
+        (out_dir / "manifest.json").write_text(json.dumps(skipped_manifest, indent=2), encoding="utf-8")
+        print(json.dumps(skipped_manifest, indent=2))
+        return 0
+
     manifest = generate_and_render(
         config=config,
         slot=slot,
-        output_dir=Path(args.output_dir),
+        output_dir=out_dir,
         allow_remote_art=allow_remote,
         media_mode=args.media_mode,
     )

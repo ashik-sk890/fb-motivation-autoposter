@@ -8,7 +8,7 @@ import random
 import urllib.error
 import urllib.request
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
 
@@ -78,9 +78,26 @@ def load_json(path: Path, default: Any) -> Any:
         return json.load(fh)
 
 
+def ist_date_key(utc_now: datetime | None = None) -> str:
+    """Return calendar date YYYY-MM-DD in IST (UTC+05:30)."""
+    now = utc_now or datetime.now(timezone.utc)
+    return (now + timedelta(hours=5, minutes=30)).strftime("%Y-%m-%d")
+
+
+def is_slot_published_today(
+    slot: int,
+    history_path: Path = HISTORY_PATH,
+    utc_now: datetime | None = None,
+) -> bool:
+    """Return True when the given slot already recorded a successful publish on this IST date."""
+    history = load_history(history_path)
+    key = f"{ist_date_key(utc_now)}:s{slot}"
+    return key in (history.get("slot_days") or [])
+
+
 def load_history(history_path: Path = HISTORY_PATH) -> dict[str, Any]:
     """Load posted history tracking file."""
-    return load_json(history_path, {"hashes": [], "posts": []})
+    return load_json(history_path, {"hashes": [], "posts": [], "slot_days": []})
 
 
 def save_history(
@@ -88,19 +105,25 @@ def save_history(
     post_result: dict[str, Any] | None = None,
     history_path: Path = HISTORY_PATH,
     max_items: int = 4000,
+    utc_now: datetime | None = None,
 ) -> None:
-    """Persist a newly published post hash and summary to state history."""
+    """Persist a newly published post hash, slot-day key, and summary to state history."""
     history_path.parent.mkdir(parents=True, exist_ok=True)
     history = load_history(history_path)
     hashes: list[str] = list(history.get("hashes", []))
     posts: list[dict[str, Any]] = list(history.get("posts", []))
+    slot_days: list[str] = list(history.get("slot_days", []))
 
     if plan.content_hash and plan.content_hash not in hashes:
         hashes.append(plan.content_hash)
 
+    slot_day_key = f"{ist_date_key(utc_now)}:s{plan.slot}"
+    if slot_day_key not in slot_days:
+        slot_days.append(slot_day_key)
+
     posts.append(
         {
-            "timestamp_utc": datetime.now(timezone.utc).isoformat(),
+            "timestamp_utc": (utc_now or datetime.now(timezone.utc)).isoformat(),
             "slot": plan.slot,
             "archetype_id": plan.archetype_id,
             "archetype_name": plan.archetype_name,
@@ -114,6 +137,7 @@ def save_history(
 
     history["hashes"] = hashes[-max_items:]
     history["posts"] = posts[-max_items:]
+    history["slot_days"] = slot_days[-max_items:]
     with history_path.open("w", encoding="utf-8") as fh:
         json.dump(history, fh, indent=2, ensure_ascii=False)
 

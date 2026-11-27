@@ -21,8 +21,17 @@ from src.art_engine import (
 from src.card_renderer import build_card_html
 from src.composio_publisher import list_managed_pages, publish_post, resolve_target_pages
 from src.config import ARCHETYPES_PATH, AppConfig, QUOTE_VAULT_PATH
-from src.content_engine import PostPlan, SlideContent, _infer_metaphor_prompt, build_post_plan, load_json, save_history
-from src.main import _publish_manifest_jobs, generate_and_render, resolve_slot
+from src.content_engine import (
+    PostPlan,
+    SlideContent,
+    _infer_metaphor_prompt,
+    build_post_plan,
+    is_slot_published_today,
+    ist_date_key,
+    load_json,
+    save_history,
+)
+from src.main import _publish_manifest_jobs, generate_and_render, main as cli_main, resolve_slot
 from src.music_engine import select_background_track
 from src.video_engine import _build_single_card_cmd, _build_slideshow_cmd
 
@@ -606,6 +615,35 @@ class TestComposioPublisher(unittest.TestCase):
             plan = PostPlan(1, 1, "Apex", "single", "Cap", [SlideContent("QUOTE", "QUOTE")], "h1")
             with self.assertRaises(RuntimeError):
                 publish_post(mcp_cfg, plan, image_paths=[img], target_page_id="111")
+
+    def test_slot_day_dedup_prevents_duplicate_external_or_backup_runs(self) -> None:
+        from unittest import mock
+
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp_path = Path(tmp)
+            hist_path = tmp_path / "posted_history.json"
+            dt_utc = datetime(2026, 11, 28, 4, 30, tzinfo=timezone.utc)  # 10:00 AM IST on 2026-11-28
+            self.assertEqual(ist_date_key(dt_utc), "2026-11-28")
+            self.assertFalse(is_slot_published_today(slot=1, history_path=hist_path, utc_now=dt_utc))
+
+            plan = PostPlan(1, 1, "Apex", "single", "Cap", [SlideContent("QUOTE", "QUOTE")], "dedup1")
+            save_history(plan, {"action": "FACEBOOK_CREATE_VIDEO_POST"}, history_path=hist_path, utc_now=dt_utc)
+
+            self.assertTrue(is_slot_published_today(slot=1, history_path=hist_path, utc_now=dt_utc))
+            self.assertFalse(is_slot_published_today(slot=2, history_path=hist_path, utc_now=dt_utc))
+
+            # CLI --skip-if-posted-today writes skipped manifest without invoking generate_and_render
+            out_dir = tmp_path / "gen"
+            with (
+                mock.patch("src.main.is_slot_published_today", return_value=True),
+                mock.patch("src.main.generate_and_render") as gen_mock,
+            ):
+                rc = cli_main(["--slot", "1", "--output-dir", str(out_dir), "--render-only", "--skip-if-posted-today"])
+                self.assertEqual(rc, 0)
+                gen_mock.assert_not_called()
+                manifest = json.loads((out_dir / "manifest.json").read_text(encoding="utf-8"))
+                self.assertTrue(manifest["skipped"])
+                self.assertEqual(_publish_manifest_jobs(_test_config(), manifest)[0]["status"], "skipped")
 
 
 if __name__ == "__main__":

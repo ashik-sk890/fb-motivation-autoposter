@@ -1,0 +1,17 @@
+name = "fb-motivation-cron-trigger"
+main = "worker.js"
+compatibility_date = "2026-11-01"
+
+[vars]
+GH_OWNER = "ashik-sk890"
+GH_REPO = "fb-motivation-autoposter"
+GH_WORKFLOW = "daily_autopost.yml"
+GH_REF = "main"
+
+[triggers]
+crons = [
+  "30 4 * * *",
+  "30 8 * * *",
+  "30 12 * * *",
+  "0 16 * * *"
+]
