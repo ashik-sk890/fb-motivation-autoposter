@@ -12,7 +12,10 @@
     "0dcd6095787af8bf",
     "16f291a98699385d",
     "7c1846a0bb9a7c1a",
-    "455998f4158880ae"
+    "455998f4158880ae",
+    "98d0ff41e21e5577",
+    "900dac6c5f22cf2c",
+    "703bc089834f0163"
   ],
   "posts": [
     {
@@ -233,6 +236,57 @@
         "page_id": "237094056146383",
         "result": {
           "id": "29264256823224950"
+        }
+      }
+    },
+    {
+      "timestamp_utc": "2026-11-27T00:50:44.798440+00:00",
+      "slot": 1,
+      "archetype_id": 37,
+      "archetype_name": "They Doubted You — Let Them Watch",
+      "post_type": "single",
+      "source": "llm_live",
+      "content_hash": "98d0ff41e21e5577",
+      "headline": "LET THEM DOUBT YOUR VISION WHILE YOU BUILD YOUR EMPIRE IN SILENCE",
+      "remote_result": {
+        "action": "FACEBOOK_CREATE_VIDEO_POST",
+        "page_id": "1443084575557354",
+        "result": {
+          "id": "1692418022542418"
+        }
+      }
+    },
+    {
+      "timestamp_utc": "2026-11-27T00:50:48.566201+00:00",
+      "slot": 1,
+      "archetype_id": 8,
+      "archetype_name": "Sunk Cost Trap — Walk Away",
+      "post_type": "single",
+      "source": "llm_live",
+      "content_hash": "900dac6c5f22cf2c",
+      "headline": "STOP PAYING FOR MISTAKES JUST BECAUSE YOU ALREADY SPENT YEARS BUILDING THEM",
+      "remote_result": {
+        "action": "FACEBOOK_CREATE_VIDEO_POST",
+        "page_id": "1423121790882352",
+        "result": {
+          "id": "906985369103108"
+        }
+      }
+    },
+    {
+      "timestamp_utc": "2026-11-27T00:50:53.888847+00:00",
+      "slot": 1,
+      "archetype_id": 50,
+      "archetype_name": "Lessons on Love, Loyalty & Choosing Yourself",
+      "post_type": "single",
+      "source": "llm_live",
+      "content_hash": "703bc089834f0163",
+      "headline": "STOP FIGHTING FOR A SEAT AT A TABLE WHERE YOUR LOYALTY IS CONSTANTLY TESTED",
+      "remote_result": {
+        "action": "FACEBOOK_CREATE_VIDEO_POST",
+        "page_id": "237094056146383",
+        "result": {
+          "id": "1175578375196909"
         }
       }
     }
