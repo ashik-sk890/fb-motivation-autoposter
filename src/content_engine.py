@@ -156,12 +156,14 @@ def _post_json(url: str, payload: dict[str, Any], headers: dict[str, str], timeo
 
 
 _STYLE_HINTS: dict[str, str] = {
-    "paper_sketch": "black ink & charcoal pencil sketch on clean cream paper, clean empty top space, no text",
-    "saffron_editorial": "crisp black crosshatched ink illustration on pure bright white/cream background in lower half, generous clean top space, no text",
-    "cartoon_metaphor": "bright clean modern 2D vector comic metaphor illustration on daylight pastel sky background, subject in lower 65%, no text",
-    "sunrise_metaphor": "luminous golden sunrise horizon landscape, clear soft sky upper half, dramatic silhouette lower half, no text",
-    "gold_spotlight": "moody dramatic rim-lit portrait or scene fading smoothly into deep black on bottom/right for overlay text, no text",
-    "monochrome_alpha": "high-contrast black-and-white monochrome photograph-style dramatic art with tiny crimson accent fading to deep black bottom, no text",
+    "paper_sketch": "clean crisp black ink & charcoal pencil metaphor drawing isolated on pure solid blank white #FFFFFF paper background, zero dark/gray background shading, no text",
+    "saffron_editorial": "minimalist crisp black crosshatched ink illustration isolated on pure solid blank white #FFFFFF paper background, lower-weighted composition, no dark edges, no text",
+    "cartoon_metaphor": "bright sunny modern 2D flat vector comic metaphor illustration on crisp daylight sky blue/pastel background, joyful high-contrast colors, no text",
+    "sunrise_metaphor": "radiant golden morning sunrise horizon landscape with luminous pastel sky upper half and vivid coral/emerald foreground contrast, no text",
+    "pastel_viral": "bright trendy 2026 pastel 3D/vector daylight illustration with sky blue, warm peach, butter yellow, and vibrant coral accents, clean uplifting composition, no text",
+    "vibrant_magazine": "bright golden-hour daylight editorial photograph-style scene with luminous turquoise, warm amber, and sunny sky tones, no dark gloomy black shadows, no text",
+    "gold_spotlight": "bright golden-hour studio rim-lit portrait on warm sapphire/amber backdrop, high clarity, no text",
+    "monochrome_alpha": "clean silver-gelatin editorial portrait with bright luminous highlights, no text",
 }
 
 
@@ -181,19 +183,20 @@ def _generate_via_llm(
             for k, v in theme_map.items()
         )
     else:
-        theme_guide = "dark_eagle, dark_anime_moody, dark_anime_rain, noir_suit, dark_anime_warm, shadow_boxer, dark_lion"
+        theme_guide = "bright_pastel_path, vibrant_sunrise_pop, sunny_sky_growth, dark_eagle, dark_anime_moody, dark_anime_rain, noir_suit, dark_anime_warm"
 
     prompt = (
-        f"Create an original viral high-CTR motivation/attitude Facebook {post_type} post.\n"
+        f"Create an original viral high-CTR bright modern Facebook {post_type} post.\n"
         f"Theme: {archetype['name']} (tone: {archetype['tone']}).\n"
         f"Rules:\n"
         f"- Output strict JSON only, no markdown fences.\n"
         f"- Return object with keys: caption (1 crisp engaging sentence), lead (short phrase after 'Follow for '), "
         f"slides (array of {slide_count} objects with keys: quote, accent, badge, visual_theme, image_prompt).\n"
         f"- Each quote must be UPPERCASE, punchy, 8 to 20 words, strong self-respect/mindset/discipline hook.\n"
-        f"- 'accent' MUST be an exact uppercase substring of 'quote' (2 to 5 impactful words to color crimson/gold).\n"
+        f"- 'accent' MUST be an exact uppercase substring of 'quote' (2 to 5 impactful words to color highlight).\n"
         f"- 'visual_theme' MUST be one of the theme keys listed below.\n"
-        f"- 'image_prompt' MUST describe a brand-new, high-CTR visual metaphor or dramatic scene strictly matching the required medium/background style for your chosen visual_theme (no text, no words, no watermark inside the image):\n"
+        f"- BRIGHT & TRENDY VISUAL RULE: Every visual MUST feel bright, eye-catching, modern, and vibrant (sunlit daylight, pastel sky, cream paper ink, warm saffron, or golden sunrise — NEVER dark gloomy pitch-black shadows!).\n"
+        f"- 'image_prompt' MUST describe a fresh, creative visual metaphor strictly matching the required medium/background style for your chosen visual_theme (no text, no words, no watermark inside the image):\n"
         f"  Themes & required visual medium: {theme_guide}.\n"
         f"- For carousel slides, set badge to '01 / 04', '02 / 04', etc. For single post, badge is empty string.\n"
     )

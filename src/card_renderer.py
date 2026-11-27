@@ -73,6 +73,10 @@ def build_card_html(
         return _tpl_saffron_editorial(slide, artwork_data_uri, brand_label, badge, is_ai_art=is_ai_art)
     if layout_style == "cartoon_metaphor":
         return _tpl_cartoon_metaphor(slide, artwork_data_uri, brand_label, badge)
+    if layout_style == "pastel_viral":
+        return _tpl_pastel_viral(slide, artwork_data_uri, brand_label, monogram, handle, badge, accent_color)
+    if layout_style == "vibrant_magazine":
+        return _tpl_vibrant_magazine(slide, artwork_data_uri, brand_label, monogram, handle, badge, accent_color)
     if layout_style == "gold_spotlight":
         return _tpl_gold_spotlight(slide, artwork_data_uri, brand_label, monogram, handle, badge, svg_motif)
     return _tpl_monochrome_alpha(slide, artwork_data_uri, accent_color, monogram, handle, badge)
@@ -96,8 +100,8 @@ def _tpl_paper_sketch(slide: SlideContent, art_uri: str, brand: str, badge: str,
 <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,600;0,700;1,600&family=Patrick+Hand&display=swap" rel="stylesheet" />
 <style>
   * {{ box-sizing: border-box; margin: 0; padding: 0; }}
-  html, body {{ width: 1080px; height: 1350px; overflow: hidden; background: #eeeae0; font-family: 'Patrick Hand', 'Lora', Georgia, serif; color: #18181b; }}
-  .card {{ position: relative; width: 1080px; height: 1350px; background: radial-gradient(circle at 50% 48%, #f3efe6 55%, #d6cfc0 100%); }}
+  html, body {{ width: 1080px; height: 1350px; overflow: hidden; background: #faf6ee; font-family: 'Patrick Hand', 'Lora', Georgia, serif; color: #18181b; }}
+  .card {{ position: relative; width: 1080px; height: 1350px; background: radial-gradient(circle at 50% 45%, #fffdf8 52%, #efe8d8 100%); }}
   {art_layer_css}
   .top-text {{ position: absolute; top: 88px; left: 86px; right: 86px; text-align: center; }}
   .pill {{ display: inline-block; margin-bottom: 18px; padding: 6px 22px; border: 2px solid #dc2626; border-radius: 999px; color: #dc2626; font-family: Arial, sans-serif; font-weight: 800; font-size: 20px; letter-spacing: 3px; }}
@@ -168,7 +172,7 @@ def _tpl_saffron_editorial(slide: SlideContent, art_uri: str, brand: str, badge:
 <style>
   * {{ box-sizing: border-box; margin: 0; padding: 0; }}
   html, body {{ width: 1080px; height: 1350px; overflow: hidden; font-family: 'Lora', Georgia, serif; }}
-  .card {{ position: relative; width: 1080px; height: 1350px; background: radial-gradient(circle at 50% 46%, #fbbf24 0%, #f59e0b 60%, #d97706 100%); }}
+  .card {{ position: relative; width: 1080px; height: 1350px; background: radial-gradient(circle at 50% 42%, #fde047 0%, #fbbf24 52%, #f59e0b 100%); }}
   {art_layer_css}
   .top-text {{ position: absolute; top: 96px; left: 86px; right: 86px; text-align: center; }}
   .pill {{ display: inline-block; margin-bottom: 16px; padding: 6px 20px; border: 2px solid #111111; border-radius: 999px; font-family: Arial, sans-serif; font-weight: 800; font-size: 19px; letter-spacing: 3px; color: #111111; }}
@@ -213,6 +217,96 @@ def _tpl_cartoon_metaphor(slide: SlideContent, art_uri: str, brand: str, badge: 
       <div class="quote">{q_html}</div>
     </div>
     <div class="brand">{brand}</div>
+  </div>
+</body></html>"""
+
+
+def _tpl_pastel_viral(
+    slide: SlideContent,
+    art_uri: str,
+    brand: str,
+    monogram: str,
+    handle: str,
+    badge: str,
+    accent_color: str,
+) -> str:
+    """2026 bright pastel gallery card: crisp sky/cream gradient + bold headline + artwork frame."""
+    quote_txt = slide.quote.strip().upper()
+    q_html = _highlight_html(quote_txt, slide.accent, "pop-mark")
+    font_px = _scale_font(quote_txt, large=48, medium=42, compact=36)
+    pill_color = accent_color if accent_color and accent_color != "#111111" else "#2563EB"
+    badge_html = f'<div class="pill">{badge}</div>' if badge else '<div class="pill">DAILY MINDSET</div>'
+    return f"""<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8" />
+<meta name="viewport" content="width=1080, initial-scale=1.0" />
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet" />
+<style>
+  * {{ box-sizing: border-box; margin: 0; padding: 0; }}
+  html, body {{ width: 1080px; height: 1350px; overflow: hidden; font-family: 'Montserrat', Arial, sans-serif; }}
+  .card {{ position: relative; width: 1080px; height: 1350px; background: linear-gradient(155deg, #e0f2fe 0%, #fef9c3 52%, #ffedd5 100%); padding: 52px; display: flex; flex-direction: column; }}
+  .frame {{ flex: 1; background: #ffffff; border: 4px solid #0f172a; border-radius: 34px; box-shadow: 0 24px 54px rgba(15,23,42,0.12); padding: 44px 48px 34px; display: flex; flex-direction: column; }}
+  .top-row {{ display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }}
+  .pill {{ display: inline-block; padding: 8px 22px; background: {pill_color}; color: #ffffff; border-radius: 999px; font-size: 18px; font-weight: 800; letter-spacing: 2.5px; }}
+  .mono {{ width: 52px; height: 52px; border-radius: 50%; border: 3px solid #0f172a; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 18px; color: #0f172a; background: #fef08a; }}
+  .quote {{ font-size: {font_px}px; line-height: 1.24; font-weight: 900; color: #0f172a; letter-spacing: -0.3px; margin-bottom: 28px; }}
+  .pop-mark {{ color: {pill_color}; background: #fef08a; padding: 0 8px; border-radius: 8px; }}
+  .art-box {{ flex: 1; border-radius: 24px; border: 3px solid #e2e8f0; background: #f8fafc url("{art_uri}") center/cover no-repeat; }}
+  .footer {{ margin-top: 20px; display: flex; align-items: center; justify-content: space-between; font-size: 18px; font-weight: 800; color: #475569; letter-spacing: 1.5px; }}
+</style></head><body>
+  <div class="card">
+    <div class="frame">
+      <div class="top-row">
+        {badge_html}
+        <div class="mono">{monogram}</div>
+      </div>
+      <div class="quote">{q_html}</div>
+      <div class="art-box"></div>
+      <div class="footer"><span>{brand}</span><span>{handle}</span></div>
+    </div>
+  </div>
+</body></html>"""
+
+
+def _tpl_vibrant_magazine(
+    slide: SlideContent,
+    art_uri: str,
+    brand: str,
+    monogram: str,
+    handle: str,
+    badge: str,
+    accent_color: str,
+) -> str:
+    """Luminous daylight editorial card: full-bleed bright scene fading cleanly into pure white card bottom."""
+    quote_txt = slide.quote.strip().upper()
+    q_html = _highlight_html(quote_txt, slide.accent, "mag-accent")
+    font_px = _scale_font(quote_txt, large=52, medium=44, compact=38)
+    hi = accent_color if accent_color and accent_color != "#111111" else "#EA580C"
+    badge_html = f'<div class="pill">{badge}</div>' if badge else ""
+    return f"""<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8" />
+<meta name="viewport" content="width=1080, initial-scale=1.0" />
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet" />
+<style>
+  * {{ box-sizing: border-box; margin: 0; padding: 0; }}
+  html, body {{ width: 1080px; height: 1350px; overflow: hidden; background: #ffffff; font-family: 'Montserrat', Arial, sans-serif; color: #0f172a; }}
+  .card {{ position: relative; width: 1080px; height: 1350px; background: #f8fafc url("{art_uri}") center top/cover no-repeat; }}
+  .white-fade {{ position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(255,255,255,0.0) 0%, rgba(255,255,255,0.12) 48%, rgba(255,255,255,0.92) 64%, #ffffff 74%); }}
+  .panel {{ position: absolute; left: 68px; right: 68px; bottom: 58px; text-align: center; display: flex; flex-direction: column; align-items: center; }}
+  .pill {{ margin-bottom: 14px; padding: 7px 22px; background: {hi}; color: #ffffff; border-radius: 999px; font-size: 19px; font-weight: 800; letter-spacing: 3px; }}
+  .quote {{ font-size: {font_px}px; line-height: 1.22; font-weight: 900; color: #0f172a; text-transform: uppercase; }}
+  .mag-accent {{ color: {hi}; text-decoration: underline; text-decoration-thickness: 5px; text-underline-offset: 8px; }}
+  .bar {{ width: 420px; max-width: 80%; height: 4px; border-radius: 4px; background: linear-gradient(90deg, transparent, {hi}, transparent); margin: 24px 0 18px; }}
+  .sig-row {{ display: flex; align-items: center; gap: 14px; font-size: 19px; font-weight: 800; color: #334155; letter-spacing: 2px; text-transform: uppercase; }}
+  .seal {{ width: 54px; height: 54px; border-radius: 50%; background: #0f172a; color: #fde047; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 900; }}
+</style></head><body>
+  <div class="card">
+    <div class="white-fade"></div>
+    <div class="panel">
+      {badge_html}
+      <div class="quote">{q_html}</div>
+      <div class="bar"></div>
+      <div class="sig-row"><span class="seal">{monogram}</span><span>{brand} · {handle}</span></div>
+    </div>
   </div>
 </body></html>"""
 

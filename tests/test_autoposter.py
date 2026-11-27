@@ -94,6 +94,8 @@ class TestRenderingAndArt(unittest.TestCase):
             ("sunrise_metaphor", "crimson_tree", "#DC2626"),
             ("saffron_editorial", "strategist", "#111111"),
             ("cartoon_metaphor", "wrong_person_tap", "#2563EB"),
+            ("pastel_viral", "pastel_ladder", "#E11D48"),
+            ("vibrant_magazine", "sunburst_peak", "#2563EB"),
             ("gold_spotlight", "mentor_split", "#FACC15"),
             ("monochrome_alpha", "lion", "#FF3B30"),
         ]
@@ -391,18 +393,33 @@ class TestComposioPublisher(unittest.TestCase):
             self.assertIsNotNone(track)
             self.assertEqual(track["category"], "late-night")
 
+            custom_dir = tmp_path / "custom" / "trending"
+            custom_dir.mkdir(parents=True)
+            m4a = custom_dir / "fb_trending_1.m4a"
+            m4a.write_bytes(b"\x00\x00\x00 ftyp" + b"0" * 80)
+            custom_track = select_background_track("pastel_viral", seed=5, allow_download=False, cache_dir=tmp_path, custom_dir=custom_dir.parent)
+            self.assertIsNotNone(custom_track)
+            self.assertEqual(custom_track["source"], "custom")
+            self.assertEqual(custom_track["path"], m4a)
+
             img1 = tmp_path / "c1.jpg"
             img2 = tmp_path / "c2.jpg"
             out_mp4 = tmp_path / "out.mp4"
             img1.write_bytes(b"\xff\xd8\xff" + b"0" * 50)
             img2.write_bytes(b"\xff\xd8\xff" + b"0" * 50)
 
-            cmd1 = _build_single_card_cmd(img1, mp3, out_mp4)
-            self.assertIn("zoompan", " ".join(cmd1))
-            self.assertIn(str(mp3), cmd1)
+            cmd1 = _build_single_card_cmd(img1, m4a, out_mp4)
+            joined1 = " ".join(cmd1)
+            self.assertNotIn("zoompan", joined1)
+            self.assertIn("scale=1080:1350", joined1)
+            self.assertIn("stillimage", joined1)
+            self.assertIn("aloop=loop=-1", joined1)
+            self.assertIn(str(m4a), cmd1)
 
-            cmd2 = _build_slideshow_cmd([img1, img2], mp3, out_mp4)
-            self.assertIn("concat=n=2:v=1:a=0", " ".join(cmd2))
+            cmd2 = _build_slideshow_cmd([img1, img2], m4a, out_mp4)
+            joined2 = " ".join(cmd2)
+            self.assertIn("concat=n=2:v=1:a=0", joined2)
+            self.assertIn("aloop=loop=-1", joined2)
 
             class FakeResp:
                 def __init__(self, body_str: str) -> None:

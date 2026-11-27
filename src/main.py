@@ -117,12 +117,15 @@ def _render_single_job(
                 "title": track["title"],
                 "category": track["category"],
                 "license": track["license"],
+                "source": track.get("source", "openlofi"),
             }
         mp4_out = output_dir / f"p_{safe_pid}_s{slot}.mp4"
+        offset_sec = 0.0 if (track and track.get("source") == "custom") else 16.0
         built_mp4 = render_video_from_cards(
             image_paths=[Path(p) for p in image_paths],
             audio_path=audio_path,
             output_mp4=mp4_out,
+            audio_offset_sec=offset_sec,
         )
         if built_mp4:
             video_path_str = str(built_mp4)

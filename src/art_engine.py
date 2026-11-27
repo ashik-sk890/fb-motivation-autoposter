@@ -309,9 +309,81 @@ def build_illustrated_svg(layout_style: str, motif: str, accent: str, seed: int)
         return _svg_saffron_ink(motif)
     if layout_style == "cartoon_metaphor":
         return _svg_cartoon_metaphor(motif)
+    if layout_style == "pastel_viral":
+        return _svg_pastel_viral(motif, accent)
+    if layout_style == "vibrant_magazine":
+        return _svg_vibrant_magazine(motif, accent)
     if layout_style == "gold_spotlight":
         return _svg_gold_spotlight(motif, rng)
     return _svg_monochrome_alpha(motif, accent, rng)
+
+
+def _svg_pastel_viral(motif: str, accent: str) -> str:
+    """Bright pastel daylight 2026 vector metaphor artwork for viral card insets."""
+    fill_hi = accent or "#2563EB"
+    return f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1350" width="1080" height="1350">
+  <defs>
+    <linearGradient id="pastelSky" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#e0f2fe"/>
+      <stop offset="55%" stop-color="#fef9c3"/>
+      <stop offset="100%" stop-color="#ffedd5"/>
+    </linearGradient>
+    <radialGradient id="sunnyOrb" cx="78%" cy="28%" r="26%">
+      <stop offset="0%" stop-color="#fde047" stop-opacity="0.95"/>
+      <stop offset="60%" stop-color="#fb923c" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#fb923c" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1080" height="1350" fill="url(#pastelSky)"/>
+  <rect width="1080" height="1350" fill="url(#sunnyOrb)"/>
+  <!-- Floating clouds -->
+  <ellipse cx="220" cy="240" rx="140" ry="52" fill="#ffffff" opacity="0.88"/>
+  <ellipse cx="310" cy="220" rx="95" ry="44" fill="#ffffff" opacity="0.92"/>
+  <ellipse cx="830" cy="360" rx="125" ry="42" fill="#ffffff" opacity="0.82"/>
+  <!-- Vibrant pastel hills & stepping stones rising upward -->
+  <path d="M0,1080 Q280,930 580,1030 T1080,960 L1080,1350 L0,1350 Z" fill="#fed7aa"/>
+  <path d="M0,1150 Q380,1030 720,1140 T1080,1090 L1080,1350 L0,1350 Z" fill="#bae6fd"/>
+  <!-- Ascending stairs & glowing star peak -->
+  <g stroke="#0f172a" stroke-width="5" stroke-linejoin="round">
+    <rect x="260" y="980" width="120" height="190" rx="12" fill="#ffffff"/>
+    <rect x="410" y="860" width="120" height="310" rx="12" fill="#ffffff"/>
+    <rect x="560" y="740" width="120" height="430" rx="12" fill="#ffffff"/>
+    <rect x="710" y="610" width="120" height="560" rx="12" fill="{fill_hi}"/>
+  </g>
+  <!-- Confident minimalist character at top step -->
+  <g transform="translate(770,540)" fill="#0f172a">
+    <circle cx="0" cy="-35" r="24"/>
+    <path d="M-24,0 L24,0 L32,68 L-32,68 Z" rx="8"/>
+  </g>
+</svg>"""
+
+
+def _svg_vibrant_magazine(motif: str, accent: str) -> str:
+    """Luminous daylight coral-azure editorial sunburst artwork."""
+    hi = accent or "#F97316"
+    return f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1350" width="1080" height="1350">
+  <defs>
+    <linearGradient id="magSky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="48%" stop-color="#fed7aa"/>
+      <stop offset="82%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#ffffff"/>
+    </linearGradient>
+    <radialGradient id="sunBloom" cx="50%" cy="38%" r="42%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="40%" stop-color="#fde047" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#fb923c" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1080" height="1350" fill="url(#magSky)"/>
+  <rect width="1080" height="980" fill="url(#sunBloom)"/>
+  <!-- Bright scenic layered peaks -->
+  <path d="M0,780 L250,480 L470,690 L740,420 L1080,760 L1080,1000 L0,1000 Z" fill="#0284c7" opacity="0.72"/>
+  <path d="M0,840 L310,600 L560,760 L820,560 L1080,820 L1080,1020 L0,1020 Z" fill="#0f172a" opacity="0.88"/>
+  <!-- Vibrant warm beacon glow at summit -->
+  <circle cx="740" cy="400" r="22" fill="{hi}"/>
+  <circle cx="740" cy="400" r="46" fill="{hi}" opacity="0.28"/>
+</svg>"""
 
 
 def _svg_paper_sketch(motif: str) -> str:

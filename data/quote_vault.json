@@ -1,102 +1,123 @@
 {
   "visual_themes": {
     "dark_lion": {
-      "label": "Monochrome Scarred Lion",
-      "layout_style": "monochrome_alpha",
-      "accent": "#FF3B30",
+      "label": "Pastel Gallery Golden Lion",
+      "layout_style": "pastel_viral",
+      "accent": "#EA580C",
       "svg_motif": "lion",
-      "ai_prompt": "Full-bleed dramatic black-and-white monochrome photograph-style digital art of a battle-scarred alpha lion walking forward through mist, intense sharp eyes, high-contrast silver-gelatin lighting, empty lower third for crisp caption, no text, no watermark"
+      "ai_prompt": "Bright vibrant 3D digital art illustration of a majestic golden lion with glowing sunlight aura against crisp sky blue and warm cream clouds, uplifting modern high-contrast aesthetic, no text, no watermark"
     },
     "dark_knight": {
-      "label": "Gold Spotlight Warrior Carousel",
-      "layout_style": "gold_spotlight",
-      "accent": "#FACC15",
+      "label": "Vibrant Daylight Strategist Magazine",
+      "layout_style": "vibrant_magazine",
+      "accent": "#2563EB",
       "svg_motif": "knight",
-      "ai_prompt": "Cinematic moody portrait of a determined stoic warrior/strategist in dramatic warm golden rim light and deep shadow, dark background on bottom/side for bold white and gold typography, ultra crisp, no text, no watermark"
+      "ai_prompt": "Bright golden-hour editorial wide shot of a confident sharp-dressed strategist overlooking a sunlit modern glass skyline, luminous daylight rim lighting fading softly into clean bright sky below, ultra crisp, no text, no watermark"
     },
     "lone_wolf": {
-      "label": "Misty Wolf Pack Alpha",
-      "layout_style": "monochrome_alpha",
-      "accent": "#FF3B30",
-      "svg_motif": "wolf",
-      "ai_prompt": "Full-bleed atmospheric dark-amber and silver illustration of a lone wolf pack emerging from misty pine forest, glowing intense eyes, cinematic volumetric fog, clean space at bottom for bold typography, no text, no watermark"
+      "label": "Sketchbook Solo Mountain Climber",
+      "layout_style": "paper_sketch",
+      "accent": "#DC2626",
+      "svg_motif": "mountain_mask",
+      "ai_prompt": "Crisp black ink and charcoal sketch isolated on pure solid blank white #FFFFFF background showing a bold lone wolf standing on a sunlit ridge overlooking mist below, clean empty top space, no gray paper shading, no text, no watermark"
     },
     "noir_suit": {
       "label": "Saffron Editorial Strategist",
       "layout_style": "saffron_editorial",
       "accent": "#111111",
       "svg_motif": "strategist",
-      "ai_prompt": "Vibrant warm saffron-orange textured paper background with a detailed black charcoal crosshatched portrait of a sharp suited strategist thinking quietly in lower half, generous clean top space for black serif quote, no text, no watermark"
+      "ai_prompt": "Minimalist crisp black crosshatched ink illustration isolated on pure solid blank white #FFFFFF background showing a sharp suited strategist thinking calmly in lower half, generous clean white top half, no dark background, no text, no watermark"
     },
     "dark_eagle": {
       "label": "Paper Sketch Priority Bird",
       "layout_style": "paper_sketch",
       "accent": "#DC2626",
       "svg_motif": "cliff_birds",
-      "ai_prompt": "Detailed black ink and pencil sketch on textured cream sketchbook paper showing one lone bird boldly flying off a rocky cliff away from four passive birds, subtle dynamic crimson red brushstroke trail, clean upper area for handwritten ink quote, no text, no watermark"
+      "ai_prompt": "Crisp black ink and pencil sketch isolated on pure solid blank white #FFFFFF background showing one bold eagle flying off a cliff away from passive perched birds with one dynamic red brushstroke trail, generous blank white top space, no dark shading, no text, no watermark"
     },
     "dark_anime_moody": {
       "label": "Paper Sketch Mind Freedom",
       "layout_style": "paper_sketch",
       "accent": "#DC2626",
       "svg_motif": "chained_mind",
-      "ai_prompt": "Expressive charcoal pencil sketch on warm off-white paper showing a young person dragging a heavy iron ball chained to a stone band around their head, metaphorical self-limiting beliefs art, clean upper half for black ink quote, no text, no watermark"
+      "ai_prompt": "Expressive clean black pencil sketch isolated on pure solid blank white #FFFFFF background showing a young person breaking free from an iron ball chained to their thoughts, crisp studio scan, generous blank white upper half, no text, no watermark"
     },
     "dark_anime_rain": {
       "label": "Sunrise Crimson Tree Reality",
       "layout_style": "sunrise_metaphor",
       "accent": "#DC2626",
       "svg_motif": "crimson_tree",
-      "ai_prompt": "Luminous golden sunrise landscape with a vivid crimson-red tree on a calm shore, a lone silhouette figure walking toward the bright sun reflecting on mirror water, soft bright sky upper half for crisp red and dark text, no text, no watermark"
+      "ai_prompt": "Radiant golden morning sunrise landscape with a vivid crimson-red tree on a crystal mirror lake shore, clear pastel warm sky across the upper half for crisp dark headline, bright uplifting light, no text, no watermark"
     },
     "dark_anime_warm": {
       "label": "Cartoon Life Lesson Metaphor",
       "layout_style": "cartoon_metaphor",
       "accent": "#2563EB",
       "svg_motif": "wrong_person_tap",
-      "ai_prompt": "Bright clean modern vector comic illustration of a stick-figure character happily pouring clear water from a tap into a leaking wire mesh basket, crystal clear visual metaphor on soft sky background, no text, no watermark"
+      "ai_prompt": "Bright sunny 2D modern flat vector comic illustration of a cheerful character pouring sparkling blue water into a leaking wire basket on a pastel daylight sky background, crisp clean lines, no text, no watermark"
     },
     "shadow_boxer": {
-      "label": "Split Gold Mentor Spotlight",
-      "layout_style": "gold_spotlight",
-      "accent": "#FACC15",
-      "svg_motif": "mentor_split",
-      "ai_prompt": "Editorial split-frame portrait of a calm focused athlete/mentor on the left side under dramatic warm spotlight fading smoothly to deep black on the right side for bold white and yellow quote text, no text, no watermark"
+      "label": "Sunlight Champion Editorial",
+      "layout_style": "vibrant_magazine",
+      "accent": "#F97316",
+      "svg_motif": "sunburst_peak",
+      "ai_prompt": "Bright energetic daylight editorial photograph-style art of a focused boxer training beside sunlit gym windows drenched in warm golden beams, crisp airy background, vibrant coral-orange glow, no text, no watermark"
     },
     "obsidian_statue": {
       "label": "Paper Sketch Mountain Crown",
       "layout_style": "paper_sketch",
       "accent": "#DC2626",
       "svg_motif": "mountain_mask",
-      "ai_prompt": "Detailed pencil sketch on textured parchment paper of a determined young figure looking up at a shining crown atop mountain stairs while shedding a crumbling stone mask behind, clean space for bold serif quote, no text, no watermark"
+      "ai_prompt": "Clean detailed black ink sketch isolated on pure solid blank white #FFFFFF background showing a climber gazing at a glowing gold crown atop mountain stairs, generous blank white top area, no gray shading, no text, no watermark"
     },
     "dark_panther": {
-      "label": "Monochrome Panther Storm",
-      "layout_style": "monochrome_alpha",
-      "accent": "#FF3B30",
-      "svg_motif": "panther",
-      "ai_prompt": "Full-bleed hyper-detailed dark monochrome & ember artwork of a fierce black panther emerging through stormy smoke with intense glowing eyes, high contrast, clean bottom area for bold headline, no text, no watermark"
+      "label": "Electric Cobalt Emerald Pop",
+      "layout_style": "vibrant_magazine",
+      "accent": "#0284C7",
+      "svg_motif": "sunburst_peak",
+      "ai_prompt": "Vibrant colorful daylight surreal digital art of a sleek black panther walking out of bright turquoise-and-gold tropical sunlight mist, luminous azure sky above, crisp modern magazine aesthetic, no text, no watermark"
     },
     "night_city_silhouette": {
-      "label": "Gold Crown Executive Card",
-      "layout_style": "gold_spotlight",
-      "accent": "#FACC15",
+      "label": "Pastel Horizon Skyline Card",
+      "layout_style": "pastel_viral",
+      "accent": "#2563EB",
       "svg_motif": "city",
-      "ai_prompt": "Cinematic luxury portrait overlooking night city skyline in rich warm amber and obsidian shadow, dramatic lighting, deep black lower frame for stacked white and gold quote text, no text, no watermark"
+      "ai_prompt": "Bright pastel sunrise illustrated skyline of gleaming golden-hour glass towers under peach and sky-blue clouds, clean joyful modern 2D aesthetic, no text, no watermark"
     },
     "masked_samurai": {
       "label": "Saffron Chess & Sword Ink",
       "layout_style": "saffron_editorial",
       "accent": "#111111",
       "svg_motif": "samurai",
-      "ai_prompt": "Bold warm amber-orange textured background with crisp black crosshatched ink illustration of a lone samurai warrior/chess king standing firm in lower half, generous clean top space for editorial serif text, no text, no watermark"
+      "ai_prompt": "Minimalist crisp black crosshatched ink drawing isolated on pure solid blank white #FFFFFF background of a determined samurai beside a chess king piece in lower half, generous blank white upper half, no dark fill, no text, no watermark"
     },
     "scarred_bear": {
       "label": "Cartoon Time & Energy Metaphor",
       "layout_style": "cartoon_metaphor",
       "accent": "#DC2626",
       "svg_motif": "watering_rock",
-      "ai_prompt": "Clean bright modern cartoon metaphor illustration showing someone pouring effort from a watering can onto a solid gray stone while a bright green sprout waits beside it, crisp readable graphic art, no text, no watermark"
+      "ai_prompt": "Clean bright modern 2D vector cartoon metaphor on sunny sky blue showing someone pouring water from a yellow watering can onto a bright emerald sprouting plant while a gray rock sits ignored nearby, crisp daylight illustration, no text, no watermark"
+    },
+    "bright_pastel_path": {
+      "label": "Trendy Pastel Climbing Path",
+      "layout_style": "pastel_viral",
+      "accent": "#E11D48",
+      "svg_motif": "pastel_ladder",
+      "ai_prompt": "Bright trendy 2026 pastel aesthetic illustration of colorful floating stairs ascending toward a warm glowing sun through soft mint and sky clouds, clean modern vector 3D style, no text, no watermark"
+    },
+    "vibrant_sunrise_pop": {
+      "label": "Trendy Bright Sunrise Horizon",
+      "layout_style": "vibrant_magazine",
+      "accent": "#EA580C",
+      "svg_motif": "sunburst_peak",
+      "ai_prompt": "Radiant golden-hour mountaintop overlook bathed in warm amber, coral, and sky-blue daylight clouds with a confident traveler looking toward bright horizons, uplifting high-saturation editorial scene, no text, no watermark"
+    },
+    "sunny_sky_growth": {
+      "label": "Daylight Paper Origami Metaphor",
+      "layout_style": "cartoon_metaphor",
+      "accent": "#0284C7",
+      "svg_motif": "watering_rock",
+      "ai_prompt": "Bright colorful modern 2D metaphor illustration of a vibrant red paper airplane soaring out of a crowd of folded gray planes into a sunny azure sky with fluffy white clouds, clean crisp lines, no text, no watermark"
     }
   },
   "single_quotes": [

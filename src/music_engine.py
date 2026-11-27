@@ -17,6 +17,7 @@ from src.config import ROOT_DIR
 OPENLOFI_CATALOG_URL = "https://raw.githubusercontent.com/btahir/open-lofi/main/catalog.json"
 OPENLOFI_ZIP_URL = "https://github.com/btahir/open-lofi/releases/latest/download/openlofi.zip"
 CUSTOM_MUSIC_DIR = ROOT_DIR / "assets" / "music"
+AUDIO_EXTENSIONS = {".mp3", ".m4a", ".aac", ".wav", ".ogg", ".opus"}
 
 LAYOUT_TO_CATEGORIES: dict[str, tuple[str, ...]] = {
     "monochrome_alpha": ("late-night", "hybrid", "ambient-lofi"),
@@ -25,6 +26,8 @@ LAYOUT_TO_CATEGORIES: dict[str, tuple[str, ...]] = {
     "sunrise_metaphor": ("seasonal-weather", "ambient-lofi", "soul-rnb"),
     "saffron_editorial": ("jazzhop", "hybrid", "late-night"),
     "cartoon_metaphor": ("chillhop", "activities", "funk-soul"),
+    "pastel_viral": ("chillhop", "activities", "seasonal-weather"),
+    "vibrant_magazine": ("funk-soul", "hybrid", "chillhop"),
 }
 
 
@@ -86,6 +89,13 @@ def ensure_openlofi_cache(cache_dir: Path | None = None, max_tracks: int = 166) 
     return sorted(target_dir.rglob("*.mp3"))
 
 
+def _list_audio_files(root: Path) -> list[Path]:
+    """Return sorted audio files matching supported extensions under root."""
+    if not root.exists():
+        return []
+    return sorted(p for p in root.rglob("*") if p.is_file() and p.suffix.lower() in AUDIO_EXTENSIONS)
+
+
 def select_background_track(
     layout_style: str,
     seed: int,
@@ -93,18 +103,20 @@ def select_background_track(
     cache_dir: Path | None = None,
     custom_dir: Path = CUSTOM_MUSIC_DIR,
 ) -> dict[str, Any] | None:
-    """Select a mood-matched royalty-free MP3 track from custom assets or OpenLo-Fi cache."""
+    """Select custom user audio first (guaranteed every post) or mood-matched CC0 OpenLo-Fi."""
     rng = random.Random(seed)
     preferred_cats = LAYOUT_TO_CATEGORIES.get(layout_style, ("late-night", "ambient-lofi"))
-    custom_tracks = sorted(custom_dir.rglob("*.mp3")) if custom_dir.exists() else []
+    custom_tracks = _list_audio_files(custom_dir)
     if custom_tracks:
         mood_custom = [p for p in custom_tracks if p.parent.name in preferred_cats]
-        chosen = rng.choice(mood_custom or custom_tracks)
+        pool = mood_custom or custom_tracks
+        chosen = pool[seed % len(pool)] if len(pool) > 1 else pool[0]
         return {
             "path": chosen,
-            "title": chosen.stem.replace("-", " ").title(),
+            "title": chosen.stem.replace("-", " ").replace("_", " ").title(),
             "category": chosen.parent.name if chosen.parent != custom_dir else "custom",
             "license": "user_provided",
+            "source": "custom",
         }
 
     target_dir = cache_dir or get_music_cache_dir()
@@ -115,7 +127,6 @@ def select_background_track(
     if not tracks:
         return None
 
-    preferred_cats = LAYOUT_TO_CATEGORIES.get(layout_style, ("late-night", "ambient-lofi"))
     mood_pool = [p for p in tracks if p.parent.name in preferred_cats]
     chosen = rng.choice(mood_pool or tracks)
     return {
@@ -123,4 +134,5 @@ def select_background_track(
         "title": chosen.stem.replace("-", " ").title(),
         "category": chosen.parent.name,
         "license": "CC0-1.0",
+        "source": "openlofi",
     }

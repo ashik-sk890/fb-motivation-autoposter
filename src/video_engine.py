@@ -16,21 +16,26 @@ def _build_single_card_cmd(
     image_path: Path,
     audio_path: Path | None,
     output_mp4: Path,
-    duration_sec: float = 8.0,
-    audio_offset_sec: float = 16.0,
+    duration_sec: float = 10.0,
+    audio_offset_sec: float = 0.0,
 ) -> list[str]:
-    """Assemble ffmpeg command for an animated 1080x1350 card with smooth zoom and audio."""
-    frames = max(int(duration_sec * 30), 60)
-    fade_out_start = max(duration_sec - 1.0, 1.0)
+    """Assemble ffmpeg command for a rock-solid static 1080x1350 card (zero shake) + audio."""
+    fade_out_start = max(duration_sec - 0.8, 1.0)
     video_filter = (
-        f"[0:v]scale=1160:1450,"
-        f"zoompan=z='min(zoom+0.00045,1.06)':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':"
-        f"d={frames}:s=1080x1350:fps=30,format=yuv420p[v]"
+        "[0:v]scale=1080:1350:force_original_aspect_ratio=decrease,"
+        "pad=1080:1350:(ow-iw)/2:(oh-ih)/2,setsar=1,fps=30,format=yuv420p[v]"
     )
 
     if audio_path and audio_path.exists():
+        audio_input_args = (
+            ["-ss", f"{audio_offset_sec:.1f}", "-t", f"{duration_sec:.1f}", "-i", str(audio_path)]
+            if audio_offset_sec > 0
+            else ["-i", str(audio_path)]
+        )
         audio_filter = (
-            f"[1:a]afade=t=in:st=0:d=0.5,afade=t=out:st={fade_out_start:.1f}:d=1.0,"
+            f"[1:a]aresample=44100,asetpts=PTS-STARTPTS,"
+            f"aloop=loop=-1:size=1323000,atrim=0:{duration_sec:.2f},asetpts=PTS-STARTPTS,"
+            f"afade=t=in:st=0:d=0.25,afade=t=out:st={fade_out_start:.2f}:d=0.75,"
             f"loudnorm=I=-15:TP=-1.5:LRA=11[a]"
         )
         return [
@@ -38,14 +43,11 @@ def _build_single_card_cmd(
             "-y",
             "-loop",
             "1",
+            "-t",
+            f"{duration_sec:.2f}",
             "-i",
             str(image_path),
-            "-ss",
-            f"{audio_offset_sec:.1f}",
-            "-t",
-            f"{duration_sec:.1f}",
-            "-i",
-            str(audio_path),
+            *audio_input_args,
             "-filter_complex",
             f"{video_filter};{audio_filter}",
             "-map",
@@ -54,17 +56,20 @@ def _build_single_card_cmd(
             "[a]",
             "-c:v",
             "libx264",
+            "-tune",
+            "stillimage",
             "-preset",
             "veryfast",
             "-crf",
-            "23",
+            "21",
             "-c:a",
             "aac",
             "-b:a",
             "192k",
             "-movflags",
             "+faststart",
-            "-shortest",
+            "-t",
+            f"{duration_sec:.2f}",
             str(output_mp4),
         ]
 
@@ -74,12 +79,14 @@ def _build_single_card_cmd(
         "-y",
         "-loop",
         "1",
+        "-t",
+        f"{duration_sec:.2f}",
         "-i",
         str(image_path),
         "-f",
         "lavfi",
         "-t",
-        f"{duration_sec:.1f}",
+        f"{duration_sec:.2f}",
         "-i",
         "anullsrc=channel_layout=stereo:sample_rate=44100",
         "-filter_complex",
@@ -90,17 +97,20 @@ def _build_single_card_cmd(
         "1:a",
         "-c:v",
         "libx264",
+        "-tune",
+        "stillimage",
         "-preset",
         "veryfast",
         "-crf",
-        "23",
+        "21",
         "-c:a",
         "aac",
         "-b:a",
         "128k",
         "-movflags",
         "+faststart",
-        "-shortest",
+        "-t",
+        f"{duration_sec:.2f}",
         str(output_mp4),
     ]
 
@@ -110,17 +120,17 @@ def _build_slideshow_cmd(
     audio_path: Path | None,
     output_mp4: Path,
     slide_duration_sec: float = 3.5,
-    audio_offset_sec: float = 16.0,
+    audio_offset_sec: float = 0.0,
 ) -> list[str]:
-    """Assemble ffmpeg command stitching multiple carousel cards into a single MP4 with music."""
+    """Assemble ffmpeg command stitching static carousel cards cleanly into a single MP4 with music."""
     total_dur = slide_duration_sec * len(image_paths)
-    fade_out_start = max(total_dur - 1.2, 1.0)
+    fade_out_start = max(total_dur - 1.0, 1.0)
     cmd = ["ffmpeg", "-y"]
     scale_parts: list[str] = []
     concat_inputs: list[str] = []
 
     for idx, img in enumerate(image_paths):
-        cmd.extend(["-loop", "1", "-t", f"{slide_duration_sec:.1f}", "-i", str(img)])
+        cmd.extend(["-loop", "1", "-t", f"{slide_duration_sec:.2f}", "-i", str(img)])
         scale_parts.append(f"[{idx}:v]scale=1080:1350:force_original_aspect_ratio=decrease,pad=1080:1350:(ow-iw)/2:(oh-ih)/2,setsar=1,fps=30[v{idx}]")
         concat_inputs.append(f"[v{idx}]")
 
@@ -128,32 +138,40 @@ def _build_slideshow_cmd(
 
     if audio_path and audio_path.exists():
         audio_idx = len(image_paths)
-        cmd.extend(["-ss", f"{audio_offset_sec:.1f}", "-t", f"{total_dur:.1f}", "-i", str(audio_path)])
+        if audio_offset_sec > 0:
+            cmd.extend(["-ss", f"{audio_offset_sec:.1f}", "-t", f"{total_dur:.2f}", "-i", str(audio_path)])
+        else:
+            cmd.extend(["-i", str(audio_path)])
         audio_chain = (
-            f"[{audio_idx}:a]afade=t=in:st=0:d=0.6,afade=t=out:st={fade_out_start:.1f}:d=1.2,"
+            f"[{audio_idx}:a]aresample=44100,asetpts=PTS-STARTPTS,"
+            f"aloop=loop=-1:size=1323000,atrim=0:{total_dur:.2f},asetpts=PTS-STARTPTS,"
+            f"afade=t=in:st=0:d=0.35,afade=t=out:st={fade_out_start:.2f}:d=0.9,"
             f"loudnorm=I=-15:TP=-1.5:LRA=11[a]"
         )
         cmd.extend(["-filter_complex", f"{video_chain};{audio_chain}", "-map", "[v]", "-map", "[a]"])
     else:
         audio_idx = len(image_paths)
-        cmd.extend(["-f", "lavfi", "-t", f"{total_dur:.1f}", "-i", "anullsrc=channel_layout=stereo:sample_rate=44100"])
+        cmd.extend(["-f", "lavfi", "-t", f"{total_dur:.2f}", "-i", "anullsrc=channel_layout=stereo:sample_rate=44100"])
         cmd.extend(["-filter_complex", video_chain, "-map", "[v]", "-map", f"{audio_idx}:a"])
 
     cmd.extend(
         [
             "-c:v",
             "libx264",
+            "-tune",
+            "stillimage",
             "-preset",
             "veryfast",
             "-crf",
-            "23",
+            "21",
             "-c:a",
             "aac",
             "-b:a",
             "192k",
             "-movflags",
             "+faststart",
-            "-shortest",
+            "-t",
+            f"{total_dur:.2f}",
             str(output_mp4),
         ]
     )
@@ -164,7 +182,7 @@ def render_video_from_cards(
     image_paths: list[Path],
     audio_path: Path | None,
     output_mp4: Path,
-    audio_offset_sec: float = 16.0,
+    audio_offset_sec: float = 0.0,
 ) -> Path | None:
     """Render a 1080x1350 H.264/AAC MP4 from one or more JPEG cards and an audio track."""
     if not image_paths or not is_ffmpeg_available():
