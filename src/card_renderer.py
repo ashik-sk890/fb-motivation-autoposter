@@ -89,7 +89,7 @@ def _tpl_paper_sketch(slide: SlideContent, art_uri: str, brand: str, badge: str,
     font_px = _scale_font(quote_txt, large=64, medium=54, compact=46)
     badge_html = f'<div class="pill">{badge}</div>' if badge else ""
     art_layer_css = (
-        f'.art-inset {{ position: absolute; left: 24px; right: 24px; top: 580px; bottom: 210px; background: url("{art_uri}") center/contain no-repeat; mix-blend-mode: multiply; filter: contrast(1.2) brightness(1.07); -webkit-mask-image: radial-gradient(ellipse at center, black 56%, transparent 94%); mask-image: radial-gradient(ellipse at center, black 56%, transparent 94%); }}'
+        f'.art-inset {{ position: absolute; left: 24px; right: 24px; top: 580px; bottom: 210px; background: url("{art_uri}") center/112% no-repeat; mix-blend-mode: multiply; filter: contrast(1.22) brightness(1.08); -webkit-mask-image: radial-gradient(ellipse 66% 64% at 50% 50%, black 52%, transparent 92%); mask-image: radial-gradient(ellipse 66% 64% at 50% 50%, black 52%, transparent 92%); }}'
         if is_ai_art
         else f'.card {{ background: #faf6ee url("{art_uri}") center/cover no-repeat; }}'
     )
@@ -247,8 +247,8 @@ def _tpl_pastel_viral(
 <style>
   * {{ box-sizing: border-box; margin: 0; padding: 0; }}
   html, body {{ width: 1080px; height: 1920px; overflow: hidden; background: #070b14; font-family: 'Montserrat', Arial, sans-serif; color: #ffffff; }}
-  .card {{ position: relative; width: 1080px; height: 1920px; background: #070b14 url("{art_uri}") center 40%/cover no-repeat; }}
-  .cinema-scrim {{ position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(7,11,20,0.42) 0%, rgba(7,11,20,0.0) 22%, rgba(7,11,20,0.0) 50%, rgba(7,11,20,0.78) 72%, rgba(5,8,16,0.95) 100%); }}
+  .card {{ position: relative; width: 1080px; height: 1920px; background: #070b14 url("{art_uri}") center 26%/cover no-repeat; }}
+  .cinema-scrim {{ position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(7,11,20,0.22) 0%, rgba(7,11,20,0.0) 16%, rgba(7,11,20,0.0) 56%, rgba(7,11,20,0.74) 74%, rgba(5,8,16,0.94) 100%); }}
   .panel {{ position: absolute; left: 64px; right: 112px; bottom: 230px; display: flex; flex-direction: column; align-items: flex-start; }}
   .top-tag {{ display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }}
   .pill {{ padding: 7px 20px; background: {hi}; color: #ffffff; border-radius: 999px; font-size: 18px; font-weight: 900; letter-spacing: 3px; box-shadow: 0 6px 20px rgba(0,0,0,0.35); }}
@@ -292,8 +292,8 @@ def _tpl_vibrant_magazine(
 <style>
   * {{ box-sizing: border-box; margin: 0; padding: 0; }}
   html, body {{ width: 1080px; height: 1920px; overflow: hidden; background: #090d16; font-family: 'Montserrat', Arial, sans-serif; color: #ffffff; }}
-  .card {{ position: relative; width: 1080px; height: 1920px; background: #090d16 url("{art_uri}") center 36%/cover no-repeat; }}
-  .cine-fade {{ position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(9,13,22,0.32) 0%, rgba(9,13,22,0.0) 20%, rgba(9,13,22,0.0) 52%, rgba(9,13,22,0.78) 73%, rgba(6,9,16,0.96) 100%); }}
+  .card {{ position: relative; width: 1080px; height: 1920px; background: #090d16 url("{art_uri}") center 24%/cover no-repeat; }}
+  .cine-fade {{ position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(9,13,22,0.18) 0%, rgba(9,13,22,0.0) 16%, rgba(9,13,22,0.0) 56%, rgba(9,13,22,0.74) 74%, rgba(6,9,16,0.95) 100%); }}
   .panel {{ position: absolute; left: 64px; right: 104px; bottom: 235px; text-align: center; display: flex; flex-direction: column; align-items: center; }}
   .pill {{ margin-bottom: 16px; padding: 7px 24px; background: {hi}; color: #ffffff; border-radius: 999px; font-size: 19px; font-weight: 800; letter-spacing: 3px; }}
   .quote {{ font-family: 'Anton', 'Montserrat', sans-serif; font-size: {font_px + 4}px; line-height: 1.17; color: #ffffff; text-transform: uppercase; letter-spacing: 1px; text-shadow: 0 6px 24px rgba(0,0,0,0.95); }}

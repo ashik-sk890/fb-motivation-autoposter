@@ -14,7 +14,7 @@ from src.art_engine import _try_cloudflare_flux, _try_deepai, _try_gemini_imagen
 from src.card_renderer import build_card_html
 from src.composio_publisher import list_managed_pages, publish_post, resolve_target_pages
 from src.config import ARCHETYPES_PATH, AppConfig, QUOTE_VAULT_PATH
-from src.content_engine import PostPlan, SlideContent, build_post_plan, load_json, save_history
+from src.content_engine import PostPlan, SlideContent, _infer_metaphor_prompt, build_post_plan, load_json, save_history
 from src.main import generate_and_render, resolve_slot
 from src.music_engine import select_background_track
 from src.video_engine import _build_single_card_cmd, _build_slideshow_cmd
@@ -475,6 +475,9 @@ class TestComposioPublisher(unittest.TestCase):
 
             all_three = resolve_target_pages(_test_config(facebook_page_id="all"))
             self.assertEqual([p["id"] for p in all_three], ["1443084575557354", "1423121790882352", "237094056146383"])
+
+        self.assertIn("mask", _infer_metaphor_prompt("NEVER TRUST FAKE FRIENDS BEHIND KIND WORDS").lower())
+        self.assertIn("dome", _infer_metaphor_prompt("PROTECT YOUR PEACE AND IGNORE TOXIC NOISE").lower())
 
         slide = SlideContent("NEVER LOOK BACK.", "LOOK BACK.", "", "dark_lion")
         html_anime = build_card_html(_test_config(), slide, "data:image/png;base64,AA", page_brand="Anime kid Story")

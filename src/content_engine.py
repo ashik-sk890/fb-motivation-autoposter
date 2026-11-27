@@ -156,15 +156,35 @@ def _post_json(url: str, payload: dict[str, Any], headers: dict[str, str], timeo
 
 
 _STYLE_HINTS: dict[str, str] = {
-    "paper_sketch": "fine-art black ink crosshatched etching illustration on pure blank white #FFFFFF paper, clean white margin around hero subject, no text",
-    "saffron_editorial": "minimalist black ink crosshatched editorial illustration on pure blank white #FFFFFF paper, lower-weighted composition, no dark edges, no text",
-    "cartoon_metaphor": "breathtaking Pixar and Makoto Shinkai 3D animated movie frame showing the hero subject, sunlit volumetric rays, lush full-view sky above, zero borders, no text",
-    "sunrise_metaphor": "sweeping cinematic golden morning sunrise landscape in ultra-detailed 8k anime/film style, glowing horizon light, no text",
-    "pastel_viral": "breathtaking full-bleed 8k cinematic hero scene with glowing golden-hour volumetric sunbeams, vibrant atmospheric sky, centered hero subject framing, no borders, no text",
-    "vibrant_magazine": "epic full-bleed cinematic film still in 8k photorealistic/semi-realistic style, radiant warm sunset rim-light, crisp focal subject and atmospheric depth, no borders, no text",
-    "gold_spotlight": "epic golden-hour studio rim-lit cinematic portrait on sapphire/amber horizon backdrop, volumetric rays, no text",
-    "monochrome_alpha": "epic silver-gelatin storm cinema portrait with sharp dramatic rim lighting and glowing sparks, no text",
+    "paper_sketch": "minimalist black ink crosshatched editorial illustration centered and floating on pure solid blank #FFFFFF background, borderless, strictly zero frame boxes, zero signatures, no text",
+    "saffron_editorial": "minimalist black ink crosshatched editorial illustration centered and floating on pure solid blank #FFFFFF background, borderless, zero borders, zero signatures, no text",
+    "cartoon_metaphor": "Pixar and Makoto Shinkai luminous 3D animated movie frame literally depicting the metaphor, upper-center hero focus, vibrant volumetric daylight, zero frames, no text",
+    "sunrise_metaphor": "radiant golden-hour cinematic scene with luminous upper sky and crystal-clear foreground visual metaphor matching the quote, zero frames, no text",
+    "pastel_viral": "breathtaking full-screen 8k cinematic film still or concept art literally illustrating the quote's exact visual metaphor in the upper-center to center frame, vibrant volumetric lighting, calm atmospheric lower space for text, zero frames, zero watermarks, no text",
+    "vibrant_magazine": "epic full-screen 8k cinema photography or ultra-detailed surreal visual metaphor directly proving the quote's message in upper-center focus, dramatic sunset rim-light, calm foreground below, zero frames, zero text",
+    "gold_spotlight": "epic golden-hour studio rim-lit cinematic scene directly depicting the quote's core theme in upper-center focus, no text",
+    "monochrome_alpha": "dramatic high-contrast silver-gelatin cinema portrait literally illustrating the quote theme in center focus, no text",
 }
+
+
+def _infer_metaphor_prompt(quote: str) -> str:
+    """Create a literal quote-relevant visual metaphor prompt when using vault/combinatorial text."""
+    q = quote.upper()
+    if any(w in q for w in ("FAKE", "LOYAL", "BETRAY", "TRUST", "TWO-FACED", "TWO FACED", "MASK")):
+        return "Dramatic cinematic 8k close shot of a cracked porcelain smiling mask shattering to reveal cold steel underneath in warm amber light, sharp bokeh background, calm lower third, no text"
+    if any(w in q for w in ("EAGLE", "FLY", "SOAR", "CROW", "BIRD")):
+        return "A bold majestic golden eagle soaring steeply upward through sunlit storm clouds above smaller shadowed birds perched below, epic 8k cinema lighting, no text"
+    if any(w in q for w in ("PRISON", "THOUGHT", "MIND", "FREE", "FEAR")):
+        return "Cinematic surreal 8k scene of heavy iron chains snapping open inside radiant golden sunlight as a silhouette steps toward an open bright horizon, calm lower foreground, no text"
+    if any(w in q for w in ("SILENCE", "QUIET", "REACT", "PEACE", "NOISE", "IGNORE")):
+        return "Calm composed person meditating quietly inside a crystal-clear glowing glass dome untouched while chaotic lightning storms crash harmlessly outside, dramatic 8k cinema lighting, no text"
+    if any(w in q for w in ("EFFORT", "WATER", "STONE", "SEED", "GROW", "WRONG PERSON", "WASTED")):
+        return "Cinematic Pixar-grade 3D close scene of luminous crystal water pouring from a golden pitcher onto a glowing emerald sprout beside a barren gray rock, sunlit volumetric rays, no text"
+    if any(w in q for w in ("VISION", "EMPIRE", "BUILD", "FUTURE", "FOCUS", "ALONE", "WALK AWAY", "PRIORITY")):
+        return "Cinematic 8k shot of a determined visionary architect looking out from a towering sunlit glass bridge overlooking a gleaming futuristic skyline rising out of clouds, no text"
+    if any(w in q for w in ("LION", "KING", "CROWN", "DOMINATE")):
+        return "A solitary golden crown resting atop rugged sunlit canyon rock overlooking a sunlit valley under blazing amber rays, epic 8k cinema framing, no text"
+    return "Determined lone traveler ascending luminous golden stone steps breaking through morning clouds toward a radiant bright summit, breathtaking 8k cinema composition, no text"
 
 
 def _generate_via_llm(
@@ -173,31 +193,45 @@ def _generate_via_llm(
     post_type: str,
     used_hashes: set[str],
     visual_themes: dict[str, Any] | None = None,
+    rng: random.Random | None = None,
 ) -> dict[str, Any] | None:
     """Attempt fresh high-CTR quote and visual prompt generation using Gemini or OpenAI."""
     slide_count = 4 if post_type == "carousel" else 1
     theme_map = visual_themes or {}
-    if theme_map:
-        theme_guide = "; ".join(
-            f"{k} ({_STYLE_HINTS.get(str(v.get('layout_style', '')), str(v.get('label', '')))})"
-            for k, v in theme_map.items()
+    preferred_pool = [
+        k for k in (
+            "vibrant_sunrise_pop",
+            "bright_pastel_path",
+            "dark_anime_warm",
+            "scarred_bear",
+            "sunny_sky_growth",
+            "dark_knight",
+            "shadow_boxer",
+            "night_city_silhouette",
+            "dark_anime_rain",
         )
-    else:
-        theme_guide = "vibrant_sunrise_pop, dark_knight, bright_pastel_path, dark_anime_rain, dark_anime_warm, shadow_boxer, noir_suit, dark_eagle"
+        if not theme_map or k in theme_map
+    ]
+    suggested_theme = (rng or random).choice(preferred_pool)
+    theme_guide = "; ".join(
+        f"{k} ({_STYLE_HINTS.get(str(theme_map[k].get('layout_style', '')), str(theme_map[k].get('label', '')))})"
+        for k in preferred_pool
+    ) if theme_map else ", ".join(preferred_pool)
 
     prompt = (
         f"Create an original viral high-CTR cinematic Facebook Reels/Video {post_type} post.\n"
-        f"Theme: {archetype['name']} (tone: {archetype['tone']}).\n"
-        f"Rules:\n"
+        f"Topic: {archetype['name']} (tone: {archetype['tone']}).\n"
+        f"STRICT RULES:\n"
         f"- Output strict JSON only, no markdown fences.\n"
         f"- Return object with keys: caption (1 crisp engaging sentence), lead (short phrase after 'Follow for '), "
-        f"slides (array of {slide_count} objects with keys: quote, accent, badge, visual_theme, image_prompt).\n"
-        f"- Each quote must be UPPERCASE, punchy, 8 to 18 words, strong mindset/respect/ambition hook.\n"
-        f"- 'accent' MUST be an exact uppercase substring of 'quote' (2 to 5 impactful words to color highlight).\n"
-        f"- 'visual_theme' MUST be picked creatively to best fit the scene from: {', '.join(theme_map.keys()) if theme_map else theme_guide} (vary themes instead of always picking the first one).\n"
-        f"- CINEMATIC FULL-VIEW RULE: Design every visual as a breathtaking, vibrant full-screen 8K cinematic scene (volumetric sunlight, golden hour depth, electric atmosphere, cosmic/mountain/skyline/anime-film realism — NEVER flat dull clipart or boxy borders!).\n"
-        f"- 'image_prompt' MUST start its VERY FIRST 8 words directly naming the visible hero SUBJECT + action (for example: 'A fierce golden eagle soaring above storm clouds...', 'A lone chess king standing on sunlit marble...', 'A blooming emerald tree thriving on sunlit rock...') followed by the chosen visual_theme style (never start with only colors/style words; no text, no watermark):\n"
-        f"  Style requirements: {theme_guide}.\n"
+        f"slides (array of {slide_count} objects with keys: quote, accent, badge, visual_theme, visual_metaphor, image_prompt).\n"
+        f"- 'quote': Write a punchy, memorable 8-to-18 word HUMAN ADVICE / MINDSET QUOTE in ALL CAPS (examples: 'STOP EXPLAINING YOUR SILENCE TO PEOPLE WHO ONLY LISTEN TO REACT', 'LEAVE ENVIRONMENTS THAT SILENTLY KILL YOUR AMBITION'). NEVER describe masks, domes, trees, oceans, animals, or image scenes inside 'quote' — 'quote' must sound like timeless spoken wisdom.\n"
+        f"- 'accent': Exact uppercase substring of 'quote' (2 to 5 impactful words to color highlight).\n"
+        f"- 'visual_metaphor': Describe a 1-sentence concrete symbolic object/character visual that directly illustrates THAT specific 'quote' (different text from 'quote'; explain how a dramatic cinematic scene visualizes the advice — e.g. broken rusted chain freeing a runner, golden water filling a blooming plant while bypassing a dry stone, glowing chess king outsmarting fallen pawns).\n"
+        f"- IRRELEVANT ARTWORK BAN: Never put generic empty skies, unrelated lions, wolves, eagles, or boxers unless the quote itself literally speaks of them.\n"
+        f"- 'visual_theme': Prefer '{suggested_theme}' (or choose the best match from: {', '.join(preferred_pool)}).\n"
+        f"- 'image_prompt': Put the visual_metaphor focal SUBJECT + ACTION in the VERY FIRST 8 WORDS framed cleanly in the upper-center to center of a vertical 9:16 screen with vibrant glowing cinema colors (amber, emerald, sapphire, crimson, sunset gold — never murky gray), following the chosen visual_theme style (zero frames, zero borders, zero artist signatures, zero text/letters inside image):\n"
+        f"  Theme styles: {theme_guide}.\n"
         f"- For carousel slides, set badge to '01 / 04', '02 / 04', etc. For single post, badge is empty string.\n"
     )
 
@@ -280,6 +314,7 @@ def _pick_from_vault(
                         accent=s.get("accent", ""),
                         badge=s.get("badge", ""),
                         visual_theme=s.get("visual_theme") or item.get("visual_theme", theme),
+                        image_prompt=str(s.get("image_prompt", "")).strip() or _infer_metaphor_prompt(s["quote"]),
                     )
                     for s in item["slides"]
                 ]
@@ -299,6 +334,7 @@ def _pick_from_vault(
                 accent=item.get("accent", ""),
                 badge="",
                 visual_theme=item.get("preferred_theme", theme),
+                image_prompt=str(item.get("image_prompt", "")).strip() or _infer_metaphor_prompt(item["quote"]),
             )
             return [slide], item.get("caption", ""), item.get("caption", ""), h, "vault_single"
     return None
@@ -340,6 +376,7 @@ def _synthesize_combinatorial(
                         accent=accent,
                         badge=f"RULE #{idx:02d}",
                         visual_theme=theme,
+                        image_prompt=_infer_metaphor_prompt(q),
                     )
                 )
             h = compute_hash(" | ".join(s.quote for s in slides))
@@ -357,7 +394,7 @@ def _synthesize_combinatorial(
         h = compute_hash(q)
         if h not in used_hashes:
             return (
-                [SlideContent(quote=q, accent=accent, badge="", visual_theme=theme)],
+                [SlideContent(quote=q, accent=accent, badge="", visual_theme=theme, image_prompt=_infer_metaphor_prompt(q))],
                 "Keep your standards high and your circle honest.",
                 "daily attitude & mindset fuel.",
                 h,
@@ -368,7 +405,7 @@ def _synthesize_combinatorial(
     q, accent = make_one()
     salt = datetime.now(timezone.utc).strftime("%Y%m%d%H%M")
     return (
-        [SlideContent(quote=q, accent=accent, badge="", visual_theme=theme)],
+        [SlideContent(quote=q, accent=accent, badge="", visual_theme=theme, image_prompt=_infer_metaphor_prompt(q))],
         "Stay relentless.",
         "daily mindset reminders.",
         compute_hash(f"{q}:{salt}"),
@@ -403,7 +440,7 @@ def build_post_plan(
 
     visual_themes = vault.get("visual_themes") or {}
     valid_themes = list(visual_themes.keys())
-    llm_data = _generate_via_llm(config, archetype, post_type, used_hashes, visual_themes=visual_themes)
+    llm_data = _generate_via_llm(config, archetype, post_type, used_hashes, visual_themes=visual_themes, rng=rng)
     if llm_data:
         theme = archetype.get("visual_theme", "dark_lion")
         slides = [
