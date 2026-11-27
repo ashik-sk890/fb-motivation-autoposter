@@ -15,7 +15,10 @@
     "455998f4158880ae",
     "98d0ff41e21e5577",
     "900dac6c5f22cf2c",
-    "703bc089834f0163"
+    "703bc089834f0163",
+    "7846b012fcdee32b",
+    "38b894a6a1a126b4",
+    "8048b38c3fe8207d"
   ],
   "posts": [
     {
@@ -287,6 +290,57 @@
         "page_id": "237094056146383",
         "result": {
           "id": "1175578375196909"
+        }
+      }
+    },
+    {
+      "timestamp_utc": "2026-11-27T00:58:47.550603+00:00",
+      "slot": 1,
+      "archetype_id": 23,
+      "archetype_name": "The Price of Becoming Great",
+      "post_type": "single",
+      "source": "llm_live",
+      "content_hash": "7846b012fcdee32b",
+      "headline": "THE PRICE OF GREATNESS IS ISOLATION BEFORE YOU BECOME A FORCE TO BE RECKONED WITH",
+      "remote_result": {
+        "action": "FACEBOOK_CREATE_VIDEO_POST",
+        "page_id": "1443084575557354",
+        "result": {
+          "id": "1022334776861989"
+        }
+      }
+    },
+    {
+      "timestamp_utc": "2026-11-27T00:58:52.353863+00:00",
+      "slot": 1,
+      "archetype_id": 23,
+      "archetype_name": "The Price of Becoming Great",
+      "post_type": "single",
+      "source": "llm_live",
+      "content_hash": "38b894a6a1a126b4",
+      "headline": "GREATNESS DEMANDS YOU SURVIVE THE LONELY HOURS NO ONE ELSE SEES",
+      "remote_result": {
+        "action": "FACEBOOK_CREATE_VIDEO_POST",
+        "page_id": "1423121790882352",
+        "result": {
+          "id": "2357956211631591"
+        }
+      }
+    },
+    {
+      "timestamp_utc": "2026-11-27T00:58:56.883421+00:00",
+      "slot": 1,
+      "archetype_id": 47,
+      "archetype_name": "One Year of Pure Focus Changes Everything",
+      "post_type": "single",
+      "source": "llm_live",
+      "content_hash": "8048b38c3fe8207d",
+      "headline": "ONE YEAR OF RELENTLESS FOCUS WILL SILENCE EVERY DOUBT AND CHANGE YOUR LIFE COMPLETELY",
+      "remote_result": {
+        "action": "FACEBOOK_CREATE_VIDEO_POST",
+        "page_id": "237094056146383",
+        "result": {
+          "id": "1500702148663983"
         }
       }
     }
