@@ -29,8 +29,9 @@ def _is_valid_image_bytes(data: bytes) -> bool:
 
 
 def _shorten_prompt(prompt: str, max_len: int = 240) -> str:
-    """Trim prompt at a clean word boundary for URL-encoded image endpoints."""
-    clean = " ".join(prompt.split())
+    """Trim prompt at a clean word boundary and strip URL-hostile punctuation."""
+    sanitized = prompt.replace("/", " ").replace(":", " ").replace("?", " ").replace("#", " ")
+    clean = " ".join(sanitized.split())
     if len(clean) <= max_len:
         return clean
     cut = clean[:max_len].rsplit(" ", 1)[0].strip(" ,;:")
@@ -375,7 +376,7 @@ def _try_pollinations(prompt: str, api_key: str, seed: int) -> bytes | None:
                     return data if uses_key else _crop_bottom_watermark(data)
             except urllib.error.HTTPError as exc:
                 print(f"[art_engine] pollinations HTTP {exc.code}", file=sys.stderr)
-                if exc.code in (402, 429) and attempt == 0:
+                if exc.code in (402, 429, 503) and attempt == 0:
                     retry_after = int(exc.headers.get("Retry-After", "10") or 10)
                     time.sleep(min(max(retry_after, 8), 14))
                     continue
