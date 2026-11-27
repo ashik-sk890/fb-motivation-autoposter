@@ -1,7 +1,9 @@
 {
   "hashes": [
     "62b66258e0542bc7",
-    "d766e8c5c94041fe"
+    "d766e8c5c94041fe",
+    "f142fdde72227aa1",
+    "1968cf6ae6e81dbe"
   ],
   "posts": [
     {
@@ -35,6 +37,40 @@
         "page_id": "237094056146383",
         "result": {
           "id": "1018229007316198"
+        }
+      }
+    },
+    {
+      "timestamp_utc": "2026-11-27T00:15:35.745086+00:00",
+      "slot": 1,
+      "archetype_id": 18,
+      "archetype_name": "Protect Your Peace at All Costs",
+      "post_type": "single",
+      "source": "llm_live",
+      "content_hash": "f142fdde72227aa1",
+      "headline": "STOP EXPLAINING YOUR BOUNDARIES TO PEOPLE WHO ARE BENEFITING FROM YOUR LACK OF THEM",
+      "remote_result": {
+        "action": "FACEBOOK_CREATE_VIDEO_POST",
+        "page_id": "1423121790882352",
+        "result": {
+          "id": "1154966740761228"
+        }
+      }
+    },
+    {
+      "timestamp_utc": "2026-11-27T00:15:40.993692+00:00",
+      "slot": 1,
+      "archetype_id": 23,
+      "archetype_name": "The Price of Becoming Great",
+      "post_type": "single",
+      "source": "llm_live",
+      "content_hash": "1968cf6ae6e81dbe",
+      "headline": "GREATNESS DEMANDS ISOLATION BECAUSE YOU CANNOT BUILD AN EMPIRE WHILE DISTRACTED BY THE CROWD.",
+      "remote_result": {
+        "action": "FACEBOOK_CREATE_VIDEO_POST",
+        "page_id": "237094056146383",
+        "result": {
+          "id": "2220477195240148"
         }
       }
     }
