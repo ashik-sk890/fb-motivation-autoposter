@@ -136,7 +136,7 @@ def _tpl_sunrise_metaphor(slide: SlideContent, art_uri: str, brand: str, badge: 
 <style>
   * {{ box-sizing: border-box; margin: 0; padding: 0; }}
   html, body {{ width: 1080px; height: 1920px; overflow: hidden; background: #0a0c14; font-family: 'Montserrat', Arial, sans-serif; color: #ffffff; }}
-  .card {{ position: relative; width: 1080px; height: 1920px; background: #0a0c14 url("{art_uri}") center 22%/cover no-repeat; }}
+  .card {{ position: relative; width: 1080px; height: 1920px; background: #0a0c14 url("{art_uri}") center center/cover no-repeat; }}
   .scrim {{ position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(8,10,18,0.12) 0%, rgba(8,10,18,0.0) 18%, rgba(8,10,18,0.0) 46%, rgba(8,10,18,0.78) 68%, rgba(6,8,14,0.96) 100%); }}
   .panel {{ position: absolute; left: 58px; right: 118px; bottom: 385px; display: flex; flex-direction: column; align-items: flex-start; }}
   .headline {{ padding: 7px 22px; border-radius: 999px; background: #ef4444; color: #ffffff; font-size: 19px; font-weight: 900; letter-spacing: 3px; margin-bottom: 18px; }}
@@ -206,7 +206,7 @@ def _tpl_cartoon_metaphor(slide: SlideContent, art_uri: str, brand: str, badge: 
 <style>
   * {{ box-sizing: border-box; margin: 0; padding: 0; }}
   html, body {{ width: 1080px; height: 1920px; overflow: hidden; background: #0a101d; font-family: 'Montserrat', Arial, sans-serif; color: #ffffff; }}
-  .card {{ position: relative; width: 1080px; height: 1920px; background: #0a101d url("{art_uri}") center 22%/cover no-repeat; }}
+  .card {{ position: relative; width: 1080px; height: 1920px; background: #0a101d url("{art_uri}") center center/cover no-repeat; }}
   .scrim {{ position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(10,16,29,0.12) 0%, rgba(10,16,29,0.0) 18%, rgba(10,16,29,0.0) 46%, rgba(10,16,29,0.78) 68%, rgba(7,11,20,0.96) 100%); }}
   .banner {{ position: absolute; bottom: 385px; left: 58px; right: 118px; display: flex; flex-direction: column; align-items: flex-start; }}
   .pill {{ display: inline-block; margin-bottom: 16px; padding: 7px 20px; background: #0284c7; color: #ffffff; border-radius: 999px; font-size: 18px; font-weight: 900; letter-spacing: 3px; }}
@@ -247,7 +247,7 @@ def _tpl_pastel_viral(
 <style>
   * {{ box-sizing: border-box; margin: 0; padding: 0; }}
   html, body {{ width: 1080px; height: 1920px; overflow: hidden; background: #070b14; font-family: 'Montserrat', Arial, sans-serif; color: #ffffff; }}
-  .card {{ position: relative; width: 1080px; height: 1920px; background: #070b14 url("{art_uri}") center 22%/cover no-repeat; }}
+  .card {{ position: relative; width: 1080px; height: 1920px; background: #070b14 url("{art_uri}") center center/cover no-repeat; }}
   .cinema-scrim {{ position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(7,11,20,0.12) 0%, rgba(7,11,20,0.0) 18%, rgba(7,11,20,0.0) 46%, rgba(7,11,20,0.78) 68%, rgba(5,8,16,0.96) 100%); }}
   .panel {{ position: absolute; left: 58px; right: 118px; bottom: 385px; display: flex; flex-direction: column; align-items: flex-start; }}
   .top-tag {{ display: flex; align-items: center; gap: 14px; margin-bottom: 16px; }}
@@ -292,7 +292,7 @@ def _tpl_vibrant_magazine(
 <style>
   * {{ box-sizing: border-box; margin: 0; padding: 0; }}
   html, body {{ width: 1080px; height: 1920px; overflow: hidden; background: #090d16; font-family: 'Montserrat', Arial, sans-serif; color: #ffffff; }}
-  .card {{ position: relative; width: 1080px; height: 1920px; background: #090d16 url("{art_uri}") center 22%/cover no-repeat; }}
+  .card {{ position: relative; width: 1080px; height: 1920px; background: #090d16 url("{art_uri}") center center/cover no-repeat; }}
   .cine-fade {{ position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(9,13,22,0.12) 0%, rgba(9,13,22,0.0) 18%, rgba(9,13,22,0.0) 46%, rgba(9,13,22,0.78) 68%, rgba(6,9,16,0.96) 100%); }}
   .panel {{ position: absolute; left: 58px; right: 118px; bottom: 385px; text-align: left; display: flex; flex-direction: column; align-items: flex-start; }}
   .pill {{ margin-bottom: 14px; padding: 7px 22px; background: {hi}; color: #ffffff; border-radius: 999px; font-size: 18px; font-weight: 800; letter-spacing: 3px; }}

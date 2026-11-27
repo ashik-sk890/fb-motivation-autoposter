@@ -127,6 +127,8 @@ class TestRenderingAndArt(unittest.TestCase):
         fake_png = b"\x89PNG\r\n\x1a\n" + b"0" * 16000
         b64_png = base64.b64encode(fake_png).decode("ascii")
 
+        seen_cf_urls: list[str] = []
+
         class FakeResp:
             def read(self) -> bytes:
                 return json.dumps({"success": True, "result": {"image": b64_png}}).encode("utf-8")
@@ -137,9 +139,14 @@ class TestRenderingAndArt(unittest.TestCase):
             def __exit__(self, *args) -> None:
                 return None
 
-        with mock.patch("urllib.request.urlopen", return_value=FakeResp()):
-            out = _try_cloudflare_flux("charcoal sketch of wolf", "acc123", "tok123")
+        def fake_cf_open(req, timeout=75):
+            seen_cf_urls.append(req.full_url)
+            return FakeResp()
+
+        with mock.patch("urllib.request.urlopen", side_effect=fake_cf_open):
+            out = _try_cloudflare_flux("cinematic cliff climber at sunrise", "acc123", "tok123")
             self.assertEqual(out, fake_png)
+            self.assertIn("flux-2-klein-9b", seen_cf_urls[0])
 
         def fake_deepai_open(req, timeout=60):
             class Resp:

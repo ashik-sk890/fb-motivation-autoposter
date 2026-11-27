@@ -156,14 +156,14 @@ def _post_json(url: str, payload: dict[str, Any], headers: dict[str, str], timeo
 
 
 _STYLE_HINTS: dict[str, str] = {
-    "paper_sketch": "minimalist black ink crosshatched editorial illustration centered and floating on pure solid blank #FFFFFF background, borderless, strictly zero frame boxes, zero signatures, no text",
-    "saffron_editorial": "minimalist black ink crosshatched editorial illustration centered and floating on pure solid blank #FFFFFF background, borderless, zero borders, zero signatures, no text",
-    "cartoon_metaphor": "Pixar and Makoto Shinkai luminous 3D animated movie frame literally depicting the metaphor, upper-center hero focus, vibrant volumetric daylight, zero frames, no text",
-    "sunrise_metaphor": "radiant golden-hour cinematic scene with luminous upper sky and crystal-clear foreground visual metaphor matching the quote, zero frames, no text",
-    "pastel_viral": "breathtaking full-screen 8k cinematic film still or concept art literally illustrating the quote's exact visual metaphor in the upper-center to center frame, vibrant volumetric lighting, calm atmospheric lower space for text, zero frames, zero watermarks, no text",
-    "vibrant_magazine": "epic full-screen 8k cinema photography or ultra-detailed surreal visual metaphor directly proving the quote's message in upper-center focus, dramatic sunset rim-light, calm foreground below, zero frames, zero text",
-    "gold_spotlight": "epic golden-hour studio rim-lit cinematic scene directly depicting the quote's core theme in upper-center focus, no text",
-    "monochrome_alpha": "dramatic high-contrast silver-gelatin cinema portrait literally illustrating the quote theme in center focus, no text",
+    "paper_sketch": "minimalist editorial ink illustration centered cleanly on #FFFFFF background, zero text",
+    "saffron_editorial": "minimalist editorial ink illustration centered cleanly on #FFFFFF background, zero text",
+    "cartoon_metaphor": "Pixar and Makoto Shinkai 3D animated cinema movie frame literally depicting the quote's story, lush sunlit depth, natural 9:16 portrait framing, no text",
+    "sunrise_metaphor": "gorgeous golden-hour 35mm film still literally embodying the quote's exact theme with natural sunlight, rich color grading, vertical 9:16 framing, no text",
+    "pastel_viral": "breathtaking 35mm ARRI Alexa photorealistic movie still literally showing the quote's story with expressive subject & dramatic film lighting, vertical 9:16 framing, clean calm lower foreground for text, zero abstract CGI blasts, no text",
+    "vibrant_magazine": "Oscar-caliber 35mm cinema still photorealistically depicting the quote's exact theme, rich bokeh & authentic textures, upper-center subject focus with dark serene lower foreground, vertical 9:16 framing, no text",
+    "gold_spotlight": "golden-hour studio cinema portrait literally depicting the quote's core theme, 35mm film grain, vertical 9:16 framing, no text",
+    "monochrome_alpha": "dramatic Leica silver-gelatin cinema still literally illustrating the quote theme, vertical 9:16 framing, no text",
 }
 
 
@@ -228,12 +228,12 @@ def _generate_via_llm(
         f"- Output strict JSON only, no markdown fences.\n"
         f"- Return object with keys: caption (1 crisp short engaging sentence), lead (short phrase after 'Follow for '), "
         f"slides (array of {slide_count} objects with keys: quote, accent, badge, visual_theme, visual_metaphor, image_prompt).\n"
-        f"- 'quote': Write a punchy, memorable 8-to-18 word HUMAN ADVICE / MINDSET QUOTE in ALL CAPS (examples: 'STOP EXPLAINING YOUR SILENCE TO PEOPLE WHO ONLY LISTEN TO REACT', 'LEAVE ENVIRONMENTS THAT SILENTLY KILL YOUR AMBITION'). NEVER describe masks, domes, trees, oceans, animals, or image scenes inside 'quote' — 'quote' must sound like timeless spoken wisdom.\n"
+        f"- 'quote': Write a punchy, memorable 8-to-18 word HUMAN ADVICE / MINDSET QUOTE in ALL CAPS (examples: 'STOP EXPLAINING YOUR SILENCE TO PEOPLE WHO ONLY LISTEN TO REACT', 'LEAVE ENVIRONMENTS THAT SILENTLY KILL YOUR AMBITION'). NEVER describe scenery or objects inside 'quote' — 'quote' must sound like timeless spoken life advice.\n"
         f"- 'accent': Exact uppercase substring of 'quote' (2 to 5 impactful words to color highlight).\n"
-        f"- 'visual_metaphor': Describe a 1-sentence concrete symbolic scene/object visual that directly illustrates THAT specific 'quote' (different text from 'quote'; explain how an epic movie-grade scene visualizes the advice — e.g. broken heavy chain freeing a runner toward sunrise, golden glowing water nourishing a vibrant tree while bypassing cracked rock, glowing crystal dome shielding calm figure from lightning).\n"
-        f"- FULL CINEMATIC RULE: ALL visuals MUST be full-bleed 8K movie-still / photorealistic cinema or Pixar/Makoto-Shinkai 3D film frames — NEVER white-paper sketches, line drawings, minimalist icons, borders, or empty clouds. Never include unrelated lions/wolves/animals unless the quote literally mentions them.\n"
-        f"- 'visual_theme': Prefer '{suggested_theme}' (or best cinematic match from: {', '.join(preferred_pool)}).\n"
-        f"- 'image_prompt': Put the visual_metaphor focal SUBJECT + ACTION in the VERY FIRST 8 WORDS framed cleanly in the upper-center to center of a vertical 9:16 screen with vibrant cinematic colors and volumetric sunlight (amber, gold, emerald, sapphire, sunset crimson — ultra detailed), following the chosen style (zero white paper, zero ink sketches, zero frames, zero borders, zero text inside image):\n"
+        f"- 'visual_metaphor': Explain in 1 crisp sentence how a REAL, grounded photographic or movie-still scene visually tells the exact story of THIS quote so a viewer connects image + words instantly in 1 second (examples: focus despite critics -> person working calmly at warm lamp-lit desk beside rainy window overlooking blurred busy street; leaving toxic table -> sharply dressed traveler striding peacefully out golden door leaving blurred noisy dinner table behind; hard work before success -> athlete tying cleats on empty foggy stadium track at dawn; quiet power -> calm suited founder overlooking golden-hour skyscrapers).\n"
+        f"- STRICT RELEVANCE & QUALITY BAN: NEVER generate surreal fantasy clichés (zero lasers, floating cubes, crystal domes, neon portals, sci-fi explosions, line drawings, or unrelated lions/wolves). Every visual MUST look like an authentic, grounded 35mm movie still or breathtaking National Geographic wildlife/nature shot that directly illustrates the quote's human meaning.\n"
+        f"- 'visual_theme': Prefer '{suggested_theme}' (or best match from: {', '.join(preferred_pool)}).\n"
+        f"- 'image_prompt': Put the visual_metaphor REAL SUBJECT + ACTION + SETTING in the VERY FIRST 12 WORDS framed vertically in 9:16 portrait shot on ARRI Alexa 35mm lens, shallow depth of field, rich sunset/golden/teal film grading, clean darker or tranquil lower third for crisp readable subtitles, zero borders, zero text inside image:\n"
         f"  Theme styles: {theme_guide}.\n"
         f"- For carousel slides, set badge to '01 / 04', '02 / 04', etc. For single post, badge is empty string.\n"
     )

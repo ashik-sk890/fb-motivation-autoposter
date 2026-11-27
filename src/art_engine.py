@@ -9,6 +9,7 @@ import time
 import urllib.error
 import urllib.parse
 import urllib.request
+import uuid
 from pathlib import Path
 from typing import Any
 
@@ -132,32 +133,60 @@ def _try_openai_image(prompt: str, api_key: str) -> bytes | None:
     return None
 
 
+def _multipart_form_payload(fields: dict[str, str]) -> tuple[bytes, str]:
+    """Encode string fields as multipart/form-data body + Content-Type header."""
+    boundary = f"----CfFluxBoundary{uuid.uuid4().hex}"
+    chunks: list[bytes] = []
+    for key, val in fields.items():
+        chunks.append(
+            f'--{boundary}\r\nContent-Disposition: form-data; name="{key}"\r\n\r\n{val}\r\n'.encode("utf-8")
+        )
+    chunks.append(f"--{boundary}--\r\n".encode("utf-8"))
+    return b"".join(chunks), f"multipart/form-data; boundary={boundary}"
+
+
 def _try_cloudflare_flux(prompt: str, account_id: str, api_token: str) -> bytes | None:
-    """Attempt free-tier FLUX.1-schnell generation via Cloudflare Workers AI."""
+    """Attempt free-tier FLUX.2 9:16 portrait (Klein 9B / Dev) with FLUX.1-schnell fallback."""
     if not (account_id and api_token):
         return None
-    url = (
-        f"https://api.cloudflare.com/client/v4/accounts/{account_id}"
-        "/ai/run/@cf/black-forest-labs/flux-1-schnell"
+    base_url = f"https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/run"
+    attempts: list[tuple[str, bytes, str]] = []
+    for model, fields in (
+        ("@cf/black-forest-labs/flux-2-klein-9b", {"prompt": prompt, "width": "768", "height": "1344"}),
+        ("@cf/black-forest-labs/flux-2-dev", {"prompt": prompt, "width": "768", "height": "1344", "steps": "15"}),
+    ):
+        body, ctype = _multipart_form_payload(fields)
+        attempts.append((f"{base_url}/{model}", body, ctype))
+    attempts.append(
+        (
+            f"{base_url}/@cf/black-forest-labs/flux-1-schnell",
+            json.dumps({"prompt": prompt, "steps": 6}).encode("utf-8"),
+            "application/json",
+        )
     )
-    payload = json.dumps({"prompt": prompt, "steps": 6}).encode("utf-8")
-    req = urllib.request.Request(
-        url,
-        data=payload,
-        headers={
-            "Authorization": f"Bearer {api_token}",
-            "Content-Type": "application/json",
-        },
-        method="POST",
-    )
-    try:
-        with urllib.request.urlopen(req, timeout=60) as resp:
-            parsed = json.loads(resp.read().decode("utf-8"))
-            if parsed.get("success") and (parsed.get("result") or {}).get("image"):
-                data = base64.b64decode(parsed["result"]["image"])
-                return data if _is_valid_image_bytes(data) else None
-    except (urllib.error.URLError, KeyError, ValueError, TimeoutError):
-        return None
+
+    for url, body, ctype in attempts:
+        req = urllib.request.Request(
+            url,
+            data=body,
+            headers={
+                "Authorization": f"Bearer {api_token}",
+                "Content-Type": ctype,
+            },
+            method="POST",
+        )
+        try:
+            with urllib.request.urlopen(req, timeout=75) as resp:
+                raw = resp.read()
+                if _is_valid_image_bytes(raw):
+                    return raw
+                parsed = json.loads(raw.decode("utf-8"))
+                if parsed.get("success") and (parsed.get("result") or {}).get("image"):
+                    data = base64.b64decode(parsed["result"]["image"])
+                    if _is_valid_image_bytes(data):
+                        return data
+        except (urllib.error.URLError, KeyError, ValueError, TimeoutError):
+            continue
     return None
 
 
