@@ -9,7 +9,10 @@
     "ac28475edca801e7",
     "7fd318ad3bbd06cd",
     "c164a5fe4a50a39c",
-    "0dcd6095787af8bf"
+    "0dcd6095787af8bf",
+    "16f291a98699385d",
+    "7c1846a0bb9a7c1a",
+    "455998f4158880ae"
   ],
   "posts": [
     {
@@ -179,6 +182,57 @@
         "page_id": "237094056146383",
         "result": {
           "id": "1210201635009742"
+        }
+      }
+    },
+    {
+      "timestamp_utc": "2026-11-27T00:47:59.594566+00:00",
+      "slot": 1,
+      "archetype_id": 47,
+      "archetype_name": "One Year of Pure Focus Changes Everything",
+      "post_type": "single",
+      "source": "llm_live",
+      "content_hash": "16f291a98699385d",
+      "headline": "THEY WILL LAUGH AT YOUR SILENT REBUILDING UNTIL YOUR QUIET RETURN DEMANDS ABSOLUTE RESPECT",
+      "remote_result": {
+        "action": "FACEBOOK_CREATE_VIDEO_POST",
+        "page_id": "1443084575557354",
+        "result": {
+          "id": "2034016787554185"
+        }
+      }
+    },
+    {
+      "timestamp_utc": "2026-11-27T00:48:04.823311+00:00",
+      "slot": 1,
+      "archetype_id": 47,
+      "archetype_name": "One Year of Pure Focus Changes Everything",
+      "post_type": "single",
+      "source": "llm_live",
+      "content_hash": "7c1846a0bb9a7c1a",
+      "headline": "SILENCE EVERY DISTRACTION AND LET YOUR OBSESSIVE FOCUS SPEAK LOUDER THAN ANY CRITIC",
+      "remote_result": {
+        "action": "FACEBOOK_CREATE_VIDEO_POST",
+        "page_id": "1423121790882352",
+        "result": {
+          "id": "1651909070031831"
+        }
+      }
+    },
+    {
+      "timestamp_utc": "2026-11-27T00:48:09.638696+00:00",
+      "slot": 1,
+      "archetype_id": 8,
+      "archetype_name": "Sunk Cost Trap — Walk Away",
+      "post_type": "single",
+      "source": "llm_live",
+      "content_hash": "455998f4158880ae",
+      "headline": "WALKING AWAY FROM A BAD INVESTMENT IS NOT LOSING, IT IS PROTECTING YOUR FUTURE",
+      "remote_result": {
+        "action": "FACEBOOK_CREATE_VIDEO_POST",
+        "page_id": "237094056146383",
+        "result": {
+          "id": "29264256823224950"
         }
       }
     }
