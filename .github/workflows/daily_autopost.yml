@@ -2,11 +2,11 @@ name: Daily Facebook Multi-Page Autoposter (4x/Day Each Page)
 
 on:
   schedule:
-    # 4 daily slots per page tuned for UTC+05:30 (10:00, 14:00, 18:00, 21:30)
-    - cron: "30 4 * * *"
-    - cron: "30 8 * * *"
-    - cron: "30 12 * * *"
-    - cron: "0 16 * * *"
+    # 4 daily slots per page tuned for UTC+05:30 (~09:49, 13:49, 17:49, 21:19 IST) off peak :00/:30 queues
+    - cron: "19 4 * * *"
+    - cron: "19 8 * * *"
+    - cron: "19 12 * * *"
+    - cron: "49 15 * * *"
   workflow_dispatch:
     inputs:
       slot:
@@ -42,6 +42,7 @@ jobs:
       HF_TOKEN: ${{ secrets.HF_TOKEN }}
       POLLINATIONS_API_KEY: ${{ secrets.POLLINATIONS_API_KEY }}
       USE_COMPOSIO_FAL: ${{ vars.USE_COMPOSIO_FAL }}
+      REQUIRE_AI_ART: ${{ inputs.dry_run != true }}
       BRAND_NAME: ${{ vars.BRAND_NAME }}
       BRAND_MONOGRAM: ${{ vars.BRAND_MONOGRAM }}
       BRAND_HANDLE: ${{ vars.BRAND_HANDLE }}
@@ -89,16 +90,29 @@ jobs:
 
       - name: Detect public repo media hosting capability
         id: repo-check
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           IS_PUBLIC=$(python -c '
-          import json, os, urllib.request
+          import json, os, time, urllib.request
           repo = os.environ["GITHUB_REPOSITORY"]
-          try:
-              with urllib.request.urlopen(f"https://api.github.com/repos/{repo}", timeout=10) as r:
-                  data = json.load(r)
-                  print("true" if data.get("private") is False else "false")
-          except Exception:
-              print("false")
+          token = os.environ.get("GITHUB_TOKEN", "")
+          headers = {"User-Agent": "fb-motivation-autoposter", "Accept": "application/vnd.github+json"}
+          if token:
+              headers["Authorization"] = f"Bearer {token}"
+          res = "false"
+          for attempt in range(3):
+              try:
+                  req = urllib.request.Request(f"https://api.github.com/repos/{repo}", headers=headers)
+                  with urllib.request.urlopen(req, timeout=15) as r:
+                      data = json.load(r)
+                      res = "true" if data.get("private") is False else "false"
+                      break
+              except Exception as exc:
+                  import sys
+                  print(f"repo-check attempt {attempt + 1} err: {exc}", file=sys.stderr)
+                  time.sleep(2)
+          print(res)
           ')
           echo "REPO_IS_PUBLIC=$IS_PUBLIC" >> "$GITHUB_ENV"
 
@@ -122,8 +136,17 @@ jobs:
           git commit -m "chore: update latest generated card media"
           git remote add origin "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"
           git push --force origin media
+          SAMPLE_FILE=$(find . -maxdepth 1 -type f \( -name '*.mp4' -o -name '*.jpg' \) -printf '%f\n' | sort | head -n 1 || true)
           popd
-          sleep 4
+          if [ -n "$SAMPLE_FILE" ]; then
+            MEDIA_URL="https://raw.githubusercontent.com/${{ github.repository }}/media/${SAMPLE_FILE}"
+            for i in $(seq 1 10); do
+              if curl -sfI "$MEDIA_URL" >/dev/null 2>&1; then
+                break
+              fi
+              sleep 2
+            done
+          fi
 
       - name: Publish to Facebook Page via Composio
         if: inputs.dry_run != true

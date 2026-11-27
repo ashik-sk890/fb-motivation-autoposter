@@ -10,7 +10,14 @@ import unittest
 from datetime import datetime, timezone
 from pathlib import Path
 
-from src.art_engine import _try_cloudflare_flux, _try_deepai, _try_gemini_imagen, build_illustrated_svg
+from src.art_engine import (
+    _try_cloudflare_flux,
+    _try_deepai,
+    _try_gemini_imagen,
+    _try_pollinations,
+    build_illustrated_svg,
+    resolve_artwork_data_uri,
+)
 from src.card_renderer import build_card_html
 from src.composio_publisher import list_managed_pages, publish_post, resolve_target_pages
 from src.config import ARCHETYPES_PATH, AppConfig, QUOTE_VAULT_PATH
@@ -526,6 +533,79 @@ class TestComposioPublisher(unittest.TestCase):
             sleep_mock.reset_mock()
             _publish_manifest_jobs(_test_config(), {"jobs": [manifest_3["jobs"][0]]})
             sleep_mock.assert_not_called()
+
+    def test_require_ai_art_blocks_svg_fallback_and_pollinations_fallback_guard(self) -> None:
+        import io
+        from unittest import mock
+        import urllib.error
+
+        cfg_strict = _test_config(require_ai_art=True)
+        base_job = {
+            "slot": 1,
+            "archetype_id": 1,
+            "archetype_name": "Apex Patience",
+            "post_type": "single",
+            "caption": "Strict AI quality check",
+            "content_hash": "aihash1",
+            "source": "llm_live",
+            "slides": [{"quote": "PROTECT YOUR PEACE.", "accent": "PEACE."}],
+            "image_paths": ["/tmp/fake.jpg"],
+            "public_urls": ["https://example.com/fake.jpg"],
+        }
+        manifest = {
+            "jobs": [
+                {**base_job, "page_id": "111", "page_name": "Page A", "has_ai_art": False},
+                {**base_job, "page_id": "222", "page_name": "Page B", "has_ai_art": True},
+            ]
+        }
+        with (
+            mock.patch("src.main.publish_post", return_value={"action": "FACEBOOK_CREATE_VIDEO_POST", "id": "ok1"}) as pub_mock,
+            mock.patch("src.main.save_history"),
+            mock.patch("src.main.time.sleep"),
+        ):
+            res = _publish_manifest_jobs(cfg_strict, manifest)
+            self.assertEqual(res[0]["status"], "error")
+            self.assertIn("SVG fallback", res[0]["error"])
+            self.assertEqual(res[1]["status"], "ok")
+            pub_mock.assert_called_once()
+
+        # Pollinations keyless fallback avoids ?model=flux, retries cleanly on 402/429, and keeps 9:16 portrait URL
+        fake_jpg = b"\xff\xd8\xff\xe0" + b"1" * 16000
+        seen_urls: list[str] = []
+
+        def fake_dl(url, headers=None, timeout=60):
+            seen_urls.append(url)
+            if len(seen_urls) == 1:
+                raise urllib.error.HTTPError(url, 402, "Payment Required", {}, io.BytesIO(b""))
+            return fake_jpg
+
+        with mock.patch("src.art_engine._download_bytes", side_effect=fake_dl), mock.patch("src.art_engine.time.sleep"):
+            out = _try_pollinations("calm founder overlooking skyline at sunrise, 35mm, no text", "", seed=42)
+            self.assertEqual(out, fake_jpg)
+            self.assertNotIn("model=flux", seen_urls[0])
+            self.assertIn("width=768&height=1344", seen_urls[0])
+
+        # Fallback AI reuse on carousel slides avoids SVG clip-art when remote APIs fail mid-carousel
+        with mock.patch("src.art_engine._try_pollinations", return_value=None):
+            uri, src = resolve_artwork_data_uri(
+                _test_config(),
+                {"ai_prompt": "city dawn", "layout_style": "vibrant_magazine"},
+                seed=9,
+                allow_remote_art=True,
+                fast_tier=True,
+                fallback_ai_uri="data:image/jpeg;base64,REUSED",
+            )
+            self.assertEqual(src, "ai_image")
+            self.assertEqual(uri, "data:image/jpeg;base64,REUSED")
+
+        # McpHttpBackend rejects publishing local runner file paths without public HTTPS URLs
+        with tempfile.TemporaryDirectory() as tmp:
+            img = Path(tmp) / "c1.jpg"
+            img.write_bytes(b"\xff\xd8\xff" + b"0" * 50)
+            mcp_cfg = _test_config(composio_api_key="ck_sample_consumer_key")
+            plan = PostPlan(1, 1, "Apex", "single", "Cap", [SlideContent("QUOTE", "QUOTE")], "h1")
+            with self.assertRaises(RuntimeError):
+                publish_post(mcp_cfg, plan, image_paths=[img], target_page_id="111")
 
 
 if __name__ == "__main__":

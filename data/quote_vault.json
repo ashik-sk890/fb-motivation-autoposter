@@ -12,7 +12,7 @@
       "layout_style": "pastel_viral",
       "accent": "#F97316",
       "svg_motif": "pastel_ladder",
-      "ai_prompt": "Breathtaking cinematic Unreal Engine 5 concept art of luminous sky bridges and glowing golden stairs rising above sunlit emerald clouds toward an aurora horizon, dramatic volumetric sunbeams, vibrant teal and amber palette, full-bleed vertical cinema composition, no text, no watermark"
+      "ai_prompt": "35mm movie still of weathered stone steps ascending a misty mountain ridge into bright golden-hour sunrise light above an ocean of valley clouds, rich teal and amber palette, calm darker lower foreground, no text, no watermark"
     },
     "dark_lion": {
       "label": "Cinematic Golden Sovereign Lion",
@@ -64,11 +64,11 @@
       "ai_prompt": "Radiant golden morning sunrise landscape with a vivid crimson-red tree on a crystal mirror lake shore, clear pastel warm sky across the upper half for crisp dark headline, bright uplifting light, no text, no watermark"
     },
     "dark_anime_warm": {
-      "label": "Cinematic 3D Dream Metaphor",
+      "label": "Cinematic Golden Hour Sanctuary",
       "layout_style": "cartoon_metaphor",
-      "accent": "#2563EB",
+      "accent": "#F59E0B",
       "svg_motif": "wrong_person_tap",
-      "ai_prompt": "Vibrant Pixar-and-Makoto-Shinkai 3D cinematic animated movie still of glowing clear water cascading off a sunlit terrace garden over luminous emerald valleys and sunlit clouds, open bright sky above, hyperdetailed 8k colors, no text, no watermark"
+      "ai_prompt": "35mm film still of clear mountain spring water cascading beside moss-covered dark river stones through sunlit misty cedar woods at warm golden hour, rich natural shadows below, no text, no watermark"
     },
     "shadow_boxer": {
       "label": "Sunlight Champion Editorial",
@@ -106,18 +106,18 @@
       "ai_prompt": "Breathtaking 8k cinema movie still of a calm poised samurai warrior standing amid glowing crimson maple leaves bathed in golden-amber volumetric sunset rays and drifting atmospheric embers, zero borders, no text, no watermark"
     },
     "scarred_bear": {
-      "label": "Cinematic Blooming Future Metaphor",
+      "label": "Cinematic Wild Grizzly Dawn",
       "layout_style": "cartoon_metaphor",
       "accent": "#DC2626",
       "svg_motif": "watering_rock",
-      "ai_prompt": "Vibrant Pixar-quality 3D cinematic illustration of golden sunlight beams striking a radiant glowing emerald sprout blooming out of ancient cracked stone beside a misty sunlit waterfall, rich volumetric lighting, open sky above, no text, no watermark"
+      "ai_prompt": "National Geographic 35mm wildlife photograph of a powerful dark grizzly bear standing beside a misty alpine river at golden dawn backlit by warm amber sunbeams, rich shadows below, no text, no watermark"
     },
     "sunny_sky_growth": {
-      "label": "Cinematic Ascending Origami Sky",
+      "label": "Cinematic Horizon Ridge Ascent",
       "layout_style": "cartoon_metaphor",
       "accent": "#0284C7",
       "svg_motif": "watering_rock",
-      "ai_prompt": "Luminous Makoto Shinkai anime film frame of a brilliant fiery crimson paper glider soaring high through gleaming white cathedral clouds into an electric azure morning sky streaked with sunlight beams, full-screen cinema beauty, no text, no watermark"
+      "ai_prompt": "35mm cinema still of a solitary trail runner standing atop a misty mountain peak at sunrise overlooking dramatic sunlit clouds and azure valleys below, calm shadowed foreground, no text, no watermark"
     }
   },
   "single_quotes": [

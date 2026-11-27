@@ -66,6 +66,7 @@ def _render_single_job(
     public_urls: list[str] = []
     cache_bust = int(time.time())
     safe_pid = "".join(ch for ch in page_id if ch.isalnum()) or "default"
+    hero_ai_uri = ""
 
     for idx, slide in enumerate(plan.slides, start=1):
         theme_meta = themes.get(slide.visual_theme, next(iter(themes.values()), {}))
@@ -80,7 +81,10 @@ def _render_single_job(
             allow_remote_art=allow_remote_art,
             page_brand=page_name or config.brand_name,
             fast_tier=(idx > 1),
+            fallback_ai_uri=hero_ai_uri if idx > 1 else "",
         )
+        if idx == 1 and assets["art_source"] == "ai_image":
+            hero_ai_uri = str(assets.get("art_uri") or "")
         img_path = assets["image_path"]
         if img_path is not None:
             image_paths.append(str(img_path))
@@ -159,6 +163,7 @@ def _render_single_job(
         "video_path": video_path_str,
         "video_public_url": video_public_url,
         "music_track": music_meta,
+        "has_ai_art": bool(rendered_cards) and all(c["art_source"] == "ai_image" for c in rendered_cards),
     }
 
 
@@ -248,6 +253,16 @@ def _publish_manifest_jobs(
         target_account = str(job.get("account") or "").strip() or None
         video_path = Path(job["video_path"]) if job.get("video_path") else None
         video_public_url = str(job.get("video_public_url") or "").strip() or None
+        if config.require_ai_art and not job.get("has_ai_art", False):
+            results.append(
+                {
+                    "page_id": target_page_id,
+                    "page_name": job.get("page_name"),
+                    "status": "error",
+                    "error": "Blocked publish: real AI image unavailable (refusing SVG fallback)",
+                }
+            )
+            continue
         try:
             pub_res = publish_post(
                 config=config,

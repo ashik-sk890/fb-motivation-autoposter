@@ -168,23 +168,23 @@ _STYLE_HINTS: dict[str, str] = {
 
 
 def _infer_metaphor_prompt(quote: str) -> str:
-    """Create a literal quote-relevant visual metaphor prompt when using vault/combinatorial text."""
+    """Create a literal quote-relevant 35mm visual metaphor prompt when using vault/combinatorial text."""
     q = quote.upper()
     if any(w in q for w in ("FAKE", "LOYAL", "BETRAY", "TRUST", "TWO-FACED", "TWO FACED", "MASK")):
-        return "Dramatic cinematic 8k close shot of a cracked porcelain smiling mask shattering to reveal cold steel underneath in warm amber light, sharp bokeh background, calm lower third, no text"
+        return "Dramatic 35mm close shot of a Venetian porcelain theater mask resting beside a cold steel dagger under warm amber chiaroscuro window light, shallow depth of field, tranquil darker lower third, no text"
     if any(w in q for w in ("EAGLE", "FLY", "SOAR", "CROW", "BIRD")):
-        return "A bold majestic golden eagle soaring steeply upward through sunlit storm clouds above smaller shadowed birds perched below, epic 8k cinema lighting, no text"
+        return "National Geographic wildlife 35mm photograph of a golden eagle soaring high above sunlit alpine peaks and breaking storm clouds, dramatic golden-hour rays, dark valley below, no text"
     if any(w in q for w in ("PRISON", "THOUGHT", "MIND", "FREE", "FEAR")):
-        return "Cinematic surreal 8k scene of heavy iron chains snapping open inside radiant golden sunlight as a silhouette steps toward an open bright horizon, calm lower foreground, no text"
+        return "35mm movie still of a lone traveler walking out from a shadowy stone archway into bright golden morning sunlight overlooking mist, deep atmospheric contrast, calm lower foreground, no text"
     if any(w in q for w in ("SILENCE", "QUIET", "REACT", "PEACE", "NOISE", "IGNORE")):
-        return "Calm composed person meditating quietly inside a crystal-clear glowing glass dome untouched while chaotic lightning storms crash harmlessly outside, dramatic 8k cinema lighting, no text"
+        return "35mm movie still of a calm composed man seated quietly reading under warm amber light inside a historic stone dome library while rain streaks dark tall arched windows outside, no text"
     if any(w in q for w in ("EFFORT", "WATER", "STONE", "SEED", "GROW", "WRONG PERSON", "WASTED")):
-        return "Cinematic Pixar-grade 3D close scene of luminous crystal water pouring from a golden pitcher onto a glowing emerald sprout beside a barren gray rock, sunlit volumetric rays, no text"
+        return "35mm cinematic outdoor photograph of a focused gardener pouring clear spring water from a weathered brass can onto fertile green saplings in rich golden-hour sunlight beside barren rock, no text"
     if any(w in q for w in ("VISION", "EMPIRE", "BUILD", "FUTURE", "FOCUS", "ALONE", "WALK AWAY", "PRIORITY")):
-        return "Cinematic 8k shot of a determined visionary architect looking out from a towering sunlit glass bridge overlooking a gleaming futuristic skyline rising out of clouds, no text"
+        return "35mm cinema still of a sharp-suited founder standing alone on a rain-slicked skyscraper rooftop terrace at golden sunrise overlooking a misty metropolis, rich teal-and-amber grading, no text"
     if any(w in q for w in ("LION", "KING", "CROWN", "DOMINATE")):
-        return "A solitary golden crown resting atop rugged sunlit canyon rock overlooking a sunlit valley under blazing amber rays, epic 8k cinema framing, no text"
-    return "Determined lone traveler ascending luminous golden stone steps breaking through morning clouds toward a radiant bright summit, breathtaking 8k cinema composition, no text"
+        return "National Geographic 35mm golden-hour photograph of a scarred wild alpha lion standing alert on dark granite savanna rock backlit by warm dusty sunrise beams, calm darker foreground, no text"
+    return "35mm film still of a solitary runner climbing mist-shrouded stone mountain steps toward golden dawn sunlight breaking over the ridge, rich natural shadows below, no text"
 
 
 def _generate_via_llm(

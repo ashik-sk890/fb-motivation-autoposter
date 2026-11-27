@@ -3,8 +3,10 @@
 from __future__ import annotations
 
 import base64
+import io
 import json
 import random
+import sys
 import time
 import urllib.error
 import urllib.parse
@@ -24,6 +26,35 @@ def _is_valid_image_bytes(data: bytes) -> bool:
     is_jpg = data.startswith(b"\xff\xd8\xff")
     is_webp = data[:4] == b"RIFF" and data[8:12] == b"WEBP"
     return is_png or is_jpg or is_webp
+
+
+def _shorten_prompt(prompt: str, max_len: int = 240) -> str:
+    """Trim prompt at a clean word boundary for URL-encoded image endpoints."""
+    clean = " ".join(prompt.split())
+    if len(clean) <= max_len:
+        return clean
+    cut = clean[:max_len].rsplit(" ", 1)[0].strip(" ,;:")
+    return cut or clean[:max_len]
+
+
+def _crop_bottom_watermark(data: bytes, keep_ratio: float = 0.91) -> bytes:
+    """Strip bottom corner badges (e.g. Pollinations free footer) cleanly when Pillow is installed."""
+    try:
+        from PIL import Image  # type: ignore
+
+        with Image.open(io.BytesIO(data)) as im:
+            w, h = im.size
+            crop_h = max(int(h * keep_ratio), 1)
+            if w > 0 and crop_h < h:
+                cropped = im.convert("RGB").crop((0, 0, w, crop_h))
+                buf = io.BytesIO()
+                cropped.save(buf, format="JPEG", quality=94)
+                out = buf.getvalue()
+                if _is_valid_image_bytes(out):
+                    return out
+    except Exception:
+        pass
+    return data
 
 
 def _download_bytes(url: str, headers: dict[str, str] | None = None, timeout: int = 45) -> bytes:
@@ -67,7 +98,11 @@ def _try_gemini_imagen(prompt: str, api_key: str) -> bytes | None:
                         data = base64.b64decode(inline["data"])
                         if _is_valid_image_bytes(data):
                             return data
-        except (urllib.error.URLError, KeyError, IndexError, ValueError, TimeoutError):
+        except urllib.error.HTTPError as exc:
+            print(f"[art_engine] gemini {model} HTTP {exc.code}", file=sys.stderr)
+            continue
+        except (urllib.error.URLError, KeyError, IndexError, ValueError, TimeoutError) as exc:
+            print(f"[art_engine] gemini {model} err: {type(exc).__name__}", file=sys.stderr)
             continue
     return None
 
@@ -191,7 +226,13 @@ def _try_cloudflare_flux(
                     data = base64.b64decode(parsed["result"]["image"])
                     if _is_valid_image_bytes(data):
                         return data
-        except (urllib.error.URLError, KeyError, ValueError, TimeoutError):
+        except urllib.error.HTTPError as exc:
+            slug = url.rsplit("/", 1)[-1]
+            print(f"[art_engine] cloudflare {slug} HTTP {exc.code}", file=sys.stderr)
+            continue
+        except (urllib.error.URLError, KeyError, ValueError, TimeoutError) as exc:
+            slug = url.rsplit("/", 1)[-1]
+            print(f"[art_engine] cloudflare {slug} err: {type(exc).__name__}", file=sys.stderr)
             continue
     return None
 
@@ -306,28 +347,41 @@ def _try_deepai(prompt: str, api_key: str) -> bytes | None:
 
 
 def _try_pollinations(prompt: str, api_key: str, seed: int) -> bytes | None:
-    """Attempt artwork generation via Pollinations Flux endpoints with rate-limit backoff."""
-    encoded = urllib.parse.quote(prompt, safe="")
-    endpoints = [
-        f"https://gen.pollinations.ai/image/{encoded}?model=flux&width=1080&height=1350&seed={seed}&nologo=true",
-        f"https://image.pollinations.ai/prompt/{encoded}?width=1080&height=1350&seed={seed}&nologo=true",
-    ]
-    headers = {"Authorization": f"Bearer {api_key}"} if api_key else {}
-    for url in endpoints:
-        if "gen.pollinations.ai" in url and not api_key:
-            continue
+    """Attempt artwork generation via Pollinations portrait endpoints with cooldown & badge trim."""
+    short_prompt = _shorten_prompt(prompt, max_len=240)
+    encoded = urllib.parse.quote(short_prompt, safe="")
+    endpoints: list[tuple[str, bool]] = []
+    if api_key:
+        endpoints.append(
+            (f"https://gen.pollinations.ai/image/{encoded}?model=flux&width=768&height=1344&seed={seed}&nologo=true", True)
+        )
+    # Free tier rejects ?model=flux and 576x1024 with HTTP 402; default 768x1344 and 1080x1350 succeed cleanly.
+    endpoints.extend(
+        [
+            (f"https://image.pollinations.ai/prompt/{encoded}?width=768&height=1344&seed={seed}&nologo=true", False),
+            (f"https://image.pollinations.ai/prompt/{encoded}?width=1080&height=1350&seed={seed}&nologo=true", False),
+        ]
+    )
+    base_headers = {"User-Agent": "Mozilla/5.0"}
+    if api_key:
+        base_headers["Authorization"] = f"Bearer {api_key}"
+
+    for url, uses_key in endpoints:
+        req_headers = base_headers if uses_key else {"User-Agent": "Mozilla/5.0"}
         for attempt in range(2):
             try:
-                data = _download_bytes(url, headers=headers, timeout=55)
+                data = _download_bytes(url, headers=req_headers, timeout=60)
                 if _is_valid_image_bytes(data):
-                    return data
+                    return data if uses_key else _crop_bottom_watermark(data)
             except urllib.error.HTTPError as exc:
-                if exc.code == 429 and attempt == 0:
-                    retry_after = int(exc.headers.get("Retry-After", "6") or 6)
-                    time.sleep(min(max(retry_after, 2), 12))
+                print(f"[art_engine] pollinations HTTP {exc.code}", file=sys.stderr)
+                if exc.code in (402, 429) and attempt == 0:
+                    retry_after = int(exc.headers.get("Retry-After", "10") or 10)
+                    time.sleep(min(max(retry_after, 8), 14))
                     continue
                 break
-            except (urllib.error.URLError, TimeoutError):
+            except (urllib.error.URLError, TimeoutError) as exc:
+                print(f"[art_engine] pollinations err: {type(exc).__name__}", file=sys.stderr)
                 break
     return None
 
@@ -354,70 +408,45 @@ def build_illustrated_svg(layout_style: str, motif: str, accent: str, seed: int)
 
 
 def _svg_pastel_viral(motif: str, accent: str) -> str:
-    """Bright pastel daylight 2026 vector metaphor artwork for viral card insets."""
-    fill_hi = accent or "#2563EB"
-    return f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1350" width="1080" height="1350">
+    """Moody 9:16 cinema lighting backdrop for offline/unit-test previews (zero flat clip-art)."""
+    fill_hi = accent or "#F97316"
+    return f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1920" width="1080" height="1920">
   <defs>
-    <linearGradient id="pastelSky" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#e0f2fe"/>
-      <stop offset="55%" stop-color="#fef9c3"/>
-      <stop offset="100%" stop-color="#ffedd5"/>
+    <linearGradient id="cineSky" x1="0" y1="0" x2="0.4" y2="1">
+      <stop offset="0%" stop-color="#0b1528"/>
+      <stop offset="52%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#05070e"/>
     </linearGradient>
-    <radialGradient id="sunnyOrb" cx="78%" cy="28%" r="26%">
-      <stop offset="0%" stop-color="#fde047" stop-opacity="0.95"/>
-      <stop offset="60%" stop-color="#fb923c" stop-opacity="0.35"/>
-      <stop offset="100%" stop-color="#fb923c" stop-opacity="0"/>
+    <radialGradient id="amberRim" cx="62%" cy="32%" r="46%">
+      <stop offset="0%" stop-color="{fill_hi}" stop-opacity="0.42"/>
+      <stop offset="55%" stop-color="#f59e0b" stop-opacity="0.14"/>
+      <stop offset="100%" stop-color="#05070e" stop-opacity="0"/>
     </radialGradient>
   </defs>
-  <rect width="1080" height="1350" fill="url(#pastelSky)"/>
-  <rect width="1080" height="1350" fill="url(#sunnyOrb)"/>
-  <!-- Floating clouds -->
-  <ellipse cx="220" cy="240" rx="140" ry="52" fill="#ffffff" opacity="0.88"/>
-  <ellipse cx="310" cy="220" rx="95" ry="44" fill="#ffffff" opacity="0.92"/>
-  <ellipse cx="830" cy="360" rx="125" ry="42" fill="#ffffff" opacity="0.82"/>
-  <!-- Vibrant pastel hills & stepping stones rising upward -->
-  <path d="M0,1080 Q280,930 580,1030 T1080,960 L1080,1350 L0,1350 Z" fill="#fed7aa"/>
-  <path d="M0,1150 Q380,1030 720,1140 T1080,1090 L1080,1350 L0,1350 Z" fill="#bae6fd"/>
-  <!-- Ascending stairs & glowing star peak -->
-  <g stroke="#0f172a" stroke-width="5" stroke-linejoin="round">
-    <rect x="260" y="980" width="120" height="190" rx="12" fill="#ffffff"/>
-    <rect x="410" y="860" width="120" height="310" rx="12" fill="#ffffff"/>
-    <rect x="560" y="740" width="120" height="430" rx="12" fill="#ffffff"/>
-    <rect x="710" y="610" width="120" height="560" rx="12" fill="{fill_hi}"/>
-  </g>
-  <!-- Confident minimalist character at top step -->
-  <g transform="translate(770,540)" fill="#0f172a">
-    <circle cx="0" cy="-35" r="24"/>
-    <path d="M-24,0 L24,0 L32,68 L-32,68 Z" rx="8"/>
-  </g>
+  <rect width="1080" height="1920" fill="url(#cineSky)"/>
+  <rect width="1080" height="1920" fill="url(#amberRim)"/>
+  <ellipse cx="540" cy="640" rx="520" ry="180" fill="#38bdf8" opacity="0.06"/>
 </svg>"""
 
 
 def _svg_vibrant_magazine(motif: str, accent: str) -> str:
-    """Luminous daylight coral-azure editorial sunburst artwork."""
+    """Rich moody golden-hour twilight cinema backdrop for offline/unit-test previews."""
     hi = accent or "#F97316"
-    return f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1350" width="1080" height="1350">
+    return f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1920" width="1080" height="1920">
   <defs>
-    <linearGradient id="magSky" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#38bdf8"/>
-      <stop offset="48%" stop-color="#fed7aa"/>
-      <stop offset="82%" stop-color="#ffffff"/>
-      <stop offset="100%" stop-color="#ffffff"/>
+    <linearGradient id="magCine" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="48%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#05070d"/>
     </linearGradient>
-    <radialGradient id="sunBloom" cx="50%" cy="38%" r="42%">
-      <stop offset="0%" stop-color="#ffffff"/>
-      <stop offset="40%" stop-color="#fde047" stop-opacity="0.9"/>
-      <stop offset="100%" stop-color="#fb923c" stop-opacity="0"/>
+    <radialGradient id="goldBloom" cx="50%" cy="34%" r="48%">
+      <stop offset="0%" stop-color="{hi}" stop-opacity="0.52"/>
+      <stop offset="45%" stop-color="#fbbf24" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#05070d" stop-opacity="0"/>
     </radialGradient>
   </defs>
-  <rect width="1080" height="1350" fill="url(#magSky)"/>
-  <rect width="1080" height="980" fill="url(#sunBloom)"/>
-  <!-- Bright scenic layered peaks -->
-  <path d="M0,780 L250,480 L470,690 L740,420 L1080,760 L1080,1000 L0,1000 Z" fill="#0284c7" opacity="0.72"/>
-  <path d="M0,840 L310,600 L560,760 L820,560 L1080,820 L1080,1020 L0,1020 Z" fill="#0f172a" opacity="0.88"/>
-  <!-- Vibrant warm beacon glow at summit -->
-  <circle cx="740" cy="400" r="22" fill="{hi}"/>
-  <circle cx="740" cy="400" r="46" fill="{hi}" opacity="0.28"/>
+  <rect width="1080" height="1920" fill="url(#magCine)"/>
+  <rect width="1080" height="1920" fill="url(#goldBloom)"/>
 </svg>"""
 
 
@@ -680,31 +709,22 @@ def _svg_saffron_ink(motif: str) -> str:
 
 
 def _svg_cartoon_metaphor(motif: str) -> str:
-    """9:16 Makoto Shinkai-style atmospheric sunset valley & luminous rays fallback art."""
+    """Deep dusk 9:16 cinema lighting backdrop for offline/unit-test previews."""
     return """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1920" width="1080" height="1920">
   <defs>
-    <linearGradient id="shinkaiSky" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#0284c7"/>
-      <stop offset="35%" stop-color="#38bdf8"/>
-      <stop offset="68%" stop-color="#fed7aa"/>
-      <stop offset="100%" stop-color="#f97316"/>
+    <linearGradient id="duskSky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#082f49"/>
+      <stop offset="48%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#04070f"/>
     </linearGradient>
-    <radialGradient id="sunsetOrb" cx="50%" cy="54%" r="36%">
-      <stop offset="0%" stop-color="#ffffff"/>
-      <stop offset="32%" stop-color="#fef08a" stop-opacity="0.95"/>
-      <stop offset="100%" stop-color="#fb923c" stop-opacity="0"/>
+    <radialGradient id="duskGlow" cx="50%" cy="38%" r="44%">
+      <stop offset="0%" stop-color="#fbbf24" stop-opacity="0.45"/>
+      <stop offset="52%" stop-color="#f97316" stop-opacity="0.16"/>
+      <stop offset="100%" stop-color="#04070f" stop-opacity="0"/>
     </radialGradient>
   </defs>
-  <rect width="1080" height="1920" fill="url(#shinkaiSky)"/>
-  <rect width="1080" height="1450" fill="url(#sunsetOrb)"/>
-  <ellipse cx="220" cy="420" rx="210" ry="48" fill="#ffffff" opacity="0.32"/>
-  <ellipse cx="810" cy="340" rx="240" ry="52" fill="#ffffff" opacity="0.28"/>
-  <path d="M0,1240 L260,960 L540,1160 L820,910 L1080,1190 L1080,1920 L0,1920 Z" fill="#1e293b" opacity="0.72"/>
-  <path d="M0,1360 L340,1120 L620,1290 L920,1080 L1080,1260 L1080,1920 L0,1920 Z" fill="#0f172a"/>
-  <g transform="translate(540,1090)" fill="#ffffff" opacity="0.9">
-    <circle cx="0" cy="-42" r="14"/>
-    <path d="M-16,-24 L16,-24 L20,38 L-20,38 Z"/>
-  </g>
+  <rect width="1080" height="1920" fill="url(#duskSky)"/>
+  <rect width="1080" height="1920" fill="url(#duskGlow)"/>
 </svg>"""
 
 
@@ -820,6 +840,7 @@ def resolve_artwork_data_uri(
     cache_path: Path | None = None,
     prompt_override: str = "",
     fast_tier: bool = False,
+    fallback_ai_uri: str = "",
 ) -> tuple[str, str]:
     """Return (data_uri, source_label) for the visual artwork of a card."""
     prompt = prompt_override.strip() or str(theme_meta.get("ai_prompt", "Dark dramatic lion portrait, high contrast, no text"))
@@ -844,6 +865,9 @@ def resolve_artwork_data_uri(
             mime = "image/png" if image_bytes.startswith(b"\x89PNG") else "image/jpeg"
             b64 = base64.b64encode(image_bytes).decode("ascii")
             return f"data:{mime};base64,{b64}", "ai_image"
+        if fallback_ai_uri:
+            # Reuse the real AI photography from Slide 1 rather than dropping to an SVG on carousel slides.
+            return fallback_ai_uri, "ai_image"
 
     svg_markup = build_illustrated_svg(layout_style, motif, accent, seed)
     b64_svg = base64.b64encode(svg_markup.encode("utf-8")).decode("ascii")

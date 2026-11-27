@@ -41,6 +41,7 @@ class AppConfig:
     image_width: int = 1080
     image_height: int = 1920
     max_history_items: int = 4000
+    require_ai_art: bool = False
 
     @classmethod
     def from_env(cls) -> "AppConfig":
@@ -72,4 +73,5 @@ class AppConfig:
             deepai_api_key=os.getenv("DEEPAI_API_KEY", "").strip(),
             use_composio_fal=os.getenv("USE_COMPOSIO_FAL", "false").lower() == "true",
             public_media_base_url=explicit_base or auto_base,
+            require_ai_art=os.getenv("REQUIRE_AI_ART", "false").lower() == "true",
         )

@@ -335,6 +335,11 @@ def publish_post(
 
     base_dir = video_path.parent if video_path else image_paths[0].parent
     backend = _select_backend(config, base_dir)
+    if isinstance(backend, _McpHttpBackend):
+        has_valid_video_url = bool(video_public_url and video_public_url.startswith(("http://", "https://")))
+        has_valid_photo_urls = bool(public_urls and all(u.startswith(("http://", "https://")) for u in public_urls))
+        if not (has_valid_video_url or has_valid_photo_urls):
+            raise RuntimeError("Public HTTPS media URL is missing; Composio cloud MCP cannot upload local file paths.")
     page_id = target_page_id or resolve_page_id(config)
 
     if video_public_url or (video_path and video_path.exists()):

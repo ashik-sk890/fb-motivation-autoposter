@@ -495,6 +495,7 @@ def render_slide_assets(
     allow_remote_art: bool = True,
     page_brand: str | None = None,
     fast_tier: bool = False,
+    fallback_ai_uri: str = "",
 ) -> dict[str, Any]:
     """Generate artwork + HTML + rendered JPEG image (when Chromium/Pillow is available)."""
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -510,6 +511,7 @@ def render_slide_assets(
         cache_path=art_cache_path,
         prompt_override=slide.image_prompt,
         fast_tier=fast_tier,
+        fallback_ai_uri=fallback_ai_uri,
     )
 
     html_content = build_card_html(
@@ -535,6 +537,7 @@ def render_slide_assets(
     return {
         "html_path": html_path,
         "image_path": image_path if image_path.exists() else None,
+        "art_uri": art_uri,
         "art_source": art_source,
         "layout_style": layout_style,
         "rendered_via": rendered_via,
