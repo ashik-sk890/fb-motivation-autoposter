@@ -209,6 +209,9 @@ def _generate_via_llm(
             "shadow_boxer",
             "night_city_silhouette",
             "dark_anime_rain",
+            "dark_eagle",
+            "noir_suit",
+            "masked_samurai",
         )
         if not theme_map or k in theme_map
     ]
@@ -219,18 +222,18 @@ def _generate_via_llm(
     ) if theme_map else ", ".join(preferred_pool)
 
     prompt = (
-        f"Create an original viral high-CTR cinematic Facebook Reels/Video {post_type} post.\n"
+        f"Create an original viral high-CTR FULL CINEMATIC Facebook Reels/Video {post_type} post.\n"
         f"Topic: {archetype['name']} (tone: {archetype['tone']}).\n"
         f"STRICT RULES:\n"
         f"- Output strict JSON only, no markdown fences.\n"
-        f"- Return object with keys: caption (1 crisp engaging sentence), lead (short phrase after 'Follow for '), "
+        f"- Return object with keys: caption (1 crisp short engaging sentence), lead (short phrase after 'Follow for '), "
         f"slides (array of {slide_count} objects with keys: quote, accent, badge, visual_theme, visual_metaphor, image_prompt).\n"
         f"- 'quote': Write a punchy, memorable 8-to-18 word HUMAN ADVICE / MINDSET QUOTE in ALL CAPS (examples: 'STOP EXPLAINING YOUR SILENCE TO PEOPLE WHO ONLY LISTEN TO REACT', 'LEAVE ENVIRONMENTS THAT SILENTLY KILL YOUR AMBITION'). NEVER describe masks, domes, trees, oceans, animals, or image scenes inside 'quote' — 'quote' must sound like timeless spoken wisdom.\n"
         f"- 'accent': Exact uppercase substring of 'quote' (2 to 5 impactful words to color highlight).\n"
-        f"- 'visual_metaphor': Describe a 1-sentence concrete symbolic object/character visual that directly illustrates THAT specific 'quote' (different text from 'quote'; explain how a dramatic cinematic scene visualizes the advice — e.g. broken rusted chain freeing a runner, golden water filling a blooming plant while bypassing a dry stone, glowing chess king outsmarting fallen pawns).\n"
-        f"- IRRELEVANT ARTWORK BAN: Never put generic empty skies, unrelated lions, wolves, eagles, or boxers unless the quote itself literally speaks of them.\n"
-        f"- 'visual_theme': Prefer '{suggested_theme}' (or choose the best match from: {', '.join(preferred_pool)}).\n"
-        f"- 'image_prompt': Put the visual_metaphor focal SUBJECT + ACTION in the VERY FIRST 8 WORDS framed cleanly in the upper-center to center of a vertical 9:16 screen with vibrant glowing cinema colors (amber, emerald, sapphire, crimson, sunset gold — never murky gray), following the chosen visual_theme style (zero frames, zero borders, zero artist signatures, zero text/letters inside image):\n"
+        f"- 'visual_metaphor': Describe a 1-sentence concrete symbolic scene/object visual that directly illustrates THAT specific 'quote' (different text from 'quote'; explain how an epic movie-grade scene visualizes the advice — e.g. broken heavy chain freeing a runner toward sunrise, golden glowing water nourishing a vibrant tree while bypassing cracked rock, glowing crystal dome shielding calm figure from lightning).\n"
+        f"- FULL CINEMATIC RULE: ALL visuals MUST be full-bleed 8K movie-still / photorealistic cinema or Pixar/Makoto-Shinkai 3D film frames — NEVER white-paper sketches, line drawings, minimalist icons, borders, or empty clouds. Never include unrelated lions/wolves/animals unless the quote literally mentions them.\n"
+        f"- 'visual_theme': Prefer '{suggested_theme}' (or best cinematic match from: {', '.join(preferred_pool)}).\n"
+        f"- 'image_prompt': Put the visual_metaphor focal SUBJECT + ACTION in the VERY FIRST 8 WORDS framed cleanly in the upper-center to center of a vertical 9:16 screen with vibrant cinematic colors and volumetric sunlight (amber, gold, emerald, sapphire, sunset crimson — ultra detailed), following the chosen style (zero white paper, zero ink sketches, zero frames, zero borders, zero text inside image):\n"
         f"  Theme styles: {theme_guide}.\n"
         f"- For carousel slides, set badge to '01 / 04', '02 / 04', etc. For single post, badge is empty string.\n"
     )

@@ -29,32 +29,32 @@
       "ai_prompt": "Bright golden-hour editorial wide shot of a confident sharp-dressed strategist overlooking a sunlit modern glass skyline, luminous daylight rim lighting fading softly into clean bright sky below, ultra crisp, no text, no watermark"
     },
     "lone_wolf": {
-      "label": "Sketchbook Solo Mountain Climber",
-      "layout_style": "paper_sketch",
-      "accent": "#DC2626",
-      "svg_motif": "mountain_mask",
-      "ai_prompt": "Crisp black ink and charcoal sketch isolated on pure solid blank white #FFFFFF background showing a bold lone wolf standing on a sunlit ridge overlooking mist below, clean empty top space, no gray paper shading, no text, no watermark"
+      "label": "Cinematic Summit Sovereign Horizon",
+      "layout_style": "vibrant_magazine",
+      "accent": "#F97316",
+      "svg_motif": "sunburst_peak",
+      "ai_prompt": "Cinematic 8k full-screen film still of a lone climber silhouetted on a rugged sunlit alpine summit overlooking glowing clouds below, radiant sunrise rim lighting, deep cyan sky above, calm lower space, no text, no watermark"
     },
     "noir_suit": {
-      "label": "Saffron Editorial Strategist",
-      "layout_style": "saffron_editorial",
-      "accent": "#111111",
-      "svg_motif": "strategist",
-      "ai_prompt": "Minimalist crisp black crosshatched ink illustration isolated on pure solid blank white #FFFFFF background showing a sharp suited strategist thinking calmly in lower half, generous clean white top half, no dark background, no text, no watermark"
+      "label": "Cinematic Amber Glass Strategist",
+      "layout_style": "vibrant_magazine",
+      "accent": "#FACC15",
+      "svg_motif": "sunburst_peak",
+      "ai_prompt": "Epic 8k cinematic cinema frame of a poised sharp-suited strategist standing inside a gleaming glass penthouse lit by warm golden sunset rays, crisp sapphire twilight city outside, no text, no watermark"
     },
     "dark_eagle": {
-      "label": "Paper Sketch Priority Bird",
-      "layout_style": "paper_sketch",
-      "accent": "#DC2626",
-      "svg_motif": "cliff_birds",
-      "ai_prompt": "One bold eagle flying off a rocky cliff away from four small perched birds, fine-art black ink crosshatched illustration with one red brushstroke swoosh isolated on pure solid white #FFFFFF paper, generous blank white top space, no text, no watermark"
+      "label": "Cinematic Soaring Eagle Horizon",
+      "layout_style": "pastel_viral",
+      "accent": "#F59E0B",
+      "svg_motif": "pastel_ladder",
+      "ai_prompt": "Epic 8k wildlife movie still of a majestic golden eagle breaking cleanly upward through illuminated amber storm clouds into dazzling sunlight above, volumetric god rays, crisp full-screen depth, no text, no watermark"
     },
     "dark_anime_moody": {
-      "label": "Paper Sketch Mind Freedom",
-      "layout_style": "paper_sketch",
-      "accent": "#DC2626",
-      "svg_motif": "chained_mind",
-      "ai_prompt": "A young person breaking free from an iron ball chained to their thoughts, fine-art black ink crosshatched illustration isolated on pure solid white #FFFFFF paper, generous blank white upper half, no text, no watermark"
+      "label": "Cinematic Shinkai Twilight Path",
+      "layout_style": "sunrise_metaphor",
+      "accent": "#F97316",
+      "svg_motif": "crimson_tree",
+      "ai_prompt": "Breathtaking Makoto Shinkai style 8k animated cinema vista of a glowing golden footbridge spanning across crystal turquoise mirror water toward radiant sunrise clouds, atmospheric light shafts, no text, no watermark"
     },
     "dark_anime_rain": {
       "label": "Sunrise Crimson Tree Reality",
@@ -78,11 +78,11 @@
       "ai_prompt": "Epic cinematic 8k shot of a focused boxer standing beside towering sunlit gym windows drenched in radiant amber rays and floating dust motes, glowing warm horizon background, shallow depth of field, no text, no watermark"
     },
     "obsidian_statue": {
-      "label": "Paper Sketch Mountain Crown",
-      "layout_style": "paper_sketch",
-      "accent": "#DC2626",
-      "svg_motif": "mountain_mask",
-      "ai_prompt": "Clean detailed black ink sketch isolated on pure solid blank white #FFFFFF background showing a climber gazing at a glowing gold crown atop mountain stairs, generous blank white top area, no gray shading, no text, no watermark"
+      "label": "Cinematic Marble Peak Summit",
+      "layout_style": "vibrant_magazine",
+      "accent": "#FACC15",
+      "svg_motif": "sunburst_peak",
+      "ai_prompt": "Epic 8k cinematic film still of stone mountain stairs illuminated by blazing golden-hour sunbeams reaching toward a glowing crown shrine above misty valleys, ultra-detailed realism, no text, no watermark"
     },
     "dark_panther": {
       "label": "Electric Cobalt Emerald Pop",
@@ -99,11 +99,11 @@
       "ai_prompt": "Breathtaking cinematic 8k aerial vista overlooking gleaming golden-hour glass skyscrapers pierced by warm amber sunbeams and pastel clouds, electric cyberpunk-meets-daylight glow, full-screen composition, no text, no watermark"
     },
     "masked_samurai": {
-      "label": "Saffron Chess & Sword Ink",
-      "layout_style": "saffron_editorial",
-      "accent": "#111111",
-      "svg_motif": "samurai",
-      "ai_prompt": "Minimalist crisp black crosshatched ink drawing isolated on pure solid blank white #FFFFFF background of a determined samurai beside a chess king piece in lower half, generous blank white upper half, no dark fill, no text, no watermark"
+      "label": "Cinematic Sunset Samurai Sanctuary",
+      "layout_style": "pastel_viral",
+      "accent": "#EF4444",
+      "svg_motif": "pastel_ladder",
+      "ai_prompt": "Breathtaking 8k cinema movie still of a calm poised samurai warrior standing amid glowing crimson maple leaves bathed in golden-amber volumetric sunset rays and drifting atmospheric embers, zero borders, no text, no watermark"
     },
     "scarred_bear": {
       "label": "Cinematic Blooming Future Metaphor",

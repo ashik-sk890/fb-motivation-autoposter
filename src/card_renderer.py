@@ -124,33 +124,33 @@ def _tpl_paper_sketch(slide: SlideContent, art_uri: str, brand: str, badge: str,
 
 
 def _tpl_sunrise_metaphor(slide: SlideContent, art_uri: str, brand: str, badge: str) -> str:
-    """Full-bleed 9:16 bright golden sunrise cinema view + vivid red headline over radiant sky."""
-    headline = badge or "HARD TRUTH"
-    body_text = slide.quote.strip().capitalize()
-    q_html = _highlight_html(body_text, slide.accent, "bold-mark")
-    font_px = _scale_font(body_text, large=48, medium=42, compact=37)
+    """Full-bleed 9:16 golden sunrise cinema poster above Facebook Reels caption zone."""
+    headline = badge or "TRUTH"
+    body_text = slide.quote.strip().upper()
+    q_html = _highlight_html(body_text, slide.accent, "sun-accent")
+    font_px = _scale_font(body_text, large=56, medium=48, compact=41)
     return f"""<!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8" />
 <meta name="viewport" content="width=1080, initial-scale=1.0" />
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;900&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@700;900&display=swap" rel="stylesheet" />
 <style>
   * {{ box-sizing: border-box; margin: 0; padding: 0; }}
-  html, body {{ width: 1080px; height: 1920px; overflow: hidden; font-family: 'Montserrat', Arial, sans-serif; }}
-  .card {{ position: relative; width: 1080px; height: 1920px; background: url("{art_uri}") center/cover no-repeat; }}
-  .sky-veil {{ position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(255,250,240,0.82) 0%, rgba(255,250,240,0.52) 28%, rgba(255,255,255,0.0) 48%); }}
-  .top-box {{ position: absolute; top: 190px; left: 74px; right: 74px; text-align: center; }}
-  .headline {{ font-size: 74px; font-weight: 900; color: #dc2626; letter-spacing: 1px; margin-bottom: 24px; text-shadow: 0 2px 16px rgba(255,255,255,0.85); }}
-  .quote {{ font-size: {font_px}px; line-height: 1.42; font-weight: 800; color: #111827; text-shadow: 0 2px 14px rgba(255,255,255,0.85); }}
-  .bold-mark {{ color: #b91c1c; font-weight: 900; }}
-  .brand {{ position: absolute; bottom: 210px; left: 0; right: 0; text-align: center; font-size: 19px; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.9); text-shadow: 0 2px 12px rgba(0,0,0,0.85); }}
+  html, body {{ width: 1080px; height: 1920px; overflow: hidden; background: #0a0c14; font-family: 'Montserrat', Arial, sans-serif; color: #ffffff; }}
+  .card {{ position: relative; width: 1080px; height: 1920px; background: #0a0c14 url("{art_uri}") center 22%/cover no-repeat; }}
+  .scrim {{ position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(8,10,18,0.12) 0%, rgba(8,10,18,0.0) 18%, rgba(8,10,18,0.0) 46%, rgba(8,10,18,0.78) 68%, rgba(6,8,14,0.96) 100%); }}
+  .panel {{ position: absolute; left: 58px; right: 118px; bottom: 385px; display: flex; flex-direction: column; align-items: flex-start; }}
+  .headline {{ padding: 7px 22px; border-radius: 999px; background: #ef4444; color: #ffffff; font-size: 19px; font-weight: 900; letter-spacing: 3px; margin-bottom: 18px; }}
+  .quote {{ font-family: 'Anton', 'Montserrat', sans-serif; font-size: {font_px + 4}px; line-height: 1.16; letter-spacing: 0.8px; color: #ffffff; text-shadow: 0 6px 24px rgba(0,0,0,0.95); }}
+  .sun-accent {{ color: #fde047; }}
+  .brand {{ margin-top: 18px; font-size: 18px; font-weight: 800; letter-spacing: 2.5px; text-transform: uppercase; color: rgba(255,255,255,0.88); }}
 </style></head><body>
   <div class="card">
-    <div class="sky-veil"></div>
-    <div class="top-box">
+    <div class="scrim"></div>
+    <div class="panel">
       <div class="headline">{headline}</div>
       <div class="quote">{q_html}</div>
+      <div class="brand">{brand}</div>
     </div>
-    <div class="brand">{brand}</div>
   </div>
 </body></html>"""
 
@@ -194,33 +194,33 @@ def _tpl_saffron_editorial(slide: SlideContent, art_uri: str, brand: str, badge:
 
 
 def _tpl_cartoon_metaphor(slide: SlideContent, art_uri: str, brand: str, badge: str) -> str:
-    """Full-bleed 9:16 Pixar/Shinkai-style vibrant 3D animated metaphor with floating cinema text."""
+    """Full-bleed 9:16 Pixar/Shinkai 3D animated cinema poster with edge-free Reels typography."""
     quote_txt = slide.quote.strip().upper()
     q_html = _highlight_html(quote_txt, slide.accent, "blue-accent")
-    font_px = _scale_font(quote_txt, large=52, medium=44, compact=38)
-    badge_html = f'<div class="pill">{badge}</div>' if badge else ""
+    font_px = _scale_font(quote_txt, large=56, medium=48, compact=41)
+    badge_html = f'<div class="pill">{badge}</div>' if badge else '<div class="pill">INSIGHT</div>'
     return f"""<!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8" />
 <meta name="viewport" content="width=1080, initial-scale=1.0" />
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@700;900&display=swap" rel="stylesheet" />
 <style>
   * {{ box-sizing: border-box; margin: 0; padding: 0; }}
-  html, body {{ width: 1080px; height: 1920px; overflow: hidden; font-family: 'Montserrat', Arial, sans-serif; }}
-  .card {{ position: relative; width: 1080px; height: 1920px; background: #0f172a url("{art_uri}") center/cover no-repeat; }}
-  .scrim {{ position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(15,23,42,0.58) 0%, rgba(15,23,42,0.22) 28%, rgba(15,23,42,0.0) 48%, rgba(15,23,42,0.78) 84%, rgba(10,14,26,0.92) 100%); }}
-  .banner {{ position: absolute; top: 185px; left: 68px; right: 68px; background: rgba(255,255,255,0.84); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-radius: 26px; padding: 30px 36px; text-align: center; box-shadow: 0 18px 42px rgba(15,23,42,0.24); }}
-  .pill {{ display: inline-block; margin-bottom: 12px; padding: 5px 18px; background: #2563eb; color: #ffffff; border-radius: 999px; font-size: 18px; font-weight: 800; letter-spacing: 3px; }}
-  .quote {{ font-size: {font_px}px; line-height: 1.24; font-weight: 900; color: #0f172a; }}
-  .blue-accent {{ color: #dc2626; }}
-  .brand {{ position: absolute; bottom: 205px; left: 0; right: 0; text-align: center; font-size: 19px; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.92); text-shadow: 0 2px 12px rgba(0,0,0,0.85); }}
+  html, body {{ width: 1080px; height: 1920px; overflow: hidden; background: #0a101d; font-family: 'Montserrat', Arial, sans-serif; color: #ffffff; }}
+  .card {{ position: relative; width: 1080px; height: 1920px; background: #0a101d url("{art_uri}") center 22%/cover no-repeat; }}
+  .scrim {{ position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(10,16,29,0.12) 0%, rgba(10,16,29,0.0) 18%, rgba(10,16,29,0.0) 46%, rgba(10,16,29,0.78) 68%, rgba(7,11,20,0.96) 100%); }}
+  .banner {{ position: absolute; bottom: 385px; left: 58px; right: 118px; display: flex; flex-direction: column; align-items: flex-start; }}
+  .pill {{ display: inline-block; margin-bottom: 16px; padding: 7px 20px; background: #0284c7; color: #ffffff; border-radius: 999px; font-size: 18px; font-weight: 900; letter-spacing: 3px; }}
+  .quote {{ font-family: 'Anton', 'Montserrat', sans-serif; font-size: {font_px + 4}px; line-height: 1.16; letter-spacing: 0.8px; color: #ffffff; text-shadow: 0 6px 26px rgba(0,0,0,0.95); }}
+  .blue-accent {{ color: #fde047; }}
+  .brand {{ margin-top: 18px; font-size: 18px; font-weight: 800; letter-spacing: 2.5px; text-transform: uppercase; color: rgba(255,255,255,0.88); }}
 </style></head><body>
   <div class="card">
     <div class="scrim"></div>
     <div class="banner">
       {badge_html}
       <div class="quote">{q_html}</div>
+      <div class="brand">{brand}</div>
     </div>
-    <div class="brand">{brand}</div>
   </div>
 </body></html>"""
 
@@ -237,7 +237,7 @@ def _tpl_pastel_viral(
     """Full-bleed 9:16 edge-to-edge cinematic scene with glowing highlights & Reels-safe typography."""
     quote_txt = slide.quote.strip().upper()
     q_html = _highlight_html(quote_txt, slide.accent, "cine-accent")
-    font_px = _scale_font(quote_txt, large=60, medium=50, compact=43)
+    font_px = _scale_font(quote_txt, large=58, medium=48, compact=41)
     hi = accent_color if accent_color and accent_color != "#111111" else "#FACC15"
     badge_html = f'<div class="pill">{badge}</div>' if badge else '<div class="pill">MINDSET</div>'
     return f"""<!DOCTYPE html>
@@ -247,16 +247,16 @@ def _tpl_pastel_viral(
 <style>
   * {{ box-sizing: border-box; margin: 0; padding: 0; }}
   html, body {{ width: 1080px; height: 1920px; overflow: hidden; background: #070b14; font-family: 'Montserrat', Arial, sans-serif; color: #ffffff; }}
-  .card {{ position: relative; width: 1080px; height: 1920px; background: #070b14 url("{art_uri}") center 26%/cover no-repeat; }}
-  .cinema-scrim {{ position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(7,11,20,0.22) 0%, rgba(7,11,20,0.0) 16%, rgba(7,11,20,0.0) 56%, rgba(7,11,20,0.74) 74%, rgba(5,8,16,0.94) 100%); }}
-  .panel {{ position: absolute; left: 64px; right: 112px; bottom: 230px; display: flex; flex-direction: column; align-items: flex-start; }}
-  .top-tag {{ display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }}
+  .card {{ position: relative; width: 1080px; height: 1920px; background: #070b14 url("{art_uri}") center 22%/cover no-repeat; }}
+  .cinema-scrim {{ position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(7,11,20,0.12) 0%, rgba(7,11,20,0.0) 18%, rgba(7,11,20,0.0) 46%, rgba(7,11,20,0.78) 68%, rgba(5,8,16,0.96) 100%); }}
+  .panel {{ position: absolute; left: 58px; right: 118px; bottom: 385px; display: flex; flex-direction: column; align-items: flex-start; }}
+  .top-tag {{ display: flex; align-items: center; gap: 14px; margin-bottom: 16px; }}
   .pill {{ padding: 7px 20px; background: {hi}; color: #ffffff; border-radius: 999px; font-size: 18px; font-weight: 900; letter-spacing: 3px; box-shadow: 0 6px 20px rgba(0,0,0,0.35); }}
   .seal {{ width: 48px; height: 48px; border-radius: 50%; border: 2px solid #facc15; background: rgba(7,11,20,0.72); color: #facc15; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 900; }}
-  .quote {{ font-family: 'Anton', 'Montserrat', sans-serif; font-size: {font_px + 6}px; line-height: 1.15; letter-spacing: 0.8px; color: #ffffff; text-transform: uppercase; text-shadow: 0 6px 26px rgba(0,0,0,0.92); }}
+  .quote {{ font-family: 'Anton', 'Montserrat', sans-serif; font-size: {font_px + 4}px; line-height: 1.15; letter-spacing: 0.8px; color: #ffffff; text-transform: uppercase; text-shadow: 0 6px 26px rgba(0,0,0,0.95); }}
   .cine-accent {{ color: #fde047; }}
-  .bar {{ width: 220px; height: 5px; border-radius: 4px; background: linear-gradient(90deg, {hi}, #fde047); margin: 22px 0 14px; }}
-  .brand {{ font-size: 19px; font-weight: 800; letter-spacing: 2.5px; color: rgba(255,255,255,0.88); text-transform: uppercase; text-shadow: 0 2px 10px rgba(0,0,0,0.9); }}
+  .bar {{ width: 220px; height: 5px; border-radius: 4px; background: linear-gradient(90deg, {hi}, #fde047); margin: 20px 0 12px; }}
+  .brand {{ font-size: 18px; font-weight: 800; letter-spacing: 2.5px; color: rgba(255,255,255,0.88); text-transform: uppercase; text-shadow: 0 2px 10px rgba(0,0,0,0.9); }}
 </style></head><body>
   <div class="card">
     <div class="cinema-scrim"></div>
@@ -279,10 +279,10 @@ def _tpl_vibrant_magazine(
     badge: str,
     accent_color: str,
 ) -> str:
-    """Full-bleed 9:16 ultra-vibrant daylight/twilight cinema poster (zero white boxes)."""
+    """Full-bleed 9:16 ultra-vibrant cinema poster positioned cleanly above Reels overlays."""
     quote_txt = slide.quote.strip().upper()
     q_html = _highlight_html(quote_txt, slide.accent, "mag-accent")
-    font_px = _scale_font(quote_txt, large=60, medium=50, compact=43)
+    font_px = _scale_font(quote_txt, large=58, medium=48, compact=41)
     hi = accent_color if accent_color and accent_color != "#111111" else "#F97316"
     badge_html = f'<div class="pill">{badge}</div>' if badge else ""
     return f"""<!DOCTYPE html>
@@ -292,15 +292,15 @@ def _tpl_vibrant_magazine(
 <style>
   * {{ box-sizing: border-box; margin: 0; padding: 0; }}
   html, body {{ width: 1080px; height: 1920px; overflow: hidden; background: #090d16; font-family: 'Montserrat', Arial, sans-serif; color: #ffffff; }}
-  .card {{ position: relative; width: 1080px; height: 1920px; background: #090d16 url("{art_uri}") center 24%/cover no-repeat; }}
-  .cine-fade {{ position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(9,13,22,0.18) 0%, rgba(9,13,22,0.0) 16%, rgba(9,13,22,0.0) 56%, rgba(9,13,22,0.74) 74%, rgba(6,9,16,0.95) 100%); }}
-  .panel {{ position: absolute; left: 64px; right: 104px; bottom: 235px; text-align: center; display: flex; flex-direction: column; align-items: center; }}
-  .pill {{ margin-bottom: 16px; padding: 7px 24px; background: {hi}; color: #ffffff; border-radius: 999px; font-size: 19px; font-weight: 800; letter-spacing: 3px; }}
-  .quote {{ font-family: 'Anton', 'Montserrat', sans-serif; font-size: {font_px + 4}px; line-height: 1.17; color: #ffffff; text-transform: uppercase; letter-spacing: 1px; text-shadow: 0 6px 24px rgba(0,0,0,0.95); }}
+  .card {{ position: relative; width: 1080px; height: 1920px; background: #090d16 url("{art_uri}") center 22%/cover no-repeat; }}
+  .cine-fade {{ position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(9,13,22,0.12) 0%, rgba(9,13,22,0.0) 18%, rgba(9,13,22,0.0) 46%, rgba(9,13,22,0.78) 68%, rgba(6,9,16,0.96) 100%); }}
+  .panel {{ position: absolute; left: 58px; right: 118px; bottom: 385px; text-align: left; display: flex; flex-direction: column; align-items: flex-start; }}
+  .pill {{ margin-bottom: 14px; padding: 7px 22px; background: {hi}; color: #ffffff; border-radius: 999px; font-size: 18px; font-weight: 800; letter-spacing: 3px; }}
+  .quote {{ font-family: 'Anton', 'Montserrat', sans-serif; font-size: {font_px + 4}px; line-height: 1.16; color: #ffffff; text-transform: uppercase; letter-spacing: 0.8px; text-shadow: 0 6px 24px rgba(0,0,0,0.95); }}
   .mag-accent {{ color: #fde047; }}
-  .bar {{ width: 420px; max-width: 80%; height: 4px; border-radius: 4px; background: linear-gradient(90deg, transparent, #fde047, {hi}, transparent); margin: 24px 0 18px; }}
-  .sig-row {{ display: flex; align-items: center; gap: 14px; font-size: 19px; font-weight: 800; color: rgba(255,255,255,0.88); letter-spacing: 2px; text-transform: uppercase; }}
-  .seal {{ width: 52px; height: 52px; border-radius: 50%; border: 2px solid #fde047; background: rgba(9,13,22,0.85); color: #fde047; display: flex; align-items: center; justify-content: center; font-size: 17px; font-weight: 900; }}
+  .bar {{ width: 280px; max-width: 80%; height: 4px; border-radius: 4px; background: linear-gradient(90deg, #fde047, {hi}, transparent); margin: 20px 0 14px; }}
+  .sig-row {{ display: flex; align-items: center; gap: 14px; font-size: 18px; font-weight: 800; color: rgba(255,255,255,0.88); letter-spacing: 2px; text-transform: uppercase; }}
+  .seal {{ width: 48px; height: 48px; border-radius: 50%; border: 2px solid #fde047; background: rgba(9,13,22,0.85); color: #fde047; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 900; }}
 </style></head><body>
   <div class="card">
     <div class="cine-fade"></div>
