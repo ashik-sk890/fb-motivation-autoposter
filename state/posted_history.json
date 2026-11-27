@@ -21,7 +21,10 @@
     "8048b38c3fe8207d",
     "9b38bb44fe3b6132",
     "87f62dc0c3fbc819",
-    "6756e5e2c3ce43c7"
+    "6756e5e2c3ce43c7",
+    "68d3fb1c23f8d5ec",
+    "ec7c560f0fc70f42",
+    "eecf9a90149b5750"
   ],
   "posts": [
     {
@@ -395,6 +398,57 @@
         "page_id": "237094056146383",
         "result": {
           "id": "2147630276114587"
+        }
+      }
+    },
+    {
+      "timestamp_utc": "2026-11-27T13:52:23.610308+00:00",
+      "slot": 3,
+      "archetype_id": 31,
+      "archetype_name": "Be So Private Nobody Can Target You",
+      "post_type": "single",
+      "source": "llm_live",
+      "content_hash": "68d3fb1c23f8d5ec",
+      "headline": "BE SO SILENT AND PRIVATE THAT NOBODY CAN EVER PREDICT YOUR NEXT MOVE",
+      "remote_result": {
+        "action": "FACEBOOK_CREATE_VIDEO_POST",
+        "page_id": "1443084575557354",
+        "result": {
+          "id": "1139354968898520"
+        }
+      }
+    },
+    {
+      "timestamp_utc": "2026-11-27T13:52:57.833505+00:00",
+      "slot": 3,
+      "archetype_id": 7,
+      "archetype_name": "Silent Grind — Let Results Scream",
+      "post_type": "single",
+      "source": "llm_live",
+      "content_hash": "ec7c560f0fc70f42",
+      "headline": "BUILD YOUR EMPIRE IN TOTAL SILENCE AND LET THE FINAL RESULTS SPEAK",
+      "remote_result": {
+        "action": "FACEBOOK_CREATE_VIDEO_POST",
+        "page_id": "1423121790882352",
+        "result": {
+          "id": "1497871819106765"
+        }
+      }
+    },
+    {
+      "timestamp_utc": "2026-11-27T13:53:33.167229+00:00",
+      "slot": 3,
+      "archetype_id": 33,
+      "archetype_name": "Stay Dangerous, Stay Disciplined",
+      "post_type": "single",
+      "source": "llm_live",
+      "content_hash": "eecf9a90149b5750",
+      "headline": "STAY DANGEROUS BY CHOOSING DISCIPLINE WHEN COMFORT WHISPERS EXCUSES",
+      "remote_result": {
+        "action": "FACEBOOK_CREATE_VIDEO_POST",
+        "page_id": "237094056146383",
+        "result": {
+          "id": "992957520095952"
         }
       }
     }
