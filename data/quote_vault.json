@@ -47,14 +47,14 @@
       "layout_style": "paper_sketch",
       "accent": "#DC2626",
       "svg_motif": "cliff_birds",
-      "ai_prompt": "Crisp black ink and pencil sketch isolated on pure solid blank white #FFFFFF background showing one bold eagle flying off a cliff away from passive perched birds with one dynamic red brushstroke trail, generous blank white top space, no dark shading, no text, no watermark"
+      "ai_prompt": "One bold eagle flying off a rocky cliff away from four small perched birds, fine-art black ink crosshatched illustration with one red brushstroke swoosh isolated on pure solid white #FFFFFF paper, generous blank white top space, no text, no watermark"
     },
     "dark_anime_moody": {
       "label": "Paper Sketch Mind Freedom",
       "layout_style": "paper_sketch",
       "accent": "#DC2626",
       "svg_motif": "chained_mind",
-      "ai_prompt": "Expressive clean black pencil sketch isolated on pure solid blank white #FFFFFF background showing a young person breaking free from an iron ball chained to their thoughts, crisp studio scan, generous blank white upper half, no text, no watermark"
+      "ai_prompt": "A young person breaking free from an iron ball chained to their thoughts, fine-art black ink crosshatched illustration isolated on pure solid white #FFFFFF paper, generous blank white upper half, no text, no watermark"
     },
     "dark_anime_rain": {
       "label": "Sunrise Crimson Tree Reality",

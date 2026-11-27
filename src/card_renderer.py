@@ -89,7 +89,7 @@ def _tpl_paper_sketch(slide: SlideContent, art_uri: str, brand: str, badge: str,
     font_px = _scale_font(quote_txt, large=64, medium=54, compact=46)
     badge_html = f'<div class="pill">{badge}</div>' if badge else ""
     art_layer_css = (
-        f'.art-inset {{ position: absolute; left: 24px; right: 24px; top: 580px; bottom: 210px; background: url("{art_uri}") center/contain no-repeat; mix-blend-mode: multiply; -webkit-mask-image: radial-gradient(ellipse at center, black 64%, transparent 98%); mask-image: radial-gradient(ellipse at center, black 64%, transparent 98%); }}'
+        f'.art-inset {{ position: absolute; left: 24px; right: 24px; top: 580px; bottom: 210px; background: url("{art_uri}") center/contain no-repeat; mix-blend-mode: multiply; filter: contrast(1.2) brightness(1.07); -webkit-mask-image: radial-gradient(ellipse at center, black 56%, transparent 94%); mask-image: radial-gradient(ellipse at center, black 56%, transparent 94%); }}'
         if is_ai_art
         else f'.card {{ background: #faf6ee url("{art_uri}") center/cover no-repeat; }}'
     )
@@ -162,7 +162,7 @@ def _tpl_saffron_editorial(slide: SlideContent, art_uri: str, brand: str, badge:
     font_px = _scale_font(quote_txt, large=64, medium=54, compact=46)
     badge_html = f'<div class="pill">{badge}</div>' if badge else ""
     art_layer_css = (
-        f'.art-inset {{ position: absolute; left: 32px; right: 32px; top: 610px; bottom: 180px; background: url("{art_uri}") center bottom/contain no-repeat; mix-blend-mode: multiply; -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 18%, black 100%); mask-image: linear-gradient(to bottom, transparent 0%, black 18%, black 100%); }}'
+        f'.art-inset {{ position: absolute; left: 32px; right: 32px; top: 610px; bottom: 180px; background: url("{art_uri}") center bottom/contain no-repeat; mix-blend-mode: multiply; filter: contrast(1.2) brightness(1.07); -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 100%); mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 100%); }}'
         if is_ai_art
         else f'.card {{ background: #f59e0b url("{art_uri}") center/cover no-repeat; }}'
     )

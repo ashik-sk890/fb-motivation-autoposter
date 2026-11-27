@@ -156,12 +156,12 @@ def _post_json(url: str, payload: dict[str, Any], headers: dict[str, str], timeo
 
 
 _STYLE_HINTS: dict[str, str] = {
-    "paper_sketch": "clean crisp black ink & charcoal pencil metaphor drawing isolated on pure solid blank white #FFFFFF paper background, zero dark background shading, no text",
-    "saffron_editorial": "minimalist crisp black crosshatched ink illustration isolated on pure solid blank white #FFFFFF paper background, lower-weighted composition, no dark edges, no text",
-    "cartoon_metaphor": "breathtaking Pixar and Makoto Shinkai 3D animated movie frame showing a vivid visual metaphor, sunlit volumetric rays, lush full-view atmospheric sky above, rich depth of field, zero borders, no text",
-    "sunrise_metaphor": "sweeping cinematic golden morning sunrise vista in ultra-detailed 8k anime/film style, luminous open pastel sky across upper third, dramatic glowing subject below, no text",
-    "pastel_viral": "breathtaking full-bleed 8k cinematic concept art with glowing golden-hour volumetric sunbeams, vibrant turquoise-amber atmospheric sky, dramatic wide depth of field, centered hero subject with calm lower space for bold typography, no borders, no text",
-    "vibrant_magazine": "epic full-bleed cinematic widescreen-feel film still in 8k photorealistic/semi-realistic style, radiant warm sunset rim-light, dramatic mist & skyline/mountain depth, clean lower gradient zone for text, no borders, no text",
+    "paper_sketch": "fine-art black ink crosshatched etching illustration on pure blank white #FFFFFF paper, clean white margin around hero subject, no text",
+    "saffron_editorial": "minimalist black ink crosshatched editorial illustration on pure blank white #FFFFFF paper, lower-weighted composition, no dark edges, no text",
+    "cartoon_metaphor": "breathtaking Pixar and Makoto Shinkai 3D animated movie frame showing the hero subject, sunlit volumetric rays, lush full-view sky above, zero borders, no text",
+    "sunrise_metaphor": "sweeping cinematic golden morning sunrise landscape in ultra-detailed 8k anime/film style, glowing horizon light, no text",
+    "pastel_viral": "breathtaking full-bleed 8k cinematic hero scene with glowing golden-hour volumetric sunbeams, vibrant atmospheric sky, centered hero subject framing, no borders, no text",
+    "vibrant_magazine": "epic full-bleed cinematic film still in 8k photorealistic/semi-realistic style, radiant warm sunset rim-light, crisp focal subject and atmospheric depth, no borders, no text",
     "gold_spotlight": "epic golden-hour studio rim-lit cinematic portrait on sapphire/amber horizon backdrop, volumetric rays, no text",
     "monochrome_alpha": "epic silver-gelatin storm cinema portrait with sharp dramatic rim lighting and glowing sparks, no text",
 }
@@ -196,7 +196,7 @@ def _generate_via_llm(
         f"- 'accent' MUST be an exact uppercase substring of 'quote' (2 to 5 impactful words to color highlight).\n"
         f"- 'visual_theme' MUST be picked creatively to best fit the scene from: {', '.join(theme_map.keys()) if theme_map else theme_guide} (vary themes instead of always picking the first one).\n"
         f"- CINEMATIC FULL-VIEW RULE: Design every visual as a breathtaking, vibrant full-screen 8K cinematic scene (volumetric sunlight, golden hour depth, electric atmosphere, cosmic/mountain/skyline/anime-film realism — NEVER flat dull clipart or boxy borders!).\n"
-        f"- 'image_prompt' MUST describe a concrete symbolic SUBJECT centered nicely with generous open atmospheric sky/foreground so it fills a vertical 9:16 mobile screen cinematically, strictly matching the chosen visual_theme style (no text, no words, no watermark):\n"
+        f"- 'image_prompt' MUST start its VERY FIRST 8 words directly naming the visible hero SUBJECT + action (for example: 'A fierce golden eagle soaring above storm clouds...', 'A lone chess king standing on sunlit marble...', 'A blooming emerald tree thriving on sunlit rock...') followed by the chosen visual_theme style (never start with only colors/style words; no text, no watermark):\n"
         f"  Style requirements: {theme_guide}.\n"
         f"- For carousel slides, set badge to '01 / 04', '02 / 04', etc. For single post, badge is empty string.\n"
     )
