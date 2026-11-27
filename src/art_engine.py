@@ -152,15 +152,15 @@ def _try_cloudflare_flux(prompt: str, account_id: str, api_token: str) -> bytes 
     base_url = f"https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/run"
     attempts: list[tuple[str, bytes, str]] = []
     for model, fields in (
-        ("@cf/black-forest-labs/flux-2-klein-9b", {"prompt": prompt, "width": "768", "height": "1344"}),
-        ("@cf/black-forest-labs/flux-2-dev", {"prompt": prompt, "width": "768", "height": "1344", "steps": "15"}),
+        ("@cf/black-forest-labs/flux-2-klein-9b", {"prompt": prompt, "width": "576", "height": "1024"}),
+        ("@cf/black-forest-labs/flux-2-klein-4b", {"prompt": prompt, "width": "576", "height": "1024"}),
     ):
         body, ctype = _multipart_form_payload(fields)
         attempts.append((f"{base_url}/{model}", body, ctype))
     attempts.append(
         (
             f"{base_url}/@cf/black-forest-labs/flux-1-schnell",
-            json.dumps({"prompt": prompt, "steps": 6}).encode("utf-8"),
+            json.dumps({"prompt": prompt, "steps": 4}).encode("utf-8"),
             "application/json",
         )
     )
@@ -674,91 +674,31 @@ def _svg_saffron_ink(motif: str) -> str:
 
 
 def _svg_cartoon_metaphor(motif: str) -> str:
-    """Bright cartoon visual metaphor illustrations inspired by Stick Wisdom (44K reactions)."""
-    if motif == "watering_rock":
-        scene = """
-  <!-- Bright green sprout thriving on left -->
-  <g transform="translate(260,960)">
-    <path d="M0,110 Q-5,40 0,0" stroke="#15803d" stroke-width="10" fill="none"/>
-    <ellipse cx="-32" cy="18" rx="34" ry="18" transform="rotate(-24 -32 18)" fill="#22c55e" stroke="#14532d" stroke-width="4"/>
-    <ellipse cx="32" cy="28" rx="34" ry="18" transform="rotate(24 32 28)" fill="#4ade80" stroke="#14532d" stroke-width="4"/>
-  </g>
-  <!-- Giant dead gray rock on right -->
-  <path d="M620,1080 L645,930 L740,860 L865,885 L920,990 L900,1085 Z" fill="#94a3b8" stroke="#1e293b" stroke-width="6"/>
-  <path d="M695,940 L765,915 M780,985 L845,965" stroke="#475569" stroke-width="5" stroke-linecap="round"/>
-  <!-- Stick character with bright red watering can -->
-  <g transform="translate(475,760)" stroke="#0f172a" stroke-width="6" stroke-linecap="round">
-    <circle cx="0" cy="-70" r="68" fill="#fed7aa"/>
-    <circle cx="-18" cy="-80" r="7" fill="#0f172a" stroke="none"/>
-    <circle cx="24" cy="-80" r="7" fill="#0f172a" stroke="none"/>
-    <path d="M-16,-45 Q8,-32 28,-48" fill="none"/>
-    <rect x="-26" y="0" width="54" height="150" rx="22" fill="#f97316"/>
-    <path d="M-14,150 L-22,295 M16,150 L28,295" stroke-width="10"/>
-    <path d="M22,40 L125,85" stroke-width="10"/>
-    <!-- Red watering can -->
-    <g transform="translate(135,75)">
-      <rect x="-25" y="-25" width="75" height="60" rx="8" fill="#ef4444" stroke="#0f172a" stroke-width="5"/>
-      <path d="M50,-5 L110,-35 L116,-18 L50,20 Z" fill="#ef4444" stroke="#0f172a" stroke-width="5"/>
-      <!-- Water drops -->
-      <line x1="124" y1="-8" x2="150" y2="35" stroke="#38bdf8" stroke-width="6"/>
-      <line x1="138" y1="-2" x2="170" y2="48" stroke="#38bdf8" stroke-width="6"/>
-    </g>
-  </g>"""
-    else:
-        # wrong_person_tap: stick figure watching tap pour water into mesh trash basket
-        scene = """
-  <!-- Stone rock seat + happy stick character -->
-  <path d="M105,1120 C95,970 210,895 360,910 C470,920 510,1010 495,1125 Z" fill="#94a3b8" stroke="#334155" stroke-width="5"/>
-  <g transform="translate(305,745)" stroke="#0f172a" stroke-width="6" stroke-linecap="round">
-    <!-- Kneeling legs -->
-    <path d="M25,145 L105,180 L75,260 L10,255" fill="#78350f"/>
-    <!-- Torso -->
-    <path d="M-35,10 L42,10 L52,155 L-25,155 Z" fill="#f97316"/>
-    <!-- Arms -->
-    <path d="M32,35 L78,125 L108,160" fill="none" stroke-width="9"/>
-    <!-- Head -->
-    <circle cx="5" cy="-72" r="76" fill="#fed7aa"/>
-    <path d="M-8,-145 L4,-168 M8,-142 L26,-162" stroke-width="5"/>
-    <circle cx="-12" cy="-84" r="7" fill="#0f172a" stroke="none"/>
-    <circle cx="32" cy="-84" r="7" fill="#0f172a" stroke="none"/>
-    <path d="M-12,-46 Q14,-24 44,-46" fill="none" stroke-width="5"/>
-  </g>
-  <!-- Water puddle below basket -->
-  <ellipse cx="745" cy="1175" rx="225" ry="46" fill="#7dd3fc" stroke="#0284c7" stroke-width="4" opacity="0.88"/>
-  <!-- Tap pipe & faucet -->
-  <path d="M895,1155 L895,555 C895,515 865,495 825,495 L745,495 L745,545" fill="none" stroke="#64748b" stroke-width="34" stroke-linecap="round"/>
-  <path d="M895,1155 L895,555 C895,515 865,495 825,495 L745,495 L745,545" fill="none" stroke="#cbd5e1" stroke-width="14" stroke-linecap="round"/>
-  <rect x="708" y="458" width="74" height="16" rx="8" fill="#475569"/>
-  <!-- Flowing water stream -->
-  <path d="M726,558 L764,558 L772,940 L718,940 Z" fill="#38bdf8" opacity="0.85"/>
-  <path d="M738,565 L746,935 M754,565 L760,935" stroke="#e0f2fe" stroke-width="5"/>
-  <!-- Mesh wire basket labeled WRONG PERSON -->
-  <g transform="translate(745,980)">
-    <polygon points="-155,-115 155,-115 120,165 -120,165" fill="#cbd5e1" fill-opacity="0.35" stroke="#334155" stroke-width="7"/>
-    <line x1="-130" y1="-40" x2="130" y2="-40" stroke="#475569" stroke-width="4"/>
-    <line x1="-124" y1="35" x2="124" y2="35" stroke="#475569" stroke-width="4"/>
-    <line x1="-118" y1="105" x2="118" y2="105" stroke="#475569" stroke-width="4"/>
-    <line x1="-65" y1="-115" x2="-48" y2="165" stroke="#475569" stroke-width="4"/>
-    <line x1="0" y1="-115" x2="0" y2="165" stroke="#475569" stroke-width="4"/>
-    <line x1="65" y1="-115" x2="48" y2="165" stroke="#475569" stroke-width="4"/>
-    <rect x="-108" y="-32" width="216" height="96" rx="8" fill="#ffffff" stroke="#1e293b" stroke-width="4"/>
-    <text x="0" y="10" text-anchor="middle" font-family="Arial Black, sans-serif" font-size="30" font-weight="900" fill="#0f172a">WRONG</text>
-    <text x="0" y="46" text-anchor="middle" font-family="Arial Black, sans-serif" font-size="30" font-weight="900" fill="#dc2626">PERSON</text>
-    <!-- Water leaking through bottom -->
-    <path d="M-75,145 Q-95,185 -90,210 M-20,150 Q-25,190 -20,215 M35,150 Q42,190 38,215 M85,145 Q102,185 95,210" stroke="#38bdf8" stroke-width="14" stroke-linecap="round" fill="none"/>
-  </g>"""
-
-    return f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1350" width="1080" height="1350">
+    """9:16 Makoto Shinkai-style atmospheric sunset valley & luminous rays fallback art."""
+    return """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1920" width="1080" height="1920">
   <defs>
-    <linearGradient id="cartoonSky" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#dbeafe"/>
-      <stop offset="68%" stop-color="#f1f5f9"/>
-      <stop offset="72%" stop-color="#e2e8f0"/>
-      <stop offset="100%" stop-color="#cbd5e1"/>
+    <linearGradient id="shinkaiSky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0284c7"/>
+      <stop offset="35%" stop-color="#38bdf8"/>
+      <stop offset="68%" stop-color="#fed7aa"/>
+      <stop offset="100%" stop-color="#f97316"/>
     </linearGradient>
+    <radialGradient id="sunsetOrb" cx="50%" cy="54%" r="36%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="32%" stop-color="#fef08a" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#fb923c" stop-opacity="0"/>
+    </radialGradient>
   </defs>
-  <rect width="1080" height="1350" fill="url(#cartoonSky)"/>
-  {scene}
+  <rect width="1080" height="1920" fill="url(#shinkaiSky)"/>
+  <rect width="1080" height="1450" fill="url(#sunsetOrb)"/>
+  <ellipse cx="220" cy="420" rx="210" ry="48" fill="#ffffff" opacity="0.32"/>
+  <ellipse cx="810" cy="340" rx="240" ry="52" fill="#ffffff" opacity="0.28"/>
+  <path d="M0,1240 L260,960 L540,1160 L820,910 L1080,1190 L1080,1920 L0,1920 Z" fill="#1e293b" opacity="0.72"/>
+  <path d="M0,1360 L340,1120 L620,1290 L920,1080 L1080,1260 L1080,1920 L0,1920 Z" fill="#0f172a"/>
+  <g transform="translate(540,1090)" fill="#ffffff" opacity="0.9">
+    <circle cx="0" cy="-42" r="14"/>
+    <path d="M-16,-24 L16,-24 L20,38 L-20,38 Z"/>
+  </g>
 </svg>"""
 
 
