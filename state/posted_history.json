@@ -18,7 +18,10 @@
     "703bc089834f0163",
     "7846b012fcdee32b",
     "38b894a6a1a126b4",
-    "8048b38c3fe8207d"
+    "8048b38c3fe8207d",
+    "9b38bb44fe3b6132",
+    "87f62dc0c3fbc819",
+    "6756e5e2c3ce43c7"
   ],
   "posts": [
     {
@@ -341,6 +344,57 @@
         "page_id": "237094056146383",
         "result": {
           "id": "1500702148663983"
+        }
+      }
+    },
+    {
+      "timestamp_utc": "2026-11-27T05:33:05.949705+00:00",
+      "slot": 1,
+      "archetype_id": 49,
+      "archetype_name": "Be the Storm They Never Saw Coming",
+      "post_type": "single",
+      "source": "llm_live",
+      "content_hash": "9b38bb44fe3b6132",
+      "headline": "BUILD YOUR EMPIRE IN TOTAL SILENCE AND LET YOUR SUCCESS BE THE SHOCKWAVE",
+      "remote_result": {
+        "action": "FACEBOOK_CREATE_VIDEO_POST",
+        "page_id": "1443084575557354",
+        "result": {
+          "id": "1132870722997367"
+        }
+      }
+    },
+    {
+      "timestamp_utc": "2026-11-27T05:33:41.658988+00:00",
+      "slot": 1,
+      "archetype_id": 5,
+      "archetype_name": "Eagle Vision — Fly Solo",
+      "post_type": "single",
+      "source": "llm_live",
+      "content_hash": "87f62dc0c3fbc819",
+      "headline": "THE HIGHEST PEAKS ARE SCALED BY THOSE WHO CHOOSE TO CLIMB ALONE",
+      "remote_result": {
+        "action": "FACEBOOK_CREATE_VIDEO_POST",
+        "page_id": "1423121790882352",
+        "result": {
+          "id": "1742209053985069"
+        }
+      }
+    },
+    {
+      "timestamp_utc": "2026-11-27T05:34:15.479525+00:00",
+      "slot": 1,
+      "archetype_id": 50,
+      "archetype_name": "Lessons on Love, Loyalty & Choosing Yourself",
+      "post_type": "single",
+      "source": "llm_live",
+      "content_hash": "6756e5e2c3ce43c7",
+      "headline": "SOMETIMES CHOOSING YOURSELF LOOKS LIKE WALKING AWAY FROM PEOPLE WHO ONLY LOVE THE VERSION OF YOU THA",
+      "remote_result": {
+        "action": "FACEBOOK_CREATE_VIDEO_POST",
+        "page_id": "237094056146383",
+        "result": {
+          "id": "2147630276114587"
         }
       }
     }
