@@ -196,7 +196,7 @@ def _generate_via_llm(
         f"- 'accent' MUST be an exact uppercase substring of 'quote' (2 to 5 impactful words to color highlight).\n"
         f"- 'visual_theme' MUST be one of the theme keys listed below.\n"
         f"- BRIGHT & TRENDY VISUAL RULE: Every visual MUST feel bright, eye-catching, modern, and vibrant (sunlit daylight, pastel sky, cream paper ink, warm saffron, or golden sunrise — NEVER dark gloomy pitch-black shadows!).\n"
-        f"- 'image_prompt' MUST describe a fresh, creative visual metaphor strictly matching the required medium/background style for your chosen visual_theme (no text, no words, no watermark inside the image):\n"
+        f"- 'image_prompt' MUST include a clear concrete visual SUBJECT + symbolic metaphor (e.g. eagle breaking away from perched birds, climber ascending sunlit stairs, suited chess strategist, red sunrise tree, golden lion in daylight, blooming sprout vs dry stone) rendered in the required medium/background style for your chosen visual_theme (never omit the subject; no text, no words, no watermark):\n"
         f"  Themes & required visual medium: {theme_guide}.\n"
         f"- For carousel slides, set badge to '01 / 04', '02 / 04', etc. For single post, badge is empty string.\n"
     )
