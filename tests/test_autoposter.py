@@ -15,7 +15,7 @@ from src.card_renderer import build_card_html
 from src.composio_publisher import list_managed_pages, publish_post, resolve_target_pages
 from src.config import ARCHETYPES_PATH, AppConfig, QUOTE_VAULT_PATH
 from src.content_engine import PostPlan, SlideContent, _infer_metaphor_prompt, build_post_plan, load_json, save_history
-from src.main import generate_and_render, resolve_slot
+from src.main import _publish_manifest_jobs, generate_and_render, resolve_slot
 from src.music_engine import select_background_track
 from src.video_engine import _build_single_card_cmd, _build_slideshow_cmd
 
@@ -490,6 +490,42 @@ class TestComposioPublisher(unittest.TestCase):
         html_anime = build_card_html(_test_config(), slide, "data:image/png;base64,AA", page_brand="Anime kid Story")
         self.assertIn(">AKS<", html_anime)
         self.assertIn(">@animekidstory<", html_anime)
+
+    def test_publish_manifest_jobs_paces_pages_with_delay(self) -> None:
+        from unittest import mock
+
+        base_job = {
+            "slot": 1,
+            "archetype_id": 1,
+            "archetype_name": "Apex Patience",
+            "post_type": "single",
+            "caption": "Test pacing",
+            "content_hash": "hash123",
+            "source": "vault",
+            "slides": [{"quote": "STAY PATIENT.", "accent": "PATIENT."}],
+            "image_paths": [],
+        }
+        manifest_3 = {
+            "jobs": [
+                {**base_job, "page_id": "1443084575557354", "page_name": "Mallick Yt"},
+                {**base_job, "page_id": "1423121790882352", "page_name": "Anime kid Story"},
+                {**base_job, "page_id": "237094056146383", "page_name": "online course"},
+            ]
+        }
+        with (
+            mock.patch("src.main.publish_post", return_value={"action": "FACEBOOK_CREATE_VIDEO_POST", "id": "p1"}) as pub_mock,
+            mock.patch("src.main.save_history") as hist_mock,
+            mock.patch("src.main.time.sleep") as sleep_mock,
+        ):
+            res = _publish_manifest_jobs(_test_config(), manifest_3)
+            self.assertEqual([r["status"] for r in res], ["ok", "ok", "ok"])
+            self.assertEqual(pub_mock.call_count, 3)
+            self.assertEqual(hist_mock.call_count, 3)
+            self.assertEqual(sleep_mock.call_args_list, [mock.call(30.0), mock.call(30.0)])
+
+            sleep_mock.reset_mock()
+            _publish_manifest_jobs(_test_config(), {"jobs": [manifest_3["jobs"][0]]})
+            sleep_mock.assert_not_called()
 
 
 if __name__ == "__main__":

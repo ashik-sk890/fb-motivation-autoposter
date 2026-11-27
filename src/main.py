@@ -232,11 +232,15 @@ def _plan_from_job(job: dict[str, Any]) -> PostPlan:
     )
 
 
-def _publish_manifest_jobs(config: AppConfig, manifest: dict[str, Any]) -> list[dict[str, Any]]:
+def _publish_manifest_jobs(
+    config: AppConfig,
+    manifest: dict[str, Any],
+    delay_between_pages_sec: float = 30.0,
+) -> list[dict[str, Any]]:
     """Publish every page job in manifest.json and persist deduplication history."""
     jobs = manifest.get("jobs") or [manifest]
     results: list[dict[str, Any]] = []
-    for job in jobs:
+    for idx, job in enumerate(jobs):
         plan = _plan_from_job(job)
         image_paths = [Path(p) for p in job.get("image_paths", []) if p]
         public_urls = job.get("public_urls") or None
@@ -259,6 +263,9 @@ def _publish_manifest_jobs(config: AppConfig, manifest: dict[str, Any]) -> list[
             results.append({"page_id": target_page_id, "page_name": job.get("page_name"), "status": "ok", **pub_res})
         except Exception as exc:
             results.append({"page_id": target_page_id, "page_name": job.get("page_name"), "status": "error", "error": str(exc)})
+        if idx < len(jobs) - 1 and delay_between_pages_sec > 0:
+            # Pace multi-page uploads so Meta does not flag rapid burst API calls as suspicious activity.
+            time.sleep(delay_between_pages_sec)
     return results
 
 
