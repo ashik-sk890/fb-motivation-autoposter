@@ -145,18 +145,24 @@ def _multipart_form_payload(fields: dict[str, str]) -> tuple[bytes, str]:
     return b"".join(chunks), f"multipart/form-data; boundary={boundary}"
 
 
-def _try_cloudflare_flux(prompt: str, account_id: str, api_token: str) -> bytes | None:
-    """Attempt free-tier FLUX.2 9:16 portrait (Klein 9B / Dev) with FLUX.1-schnell fallback."""
+def _try_cloudflare_flux(
+    prompt: str,
+    account_id: str,
+    api_token: str,
+    fast_tier: bool = False,
+) -> bytes | None:
+    """Attempt free-tier FLUX.2 9:16 portrait (or lightweight FLUX.1-schnell for secondary carousel slides)."""
     if not (account_id and api_token):
         return None
     base_url = f"https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/run"
     attempts: list[tuple[str, bytes, str]] = []
-    for model, fields in (
-        ("@cf/black-forest-labs/flux-2-klein-9b", {"prompt": prompt, "width": "576", "height": "1024"}),
-        ("@cf/black-forest-labs/flux-2-klein-4b", {"prompt": prompt, "width": "576", "height": "1024"}),
-    ):
-        body, ctype = _multipart_form_payload(fields)
-        attempts.append((f"{base_url}/{model}", body, ctype))
+    if not fast_tier:
+        for model, fields in (
+            ("@cf/black-forest-labs/flux-2-klein-9b", {"prompt": prompt, "width": "576", "height": "1024"}),
+            ("@cf/black-forest-labs/flux-2-klein-4b", {"prompt": prompt, "width": "576", "height": "1024"}),
+        ):
+            body, ctype = _multipart_form_payload(fields)
+            attempts.append((f"{base_url}/{model}", body, ctype))
     attempts.append(
         (
             f"{base_url}/@cf/black-forest-labs/flux-1-schnell",
@@ -813,6 +819,7 @@ def resolve_artwork_data_uri(
     allow_remote_art: bool = True,
     cache_path: Path | None = None,
     prompt_override: str = "",
+    fast_tier: bool = False,
 ) -> tuple[str, str]:
     """Return (data_uri, source_label) for the visual artwork of a card."""
     prompt = prompt_override.strip() or str(theme_meta.get("ai_prompt", "Dark dramatic lion portrait, high contrast, no text"))
@@ -822,7 +829,7 @@ def resolve_artwork_data_uri(
 
     if allow_remote_art:
         image_bytes = (
-            _try_cloudflare_flux(prompt, config.cloudflare_account_id, config.cloudflare_api_token)
+            _try_cloudflare_flux(prompt, config.cloudflare_account_id, config.cloudflare_api_token, fast_tier=fast_tier)
             or _try_deepai(prompt, config.deepai_api_key)
             or _try_gemini_imagen(prompt, config.gemini_api_key)
             or _try_huggingface(prompt, config.hf_token)

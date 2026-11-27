@@ -79,6 +79,7 @@ def _render_single_job(
             seed=seed + idx * 97,
             allow_remote_art=allow_remote_art,
             page_brand=page_name or config.brand_name,
+            fast_tier=(idx > 1),
         )
         img_path = assets["image_path"]
         if img_path is not None:
