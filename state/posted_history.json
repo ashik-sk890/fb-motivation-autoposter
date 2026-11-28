@@ -27,7 +27,10 @@
     "eecf9a90149b5750",
     "5bc48cee68476f55",
     "f39fc6508d8edadf",
-    "f5a2d3280bc5636a"
+    "f5a2d3280bc5636a",
+    "e878e7a6b46e6bcb",
+    "755c4999b852cec4",
+    "bd32b75ca919d8b9"
   ],
   "posts": [
     {
@@ -505,9 +508,61 @@
           "id": "1003163172341231"
         }
       }
+    },
+    {
+      "timestamp_utc": "2026-11-28T08:32:43.315523+00:00",
+      "slot": 2,
+      "archetype_id": 10,
+      "archetype_name": "Stoic Emotional Control",
+      "post_type": "carousel",
+      "source": "llm_live",
+      "content_hash": "e878e7a6b46e6bcb",
+      "headline": "STOP INVESTING YOUR PEACE IN OPINIONS YOU CANNOT CONTROL",
+      "remote_result": {
+        "action": "FACEBOOK_CREATE_VIDEO_POST",
+        "page_id": "1443084575557354",
+        "result": {
+          "id": "1535058688458919"
+        }
+      }
+    },
+    {
+      "timestamp_utc": "2026-11-28T08:33:18.335704+00:00",
+      "slot": 2,
+      "archetype_id": 45,
+      "archetype_name": "Rules for Dealing With Disrespect",
+      "post_type": "carousel",
+      "source": "llm_live",
+      "content_hash": "755c4999b852cec4",
+      "headline": "NEVER LOWER YOUR TONE TO EXPLAIN YOUR WORTH TO SOMEONE WHO CHOSE TO INSULT YOU",
+      "remote_result": {
+        "action": "FACEBOOK_CREATE_VIDEO_POST",
+        "page_id": "1423121790882352",
+        "result": {
+          "id": "3113525742314120"
+        }
+      }
+    },
+    {
+      "timestamp_utc": "2026-11-28T08:33:54.001267+00:00",
+      "slot": 2,
+      "archetype_id": 39,
+      "archetype_name": "Detach From Outcomes, Attach to Effort",
+      "post_type": "carousel",
+      "source": "llm_live",
+      "content_hash": "bd32b75ca919d8b9",
+      "headline": "CONTROL THE INPUTS AND SURRENDER THE OUTCOMES TO THE INDIFFERENT UNIVERSE",
+      "remote_result": {
+        "action": "FACEBOOK_CREATE_VIDEO_POST",
+        "page_id": "237094056146383",
+        "result": {
+          "id": "1839190567347629"
+        }
+      }
     }
   ],
   "slot_days": [
-    "2026-11-28:s1"
+    "2026-11-28:s1",
+    "2026-11-28:s2"
   ]
 }
