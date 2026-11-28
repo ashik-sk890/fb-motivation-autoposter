@@ -24,7 +24,10 @@
     "6756e5e2c3ce43c7",
     "68d3fb1c23f8d5ec",
     "ec7c560f0fc70f42",
-    "eecf9a90149b5750"
+    "eecf9a90149b5750",
+    "5bc48cee68476f55",
+    "f39fc6508d8edadf",
+    "f5a2d3280bc5636a"
   ],
   "posts": [
     {
@@ -451,6 +454,60 @@
           "id": "992957520095952"
         }
       }
+    },
+    {
+      "timestamp_utc": "2026-11-28T04:32:15.904412+00:00",
+      "slot": 1,
+      "archetype_id": 5,
+      "archetype_name": "Eagle Vision — Fly Solo",
+      "post_type": "single",
+      "source": "llm_live",
+      "content_hash": "5bc48cee68476f55",
+      "headline": "THE STRONGEST BIRDS FLY ALONE BECAUSE PEAKS ARE NEVER REACHED IN CROWDS",
+      "remote_result": {
+        "action": "FACEBOOK_CREATE_VIDEO_POST",
+        "page_id": "1443084575557354",
+        "result": {
+          "id": "1149261811028813"
+        }
+      }
+    },
+    {
+      "timestamp_utc": "2026-11-28T04:32:49.962979+00:00",
+      "slot": 1,
+      "archetype_id": 18,
+      "archetype_name": "Protect Your Peace at All Costs",
+      "post_type": "single",
+      "source": "llm_live",
+      "content_hash": "f39fc6508d8edadf",
+      "headline": "WALK AWAY FROM CHAOS BECAUSE YOUR PEACE IS WORTH MORE THAN WINNING",
+      "remote_result": {
+        "action": "FACEBOOK_CREATE_VIDEO_POST",
+        "page_id": "1423121790882352",
+        "result": {
+          "id": "1970207890618871"
+        }
+      }
+    },
+    {
+      "timestamp_utc": "2026-11-28T04:33:24.256762+00:00",
+      "slot": 1,
+      "archetype_id": 22,
+      "archetype_name": "Never Go Back to What Broke You",
+      "post_type": "single",
+      "source": "llm_live",
+      "content_hash": "f5a2d3280bc5636a",
+      "headline": "NEVER RETURN TO THE EXACT PLACE THAT TRIED TO DESTROY YOUR PEACE",
+      "remote_result": {
+        "action": "FACEBOOK_CREATE_VIDEO_POST",
+        "page_id": "237094056146383",
+        "result": {
+          "id": "1003163172341231"
+        }
+      }
     }
+  ],
+  "slot_days": [
+    "2026-11-28:s1"
   ]
 }
