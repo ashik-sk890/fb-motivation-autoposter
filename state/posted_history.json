@@ -30,7 +30,10 @@
     "f5a2d3280bc5636a",
     "e878e7a6b46e6bcb",
     "755c4999b852cec4",
-    "bd32b75ca919d8b9"
+    "bd32b75ca919d8b9",
+    "c946c2fff6779d7c",
+    "19ca858b7abadfd1",
+    "1832079b15760c59"
   ],
   "posts": [
     {
@@ -559,10 +562,62 @@
           "id": "1839190567347629"
         }
       }
+    },
+    {
+      "timestamp_utc": "2026-11-28T12:32:15.054320+00:00",
+      "slot": 3,
+      "archetype_id": 33,
+      "archetype_name": "Stay Dangerous, Stay Disciplined",
+      "post_type": "single",
+      "source": "llm_live",
+      "content_hash": "c946c2fff6779d7c",
+      "headline": "STAY DANGEROUS WHEN COMFORT WHISPERS EXCUSES TO YOUR WEAKNESS",
+      "remote_result": {
+        "action": "FACEBOOK_CREATE_VIDEO_POST",
+        "page_id": "1443084575557354",
+        "result": {
+          "id": "2598992190527361"
+        }
+      }
+    },
+    {
+      "timestamp_utc": "2026-11-28T12:32:52.116517+00:00",
+      "slot": 3,
+      "archetype_id": 33,
+      "archetype_name": "Stay Dangerous, Stay Disciplined",
+      "post_type": "single",
+      "source": "llm_live",
+      "content_hash": "19ca858b7abadfd1",
+      "headline": "STAY DANGEROUS IN YOUR FOCUS WHEN EVERYONE ELSE IS COMFORTABLE",
+      "remote_result": {
+        "action": "FACEBOOK_CREATE_VIDEO_POST",
+        "page_id": "1423121790882352",
+        "result": {
+          "id": "1655050058954956"
+        }
+      }
+    },
+    {
+      "timestamp_utc": "2026-11-28T12:33:26.838122+00:00",
+      "slot": 3,
+      "archetype_id": 46,
+      "archetype_name": "Comfort Is the Silent Killer of Dreams",
+      "post_type": "single",
+      "source": "llm_live",
+      "content_hash": "1832079b15760c59",
+      "headline": "YOUR COMFORT ZONE IS WHERE AMBITION GOES TO DIE SILENTLY",
+      "remote_result": {
+        "action": "FACEBOOK_CREATE_VIDEO_POST",
+        "page_id": "237094056146383",
+        "result": {
+          "id": "4732116730446579"
+        }
+      }
     }
   ],
   "slot_days": [
     "2026-11-28:s1",
-    "2026-11-28:s2"
+    "2026-11-28:s2",
+    "2026-11-28:s3"
   ]
 }
